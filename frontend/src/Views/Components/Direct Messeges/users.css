@@ -1,0 +1,47 @@
+.users{
+    border-top: 1px solid whitesmoke;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 50px;
+   }
+
+.users_div{
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.users_div >span>h3{
+    width:180px;
+}
+.users_continer{
+    padding: 10px 0px;
+}
+.user{
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    margin: 5px;
+}
+.user:hover{
+    background-color: #92ebf7;
+    color:#b5c1c4 ;
+}
+
+.user_icon{
+    margin-right: 10px;
+}
+.add_user{
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    margin: 5px;
+
+}
+.add_user:hover{
+    background-color: #92ebf7;
+    color:#b5c1c4 ;
+}
+.add_user>h3{
+    margin-left: 10px;
+}

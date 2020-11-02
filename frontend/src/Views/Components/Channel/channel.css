@@ -1,0 +1,54 @@
+.channels{
+ border-top: 1px solid whitesmoke;
+ padding-top: 10px;
+ padding-bottom: 10px;
+}
+.chanels_div{
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.AddCircleIcon{
+    margin-left: 10px;
+}
+.chanels_div >span>h3{
+    width:180px;
+}
+.channels_continer{
+    padding: 0px 0px;
+}
+
+.channel{
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+.selected{
+    background-color:#00a3e3;
+    color: whitesmoke;
+   
+}
+.channel:hover{
+    background-color: #92ebf7;
+    color:#b5c1c4 ;
+}
+.channel_icon{
+    margin-right: 10px;
+}
+.add_channel{
+    
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    margin: 5px;
+    
+}
+.add_channel:hover{
+    background-color: #92ebf7;
+    color:#b5c1c4 ;
+}
+.add_channel>h3{
+    margin-left: 10px;
+}
