@@ -10,12 +10,9 @@ const team = new Schema({
         type: Number,
         required: true
     },
-    users: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        }
-    ]
+    users:  {
+        type: Array
+    }
 }, {
     versionKey: false,
     timestamps: true
