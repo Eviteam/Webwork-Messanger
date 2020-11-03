@@ -1,0 +1,15 @@
+.messege_continer{
+    display: flex;
+    align-items: center;
+}
+.user_iconDiv > .MuiSvgIcon-root {
+    width: 60px;
+    height: 60px;
+    /* padding: 0; */
+}
+.massage_text{
+    color: gray;
+}
+.messege_continer:hover{
+    background-color: rgb(241, 238, 238);
+}
