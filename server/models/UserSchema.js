@@ -14,18 +14,13 @@ const userSchema = new Schema({
     type: Number,
     required: true
   },
-  teamId: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Team'
-    }
-  ],
-  channels: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Channel'
-    }
-  ],
+  teamId: {
+    type: Number
+  },
+  channels: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Channel'
+  }],
 }, {
   versionKey: false,
   timestamps: true

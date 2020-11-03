@@ -57,11 +57,9 @@ app.get(`/team/${teamId}`, (req, res) => {
 app.get(`/channel/${teamId}`, (req, res) => {
   const teamId = req.params.teamId;
   const userId = req.params.userId;
-  console.log(teamId, userId, "4444")
   connect.then(db => {
     ChannelSchema.find({teamId}).then(channel => {
       channel = channel.filter(item => item.isGlobal);
-      console.log(channel)
       channel ? res.send(channel) : res.status(404).send('Not found');
     });
   });
@@ -123,7 +121,6 @@ io.on('connection', socket => {
 
   socket.emit('message', 'welcome to chat'); // emits for single client
 
-
   socket.broadcast.emit('message', "A user has joined"); // emits to all of clients with exception
 
   // io.emit(); // for all clients
@@ -156,7 +153,29 @@ server.listen(PORT, () =>  {
     });
   
     res.on('end', () => {
-      teamId = JSON.parse(data).team_id;      
+      const newTeamData = JSON.parse(data)
+      teamId = newTeamData.team_id;
+      connect.then(db => {
+        TeamSchema.find({team_id: teamId}).then(team => {
+          if (!team.length) {
+            const newTeam = new TeamSchema(newTeamData);
+            newTeamData.users.map(user => {
+              const newUsers = new UserSchema(user);
+              newUsers.save();
+            });
+            newTeam.save();
+          }
+          newTeamData.users.map(user => {
+            UserSchema.find({id: user.id}).then(singleUser => {
+              if (!singleUser) {
+                const newUser = new UserSchema(user);
+                newUser.save();
+              }
+            })
+          })
+          return team;
+        });
+      }).catch(err => console.log(err))
     });
   })
 });
