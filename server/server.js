@@ -15,7 +15,7 @@ app.use(cors());
 const ChatSchema = require("./models/ChatSchema");
 const connect = require("./models/db");
 const UserSchema = require("./models/UserSchema");
-const TeamSchema = require("./models/teamSchema");
+const TeamSchema = require("./models/TeamSchema");
 const ChannelSchema = require("./models/ChannelSchema");
 
 // PORT
