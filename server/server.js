@@ -26,18 +26,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 let teamId;
 
-// GET ALL MESSAGES
-app.get('/all-messages', (req, res) => {
-  res.setHeader("Content-Type", "application/json");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.statusCode = 200;
-  connect.then(db => {
-    ChatSchema.find({}).then(chat => {
-      chat ? res.send(chat) : res.status(404).send('Not found');
-    });
-  });
-});
-
 // GET SINGLE TEAM
 app.get(`/team/${teamId}`, (req, res) => {
   const id = req.params.id;
@@ -52,6 +40,19 @@ app.get(`/team/${teamId}`, (req, res) => {
     });
   })
 });
+
+// GET ALL USERS
+app.get(`/users`, (req, res)=> {
+  connect.then(db => UserSchema.find({}).then(users => res.send(users)))
+})
+
+// GET SINGLE USER
+app.get(`/users/:id`, (req, res)=> {
+  connect.then(db => {
+    const id = req.params.id;
+    UserSchema.find({id}).then(user => res.send(user));
+  })
+})
 
 // GET CHANNELS 
 app.get(`/channel/${teamId}`, (req, res) => {
@@ -135,7 +136,8 @@ io.on('connection', socket => {
 
     //save chat to the database
     connect.then(db => {
-      const sender = UserSchema.find()
+      // TODO need userId
+      // const sender = UserSchema.find({}).then(user => user) 
       const chatMessage = new ChatSchema({ message: message, sender: 'test' });
       chatMessage.save();
     });
