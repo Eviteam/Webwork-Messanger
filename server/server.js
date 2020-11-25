@@ -1,13 +1,11 @@
 const express = require("express");
 const path = require("path");
-// const http = require("http");
-const https = require('https')
+const https = require('https');
+const fs = require('fs');
 const socketio = require("socket.io");
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
-const server = https.createServer(app);
-const io = socketio(server);
 const rooms = ["global", "javascript"];
 app.use(cors());
 
@@ -24,15 +22,21 @@ const PORT = 3000 || process.env.PORT;
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+  
 let teamId;
 
+app.get(`/`, (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'))
+});
+
 // GET SINGLE TEAM
-app.get(`/team/${teamId}`, (req, res) => {
+app.get(`/api/team/${teamId}`, (req, res) => {
   const id = req.params.id;
   connect.then(db => {
     UserSchema.find({}).then(users => {
       const allUsers = users.filter(user => user.teamId === id);
-      TeamSchema.findById(id).then(team =>  {
+      TeamSchema.findById(id).then(team => {
         team.user = allUsers;
         team.save();
         res.send(team)
@@ -42,24 +46,24 @@ app.get(`/team/${teamId}`, (req, res) => {
 });
 
 // GET ALL USERS
-app.get(`/users`, (req, res)=> {
+app.get(`/api/users`, (req, res) => {
   connect.then(db => UserSchema.find({}).then(users => res.send(users)))
 })
 
 // GET SINGLE USER
-app.get(`/users/:id`, (req, res)=> {
+app.get(`/api/users/:id`, (req, res) => {
   connect.then(db => {
     const id = req.params.id;
-    UserSchema.find({id}).then(user => res.send(user));
+    UserSchema.find({ id }).then(user => res.send(user));
   })
 })
 
 // GET CHANNELS 
-app.get(`/channel/${teamId}`, (req, res) => {
+app.get(`/api/channel/${teamId}`, (req, res) => {
   const teamId = req.params.teamId;
   const userId = req.params.userId;
   connect.then(db => {
-    ChannelSchema.find({teamId}).then(channel => {
+    ChannelSchema.find({ teamId }).then(channel => {
       channel = channel.filter(item => item.isGlobal);
       channel ? res.send(channel) : res.status(404).send('Not found');
     });
@@ -67,19 +71,19 @@ app.get(`/channel/${teamId}`, (req, res) => {
 });
 
 // GET SINGLE CHANNEL
-app.get(`/channel/${teamId}/:userId`, (req, res) => {
+app.get(`/api/channel/${teamId}/:userId`, (req, res) => {
   const userId = req.params.userId;
   const teamId = req.params.teamId;
   const data = {};
   connect.then(db => {
     UserSchema.findById(userId).populate('channels').then(users => {
       data.privateChannels = users.channels.filter(item => {
-        if(item.teamId === teamId && item.isGlobal === false){
+        if (item.teamId === teamId && item.isGlobal === false) {
           return item
         }
       });
       data.globalCHannels = users.channels.filter(item => {
-        if(item.isGlobal && item.teamId === teamId) {
+        if (item.isGlobal && item.teamId === teamId) {
           return item
         }
       })
@@ -89,35 +93,80 @@ app.get(`/channel/${teamId}/:userId`, (req, res) => {
 });
 
 // CREATE USER
-app.post(`/create-user`, (req, res) => {
+app.post(`/api/create-user`, (req, res) => {
   const user = req.body;
   connect.then(db => {
-    const newUser = new UserSchema({user});
+    const newUser = new UserSchema({ user });
     newUser.save()
   })
-  res.json({user});
+  res.json({ user });
 });
 
 // CREATE TEAM
-app.post(`/create-team`, (req, res) => {
+app.post(`/api/create-team`, (req, res) => {
   const data = req.body;
   connect.then(db => {
     const newTeam = new TeamSchema(data);
     newTeam.save();
   });
-  res.json({data});
+  res.json({ data });
 });
 
 // CREATE CHANNEL
-app.post(`/create-channel`, (req, res) => {
+app.post(`/api/create-channel`, (req, res) => {
   const data = req.body;
   connect.then(db => {
     const newChannel = new ChannelSchema(data);
     newChannel.save();
   });
-  res.json({data});
+  res.json({ data });
 });
 
+const server = https.createServer(
+  {
+    key: fs.readFileSync('/etc/letsencrypt/live/messenger.webwork-tracker.com/privkey.pem', 'utf8'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/messenger.webwork-tracker.com/fullchain.pem', 'utf8')
+  }, app
+);
+
+server.listen(PORT, () =>  {
+ console.log(`Server runing on port ${PORT}`);
+ https.get('https://www.webwork-tracker.com/chat-api/users?user_id=71', (res) => {
+   let data = '';
+
+   res.on('data', (chunk) => {
+     data += chunk;
+   });
+
+   res.on('end', () => {
+     const newTeamData = JSON.parse(data)
+     teamId = newTeamData.team_id;
+     connect.then(db => {
+       TeamSchema.find({team_id: teamId}).then(team => {
+         if (!team.length) {
+           const newTeam = new TeamSchema(newTeamData);
+           newTeamData.users.map(user => {
+             const newUsers = new UserSchema(user);
+             newUsers.save();
+           });
+
+         }
+         newTeamData.users.map(user => {
+           UserSchema.find({id: user.id}).then(singleUser => {
+            if (!singleUser) {
+               const newUser = new UserSchema(user);
+               newUser.save();
+             }
+           })
+         })
+         return team;
+       });
+     }).catch(err => console.log(err))
+   });
+ })
+});
+
+const io = socketio(server);
 io.on('connection', socket => {
 
   socket.emit('message', 'welcome to chat'); // emits for single client
@@ -145,40 +194,4 @@ io.on('connection', socket => {
   io.emit('rooms', rooms);
 });
 
-server.listen(PORT, () =>  {
-  console.log(`Server runing on port ${PORT}`);
-  https.get('https://www.webwork-tracker.com/chat-api/users?user_id=71', (res) => {
-    let data = '';
-
-    res.on('data', (chunk) => {
-      data += chunk;
-    });
-  
-    res.on('end', () => {
-      const newTeamData = JSON.parse(data)
-      teamId = newTeamData.team_id;
-      connect.then(db => {
-        TeamSchema.find({team_id: teamId}).then(team => {
-          if (!team.length) {
-            const newTeam = new TeamSchema(newTeamData);
-            newTeamData.users.map(user => {
-              const newUsers = new UserSchema(user);
-              newUsers.save();
-            });
-            newTeam.save();
-          }
-          newTeamData.users.map(user => {
-            UserSchema.find({id: user.id}).then(singleUser => {
-              if (!singleUser) {
-                const newUser = new UserSchema(user);
-                newUser.save();
-              }
-            })
-          })
-          return team;
-        });
-      }).catch(err => console.log(err))
-    });
-  })
-});
 module.exports.rooms = rooms;
