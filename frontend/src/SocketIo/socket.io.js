@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import io from "socket.io-client";
-import Message from '../Views/Components/Message/message'
-
+import CKEditorMessage from "../Views/Components/Message/ckEditor"
+import Message from "../Views/Components/Message/message"
+import "./socetIo.css"
 const socket = io.connect("http://localhost:3000");
 
 class SocetIo extends Component {
   constructor() {
     super();
-    this.state = { msg: "", chat: [], nickname: "" };
+    this.state = { msg: "", chat: [], nickname: "Ashot Amiraghyan" };
   }
 
   componentDidMount() {
@@ -15,7 +16,6 @@ class SocetIo extends Component {
       this.setState({
         chat: [...this.state.chat, { nickname, msg }]
       });
-      console.log({socket})
     });
   }
 
@@ -28,33 +28,36 @@ class SocetIo extends Component {
     socket.emit("chatMessage", { nickname, msg });
     this.setState({ msg: "" });
   };
-
+  changeMessage = (data)=>{
+    this.setState({ msg: data });
+  }
   renderChat() {
     const { chat } = this.state;
     return chat.map(({ nickname, msg }, idx) => (
-      <Message data = {{nickname,msg}} key = {idx}/>
+      <Message key={idx} data={{nickname,msg}}/>
+        
+        
+      
       
     ));
   }
 
   render() {
     return (
-      <div>
-        <span>Nickname</span>
+      <div className = "soket_io">
+        {/* <span>Nickname</span>
         <input
           name="nickname"
           onChange={e => this.onTextChange(e)}
           value={this.state.nickname}
         />
-        <span>Message</span>
-        <input
-          name="msg"
-          onChange={e => this.onTextChange(e)}
-          value={this.state.msg}
-        />
-        <button onClick={this.onMessageSubmit}>Send</button>
-        <div>{this.renderChat()}</div>
+        <button onClick={this.onMessageSubmit}>Send</button> */}
+        <CKEditorMessage message = {this.state.msg} changeMessage={this.changeMessage} onMessageSubmit ={this.onMessageSubmit}/>
+        <div className = 'message_continer'>{this.renderChat()}</div>
+
       </div>
+
+      
     );
   }
 }

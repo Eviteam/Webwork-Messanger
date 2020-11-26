@@ -6,10 +6,14 @@
     width: 60px;
     height: 60px;
     /* padding: 0; */
+    fill: #C5E2ED;
 }
 .massage_text{
     color: gray;
 }
 .messege_continer:hover{
     background-color: rgb(241, 238, 238);
+}
+.massegeText_continer{
+color: #474F5C;
 }

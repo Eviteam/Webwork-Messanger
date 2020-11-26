@@ -1,8 +1,9 @@
 .Chat_continer{
     flex:0.7;
     flex-grow: 1;
+    padding-bottom: 0;
     overflow-y: scroll;
-    padding-bottom: 150px;
+
 }
 .chat_header{
     display: flex;
@@ -27,4 +28,7 @@
 .chat_headerRight > p > .MuiSvgIcon-root{
     margin-right: 5px !important;
     font-size: 16px;
+}
+.Chat_continer>h2{
+    padding-left: 20px;
 }

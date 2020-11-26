@@ -1,12 +1,12 @@
 const express = require("express");
 const path = require("path");
-// const http = require("http");
-const https = require('https')
+const http = require("http");
+// const https = require('https')
 const socketio = require("socket.io");
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
-const server = https.createServer(app);
+const server = http.createServer(app);
 const io = socketio(server);
 const rooms = ["global", "javascript"];
 app.use(cors());
@@ -148,16 +148,16 @@ io.on('connection', socket => {
 
 server.listen(PORT, () =>  {
   console.log(`Server runing on port ${PORT}`);
-  https.get('https://www.webwork-tracker.com/chat-api/users?user_id=71', (res) => {
-    let data = '';
+  // https.get('https://www.webwork-tracker.com/chat-api/users?user_id=71', (res) => {
+  //   let data = '';
 
-    res.on('data', (chunk) => {
-      data += chunk;
-    });
+  //   res.on('data', (chunk) => {
+  //     data += chunk;
+  //   });
   
-    res.on('end', () => {
-      teamId = JSON.parse(data).team_id;      
-    });
-  })
+  //   res.on('end', () => {
+  //     teamId = JSON.parse(data).team_id;      
+  //   });
+  // })
 });
 module.exports.rooms = rooms;
