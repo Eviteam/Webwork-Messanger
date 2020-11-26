@@ -1,0 +1,13 @@
+.message_area{
+    padding: 20px;
+}
+.soket_io{
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 20px;
+  
+    
+}
+.message_continer{
+    min-height: 340px;
+}
