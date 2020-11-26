@@ -16,7 +16,7 @@ const teamController = require('./app/controllers/team.controller')
 const channelController = require('./app/controllers/channel.controller')
 
 // PORT
-const PORT = 3000 || process.env.PORT;
+const PORT = process.env.PORT || 3000 ;
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));

@@ -13,7 +13,7 @@ function Message({data}) {
         }
         </div>
         <div className = 'MassegeText_continer'>
-         <strong>{data.nickname}</strong>
+         <strong>{data.sender}</strong>
          <p className = "massage_text">{data.msg}</p>
         </div>
       </div>
