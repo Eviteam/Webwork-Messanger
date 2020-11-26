@@ -6,7 +6,7 @@ const ChannelSchema = require("../models/ChannelSchema");
 const { teamId } = require("../services/user.service");
 
 // GET CHANNELS 
-router.get(`/api/channel/${teamId}`, (req, res) => {
+router.get(`/${teamId}`, (req, res) => {
   const teamId = req.params.teamId;
   const userId = req.params.userId;
   connect.then(db => {
@@ -18,7 +18,7 @@ router.get(`/api/channel/${teamId}`, (req, res) => {
 });
 
 // GET SINGLE CHANNEL
-router.get(`/api/channel/${teamId}/:userId`, (req, res) => {
+router.get(`/${teamId}/:userId`, (req, res) => {
   const userId = req.params.userId;
   const teamId = req.params.teamId;
   const data = {};
@@ -41,7 +41,7 @@ router.get(`/api/channel/${teamId}/:userId`, (req, res) => {
 
 
 // CREATE CHANNEL
-router.post(`/api/create-channel`, (req, res) => {
+router.post(`/create-channel`, (req, res) => {
   const data = req.body;
   connect.then(db => {
     const newChannel = new ChannelSchema(data);

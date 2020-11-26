@@ -5,7 +5,7 @@ const UserSchema = require("../models/UserSchema");
 const TeamSchema = require("../models/TeamSchema");
 
 // GET SINGLE TEAM
-router.get(`/api/team/71`, (req, res) => {
+router.get(`/71`, (req, res) => {
   const id = req.params.id;
   connect.then(db => {
     UserSchema.find({}).then(users => {
@@ -20,7 +20,7 @@ router.get(`/api/team/71`, (req, res) => {
 });
 
 // CREATE TEAM
-router.post(`/api/create-team`, (req, res) => {
+router.post(`/create-team`, (req, res) => {
   const data = req.body;
   connect.then(db => {
     const newTeam = new TeamSchema(data);

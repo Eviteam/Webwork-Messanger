@@ -11,6 +11,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 const webWorkService = require("./app/services/web-work.service");
 const socketService = require("./app/services/socket.service");
+const userController = require('./app/controllers/user.controller')
+const teamController = require('./app/controllers/team.controller')
+const channelController = require('./app/controllers/channel.controller')
 
 // PORT
 const PORT = 3000 || process.env.PORT;
@@ -33,9 +36,9 @@ const server = https.createServer(
 
 server.listen(PORT, async () =>  {
   webWorkService.getTeamData().then(() => {
-    app.use('/team', require('./app/controllers/team.controller'));
-    app.use('/user', require('./app/controllers/user.controller'));
-    app.use('/channel', require('./app/controllers/channel.controller'));
+    app.use('/api/team', teamController);
+    app.use('/api/users', userController);
+    app.use('/api/channel', channelController);
     console.log(`Server runing on port ${PORT}`);
   });
 });
