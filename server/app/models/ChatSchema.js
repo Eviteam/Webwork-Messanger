@@ -9,7 +9,14 @@ const chatSchema = new Schema({
     // ref: 'User'
   },
   message: {
-    type: String
+    type: {
+      sender: {
+        type: String
+      },
+      msg: {
+        type: String
+      }
+    }
   },
   channel: {
     type: String

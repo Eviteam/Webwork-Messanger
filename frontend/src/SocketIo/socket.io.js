@@ -3,18 +3,18 @@ import io from "socket.io-client";
 import CKEditorMessage from "../Views/Components/Message/ckEditor"
 import Message from "../Views/Components/Message/message"
 import "./socetIo.css"
-const socket = io.connect("http://localhost:3000");
+const socket = io.connect("https://localhost:3000");
 
 class SocetIo extends Component {
   constructor() {
     super();
-    this.state = { msg: "", chat: [], nickname: "Ashot Amiraghyan" };
+    this.state = { msg: "", chat: [], sender: "Ashot Amiraghyan" };
   }
 
   componentDidMount() {
-    socket.on("chatMessage", ({ nickname, msg }) => {
+    socket.on("chatMessage", ({ sender, msg }) => {
       this.setState({
-        chat: [...this.state.chat, { nickname, msg }]
+        chat: [...this.state.chat, { sender, msg }]
       });
     });
   }
@@ -24,8 +24,8 @@ class SocetIo extends Component {
   };
 
   onMessageSubmit = () => {
-    const { nickname, msg } = this.state;
-    socket.emit("chatMessage", { nickname, msg });
+    const { sender, msg } = this.state;
+    socket.emit("chatMessage", { sender, msg });
     this.setState({ msg: "" });
   };
   changeMessage = (data)=>{
@@ -33,8 +33,8 @@ class SocetIo extends Component {
   }
   renderChat() {
     const { chat } = this.state;
-    return chat.map(({ nickname, msg }, idx) => (
-      <Message key={idx} data={{nickname,msg}}/>
+    return chat.map(({ sender, msg }, idx) => (
+      <Message key={idx} data={{sender,msg}}/>
         
         
       
