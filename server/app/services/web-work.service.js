@@ -13,7 +13,6 @@ async function getTeamData() {
   
       res.on('end', () => {
         const newTeamData = JSON.parse(data);
-        userService.teamId = newTeamData.team_id;
         userService.createUser(newTeamData);
         resolve(userService.teamId);
       });
