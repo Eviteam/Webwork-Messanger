@@ -5,17 +5,18 @@ const UserSchema = require("../models/UserSchema");
 const TeamSchema = require("../models/TeamSchema");
 
 // GET SINGLE TEAM
-router.get(`/71`, (req, res) => {
+router.get(`/:id`, (req, res) => {
   const id = req.params.id;
   connect.then(db => {
-    UserSchema.find({}).then(users => {
-      const allUsers = users.filter(user => user.teamId === id);
-      TeamSchema.findById(id).then(team => {
-        team.user = allUsers;
-        team.save();
+    // UserSchema.find({}).then(users => {
+    //   const allUsers = users.filter(user => user.team_id == id);
+      // console.log(allUsers, "all")
+      TeamSchema.find({team_id: id}).then(team => {
+        console.log(team, "team")
+        // team.save();
         res.send(team)
       })
-    });
+    // });
   })
 });
 

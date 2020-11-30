@@ -16,6 +16,7 @@ function createUser(newTeamData) {
       } else {
         newTeamData.users.map(user => {
           UserSchema.find({id: user.id}).then(singleUser => {
+          user.team_id = newTeamData.team_id;
            if (!singleUser.length) {
               const newUser = new UserSchema(user);
               newUser.save();

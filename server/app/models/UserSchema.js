@@ -14,7 +14,7 @@ const userSchema = new Schema({
     type: Number,
     required: true
   },
-  teamId: {
+  team_id: {
     type: Number
   },
   channels: [{
