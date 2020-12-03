@@ -16,6 +16,8 @@ const userController = require('./app/controllers/user.controller');
 const teamController = require('./app/controllers/team.controller');
 const channelController = require('./app/controllers/channel.controller');
 const chatController = require('./app/controllers/chat.controller');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 // PORT
 const PORT = process.env.PORT || 3000 ;
@@ -24,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../frontend/build')));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get(`/`, (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/build/index.html'))
