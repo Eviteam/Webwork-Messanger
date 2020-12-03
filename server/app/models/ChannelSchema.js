@@ -16,6 +16,9 @@ const channelSchema = new Schema({
             ref: 'User'
         }
     ],
+    message: {
+        type: String
+    },
     isGlobal: {
         type: Boolean
     }
