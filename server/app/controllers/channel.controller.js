@@ -7,7 +7,7 @@ const { teamId } = require("../services/user.service");
 const UserSchema = require("../models/UserSchema");
 
 // GET CHANNELS 
-router.get(`/${teamId}`, (req, res) => {
+router.get(`/:teamId`, (req, res) => {
   const teamId = req.params.teamId;
   const userId = req.params.userId;
   connect.then(db => {
@@ -19,7 +19,7 @@ router.get(`/${teamId}`, (req, res) => {
 });
 
 // GET SINGLE CHANNEL
-router.get(`/${teamId}/:userId`, (req, res) => {
+router.get(`/:teamId/:userId`, (req, res) => {
   const userId = req.params.userId;
   const teamId = req.params.teamId;
   const data = {};

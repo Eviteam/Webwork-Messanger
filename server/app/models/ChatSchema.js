@@ -8,11 +8,11 @@ const chatSchema = new Schema({
   },
   message: {
     type: String,
-    // required: true
+    required: true
   },
   sender: {
     type: String,
-    // required: true
+    required: true
   },
   channel: {
     type: String
