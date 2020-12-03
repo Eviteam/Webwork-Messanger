@@ -4,6 +4,7 @@ const connect = require("../helpers/db");
 const userService = require("../services/user.service");
 const ChannelSchema = require("../models/ChannelSchema");
 const { teamId } = require("../services/user.service");
+const UserSchema = require("../models/UserSchema");
 
 // GET CHANNELS 
 router.get(`/${teamId}`, (req, res) => {
@@ -38,6 +39,16 @@ router.get(`/${teamId}/:userId`, (req, res) => {
     })
   })
 });
+
+// GET CHANNEL MESSAGES
+router.get(`/:channelId`, (req, res) => {
+  const channelId = req.params.channelId;
+  connect.then(db => {
+    ChannelSchema.findById(channelId).then(data => {
+      data ? res.send(data) : res.status(404).send('Not found');
+    })
+  })
+})
 
 
 // CREATE CHANNEL

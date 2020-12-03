@@ -3,20 +3,16 @@ const Schema = mongoose.Schema;
 const User = require('./UserSchema')
 
 const chatSchema = new Schema({
-  userId: {
+  receiver_id: {
     type: String
-    // type: mongoose.Schema.Types.ObjectId,
-    // ref: 'User'
   },
   message: {
-    type: {
-      sender: {
-        type: String
-      },
-      msg: {
-        type: String
-      }
-    }
+    type: String,
+    // required: true
+  },
+  sender: {
+    type: String,
+    // required: true
   },
   channel: {
     type: String
