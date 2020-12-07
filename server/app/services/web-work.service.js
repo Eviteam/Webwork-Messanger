@@ -1,10 +1,12 @@
-
 const https = require('https');
 const userService = require("./user.service");
+const url = require('url');
+const webworkApi = `${process.env.WEBWORK_BASE_URL}/chat-api/users?user_id=71`;
+const parsedUrl = url.parse(webworkApi, true);
 
 async function getTeamData() {
   await new Promise((resolve, reject) => {
-    https.get(`${process.env.WEBWORK_BASE_URL}/chat-api/users?user_id=71`, (res) => {
+    https.get(webworkApi, (res) => {
       let data = '';
   
       res.on('data', (chunk) => {
@@ -13,6 +15,7 @@ async function getTeamData() {
   
       res.on('end', () => {
         const newTeamData = JSON.parse(data);
+        newTeamData.user_id = parsedUrl.query.user_id;
         userService.createUser(newTeamData);
         resolve(userService.teamId);
       });

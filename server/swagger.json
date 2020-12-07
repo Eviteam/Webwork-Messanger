@@ -10,7 +10,7 @@
         }
     },
     "host": "localhost:3000",
-    "basePath": "/api",
+    "basePath": "/",
     "tags": [
         {
             "name": "Users",
@@ -144,6 +144,111 @@
                     }
                 }
             }
+        },
+        "/api/channel/{team_id}": {
+            "get": {
+                "tags": [
+                    "Channel"
+                ],
+                "summary": "Get channels",
+                "parameters":[
+                    {
+                        "name":"team_id",
+                        "in":"path",
+                        "required": true,
+                        "description":"Get channels",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Channel"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/channel/{team_id}/{user_id}": {
+            "get": {
+                "tags": [
+                    "Channel"
+                ],
+                "summary": "Get single channel",
+                "parameters":[
+                    {
+                        "name":"team_id",
+                        "in":"path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name":"user_id",
+                        "in":"path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Channel"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/channel/{channel_id}": {
+            "get": {
+                "tags": [
+                    "Channel"
+                ],
+                "summary": "Get channel messages",
+                "parameters":[
+                    {
+                        "name":"channel_id",
+                        "in":"path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Channel"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/channel/create-channel": {
+            "post": {
+                "tags": [
+                    "Channel"
+                ],
+                "summary": "Create channel",
+                "parameters":[
+                    {
+                        "name":"channel",
+                        "in":"body",
+                        "description":"Create channel",
+                        "schema":{
+                            "$ref":"#/definitions/Channel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Channel"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -160,7 +265,8 @@
                 "channels": {
                     "type": "array",
                     "items": {
-                        "type": "object"
+                        "type": "object",
+                        "$ref": "#/definitions/Channel"
                     }
                 },
                 "id": {
@@ -171,6 +277,9 @@
                 },
                 "lastname": {
                     "type": "string"
+                },
+                "team_id": {
+                    "type": "integer"
                 },
                 "createdAt": {
                     "type": "string"
@@ -192,37 +301,14 @@
                 "team_id": {
                     "type": "string"
                 },
+                "user_id": {
+                    "type": "string"
+                },
                 "users": {
                     "type": "array",
                     "items": {
                         "type": "object",
-                        "properties": {
-                            "_id": {
-                                "type": "string",
-                                "uniqueItems": true
-                            },
-                            "channels": {
-                                "type": "array",
-                                "items": {
-                                    "type": "object"
-                                }
-                            },
-                            "id": {
-                                "type": "string"
-                            },
-                            "firstname": {
-                                "type": "string"
-                            },
-                            "lastname": {
-                                "type": "string"
-                            },
-                            "createdAt": {
-                                "type": "string"
-                            },
-                            "updatedAt": {
-                                "type": "string"
-                            }
-                        }
+                        "$ref": "#/definitions/User"
                     }
                 },
                 "createdAt": {
@@ -254,6 +340,43 @@
                 },
                 "channel": { 
                     "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "Channel": {
+            "required":[
+                "channelName",
+                "teamId"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "uniqueItems": true
+                },
+                "channelName": {
+                    "type": "string"
+                },
+                "teamId": { 
+                    "type": "string"
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "$ref": "#/definitions/User"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "isGlobal": { 
+                    "type": "boolean"
                 },
                 "createdAt": {
                     "type": "string"

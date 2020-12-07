@@ -41,10 +41,10 @@ router.get(`/:teamId/:userId`, (req, res) => {
 });
 
 // GET CHANNEL MESSAGES
-router.get(`/:channelId`, (req, res) => {
-  const channelId = req.params.channelId;
+router.get(`/:channel_id`, (req, res) => {
+  const channel_id = req.params.channel_id;
   connect.then(db => {
-    ChannelSchema.findById(channelId).then(data => {
+    ChannelSchema.findById(channel_id).then(data => {
       data ? res.send(data) : res.status(404).send('Not found');
     })
   })
