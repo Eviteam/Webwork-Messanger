@@ -12,7 +12,6 @@ function createUser(newTeamData) {
           const newUsers = new UserSchema(user);
           newUsers.save();
         });
-
       } else {
         newTeamData.users.map(user => {
           UserSchema.find({id: user.id}).then(singleUser => {

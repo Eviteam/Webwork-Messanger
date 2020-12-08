@@ -12,6 +12,9 @@ const team = new Schema({
     },
     users:  {
         type: Array
+    },
+    user_id: {
+        type: String
     }
 }, {
     versionKey: false,

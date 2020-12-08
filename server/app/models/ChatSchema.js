@@ -8,11 +8,11 @@ const chatSchema = new Schema({
   },
   message: {
     type: String,
-    // required: true
+    required: true
   },
   sender: {
     type: String,
-    // required: true
+    required: true
   },
   channel: {
     type: String
@@ -22,4 +22,4 @@ const chatSchema = new Schema({
   timestamps: true
 })
 
-module.exports = mongoose.model('ChatSchema', chatSchema)
+module.exports = mongoose.model('Chat', chatSchema)

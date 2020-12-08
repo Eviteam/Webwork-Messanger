@@ -1,0 +1,390 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Webwork Messenger",
+        "description": "Webwork Messenger API",
+        "license": {
+            "name": "Webwork Messenger",
+            "url": "https://messenger.webwork-tracker.com"
+        }
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Users",
+            "description": "API for users in the system"
+        }
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get all users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get single user",
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "required": true,
+                        "description":"Get single user",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/team/{id}": {
+            "get": {
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Get single team",
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "required": true,
+                        "description":"Get single team",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Team"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/chat/{id}": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Get messages of two users",
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "required": true,
+                        "description":"Get messages of two users",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Chat"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/chat/send-message": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Send message",
+                "parameters":[
+                    {
+                        "name":"message",
+                        "in":"body",
+                        "description":"Send message",
+                        "schema":{
+                            "$ref":"#/definitions/Chat"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Chat"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/channel/{team_id}": {
+            "get": {
+                "tags": [
+                    "Channel"
+                ],
+                "summary": "Get channels",
+                "parameters":[
+                    {
+                        "name":"team_id",
+                        "in":"path",
+                        "required": true,
+                        "description":"Get channels",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Channel"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/channel/{team_id}/{user_id}": {
+            "get": {
+                "tags": [
+                    "Channel"
+                ],
+                "summary": "Get single channel",
+                "parameters":[
+                    {
+                        "name":"team_id",
+                        "in":"path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name":"user_id",
+                        "in":"path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Channel"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/channel/{channel_id}": {
+            "get": {
+                "tags": [
+                    "Channel"
+                ],
+                "summary": "Get channel messages",
+                "parameters":[
+                    {
+                        "name":"channel_id",
+                        "in":"path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Channel"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/channel/create-channel": {
+            "post": {
+                "tags": [
+                    "Channel"
+                ],
+                "summary": "Create channel",
+                "parameters":[
+                    {
+                        "name":"channel",
+                        "in":"body",
+                        "description":"Create channel",
+                        "schema":{
+                            "$ref":"#/definitions/Channel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Channel"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Users": {
+            "type": "array",
+            "$ref": "#/definitions/User"
+        },
+        "User": {
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "uniqueItems": true
+                },
+                "channels": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "$ref": "#/definitions/Channel"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "firstname": {
+                    "type": "string"
+                },
+                "lastname": {
+                    "type": "string"
+                },
+                "team_id": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "Team": {
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "uniqueItems": true
+                },
+                "team_name": {
+                    "type": "string"
+                },
+                "team_id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "$ref": "#/definitions/User"
+                    }
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "Chat": {
+            "required":[
+                "message",
+                "sender"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "uniqueItems": true
+                },
+                "receiver_id": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "sender": {
+                    "type": "string"
+                },
+                "channel": { 
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "Channel": {
+            "required":[
+                "channelName",
+                "teamId"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "uniqueItems": true
+                },
+                "channelName": {
+                    "type": "string"
+                },
+                "teamId": { 
+                    "type": "string"
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "$ref": "#/definitions/User"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "isGlobal": { 
+                    "type": "boolean"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

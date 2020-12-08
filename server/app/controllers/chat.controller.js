@@ -6,10 +6,10 @@ const UserSchema = require("../models/UserSchema");
 const { teamId } = require("../services/user.service");
 
 // GET CHAT MESSAGES
-router.get(`/:user_id`, (req, res) => {
-  const user_id = req.params.user_id;
+router.get(`/:receiver_id`, (req, res) => {
+  const receiver_id = req.params.receiver_id;
   connect.then(db => {
-    ChatSchema.find({ user_id }).then(data => {
+    ChatSchema.find({ receiver_id }).then(data => {
       data ? res.send(data) : res.status(404).send('Not found');
     })
   })

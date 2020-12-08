@@ -8,15 +8,10 @@ const TeamSchema = require("../models/TeamSchema");
 router.get(`/:id`, (req, res) => {
   const id = req.params.id;
   connect.then(db => {
-    // UserSchema.find({}).then(users => {
-    //   const allUsers = users.filter(user => user.team_id == id);
-      // console.log(allUsers, "all")
-      TeamSchema.find({team_id: id}).then(team => {
-        console.log(team, "team")
-        // team.save();
-        res.send(team)
-      })
-    // });
+    TeamSchema.find({ team_id: id }).then(team => {
+      console.log(team, "team")
+      res.send(team)
+    })
   })
 });
 
