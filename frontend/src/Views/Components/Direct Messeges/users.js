@@ -24,7 +24,7 @@ function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
        <div className = 'users_continer'>
 
             {isOpenUsers && users.map((item,index)=>{
-                console.log(item)
+               
                     return (
                         <User key = {index} title = {`${item.firstname} ${item.lastname}`} Icon = {item.icon}  id = {item.id} selectUser = {selectUser} selected ={selected}/>
                     )

@@ -1,16 +1,18 @@
-import React from "react";
+import React, { } from "react";
 import {BrowserRouter as Router,Switch,Route} from "react-router-dom";
 import "./App.css"
 import Header from "./Views/Header/Header"
 import Sidebar from "./Views/SideBar/sideBar"
 import Chat from "./Views/Chat/chat"
+import {UserProvider} from './userContext'
 function App() {
-  return (
-    <div className="App">
+  return ( 
+     <UserProvider>
+      <div className="App">
       <Router>
       <Header/>
        <div className="app_body">
-       <Sidebar/>
+       <Sidebar />
       <Switch>
         <Route path="/room/:roomId">
         <Chat/>
@@ -22,9 +24,9 @@ function App() {
        </div>
       
       </Router>
-       
-     
     </div>
+     </UserProvider>
+      
   );
 }
 

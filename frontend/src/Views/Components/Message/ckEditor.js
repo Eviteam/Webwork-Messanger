@@ -18,7 +18,7 @@ function CKEditorMessage({changeMessage,message,onMessageSubmit}) {
                     onChange={ ( event, editor ) => {
                         
                         const data = editor.getData();
-                        console.log(data)
+                        
                         changeMessage(data)
                     } }
                    
@@ -26,20 +26,27 @@ function CKEditorMessage({changeMessage,message,onMessageSubmit}) {
                     //     console.log( 'Blur.', editor,event );
                     // } }
                     onFocus={ ( event, editor ) => {
-                        const newData = editor.getData();
-                    
-                        editor.editing.view.document.on( 'enter', ( evt, data ) => {
-                            if ( data.isSoft ) {
-                                console.log(1)
-                                editor.execute( 'enter' );
-                            } else {
-                                onMessageSubmit()
-                                        }
-                
-                            data.preventDefault();
-                            evt.stop();
-                            editor.editing.view.scrollToTheSelection();
-                        }, { priority: 'high' } ); 
+                        editor.editing.view.document.on( 'keydown', ( evt, data ) => {
+                            if(data.domEvent.key === 'Enter'){
+                                let text = editor.getData()
+                                onMessageSubmit(text)
+                                data.preventDefault();
+                                evt.stop();
+                            }
+                        })
+                        // editor.editing.view.document.on( 'enter', ( evt, data ) => {
+                        //     if ( data.isSoft ) {
+                        //         console.log(1)
+                        //         editor.execute( 'enter' );
+                        //     } else {
+                        //         console.log(newData,'sadasd')
+                        //         onMessageSubmit()
+                        //                 }
+                        //     console.log(newData,'sadasd')
+                        //     data.preventDefault();
+                        //     evt.stop();
+                        //     editor.editing.view.scrollToTheSelection();
+                        // }, { priority: 'high' } ); 
                             
                      }
                 }

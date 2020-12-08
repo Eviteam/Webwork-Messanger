@@ -1,22 +1,41 @@
 import React from "react";
 import './message.css';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
-function Message({data}) {
-        console.log(data)
+import ReactHtmlParser from 'react-html-parser';
+
+function Message({data,icon}) {
+        
     return (
-      <div className ='messege_continer'>
-        <div className = "user_iconDiv">
-            {data&&data.icon?
+      <>
+      {
+        data.map(({ sender, msg }, idx) => (
+         
+            
+            
+         <div className ='messege_continer' key={idx}>
+        
+         
+            <div className = "user_iconDiv">
+            {icon?
             <p>image</p>
             :
                 <AccountBoxIcon/>
-        }
+            }
         </div>
         <div className = 'MassegeText_continer'>
-         <strong>{data.sender}</strong>
-         <p className = "massage_text">{data.msg}</p>
+         <strong>{sender}</strong>
+         <div className = "massage_text">{ReactHtmlParser(msg)}</div>
         </div>
+      
+        
       </div>
+          
+        ))
+      }
+      
+      </>
+     
+      
     );
   }
   

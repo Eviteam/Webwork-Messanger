@@ -43,6 +43,7 @@ class SocetIo extends Component {
   }
 
   render() {
+    console.log(8)
     return (
       <div className = "soket_io">
         {/* <span>Nickname</span>

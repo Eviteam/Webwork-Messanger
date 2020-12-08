@@ -3,7 +3,7 @@ import './chat.css';
 import {useParams} from "react-router-dom"
 import StarBorderOutlinedIcon from '@material-ui/icons/StarBorderOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import SocetIo from "../../SocketIo/socket.io"
+import SocetIo from "../../SocketIo/socket.ioHooks"
 function Chat() {
     const {roomId} = useParams()
     return (
