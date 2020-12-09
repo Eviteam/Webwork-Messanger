@@ -1,4 +1,4 @@
-import React,{ useState,useContext } from "react";
+import React,{ useState,useContext, useEffect } from "react";
 import axios from 'axios';
 import './sideBar.css';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
@@ -10,30 +10,10 @@ import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import GroupIcon from '@material-ui/icons/Group';
 import {useHistory} from "react-router-dom";
 import {UseTeam} from "../../userContext"
-
 function SideBar() {
     const history = useHistory();
-    const {team,users,chakUser,chekChannel,chakedInfo} = UseTeam()
-  // let [responseData, setResponseData] = React.useState('');
-  // const fetchData = React.useCallback(() => {
-  //   axios({
-  //     "method": "GET",
-  //     "url": "https://localhost:3000/api/team/71",
-  //   })
-  //   .then((response) => {
-  //     setResponseData(response.data)
-      
-  //   })
-  //   .catch((error) => {
-  //     console.log(error)
-      
-  //   })
-  // }, [])
-  // React.useEffect(() => {
-  //   fetchData()
-   
-  // }, [fetchData])
-
+    const {team,users,chakUser,chekChannel,chakedInfo,userAcountData} = UseTeam();
+    
     const [channels, setChats] = useState([
       {
         channel:'firstChat',
@@ -60,9 +40,17 @@ function SideBar() {
     ]);
     
     const [isOpenChanels, setIsOpenChanels] = useState(false);
-    const [isOpenUsers, setIsOpenUsers] = useState(false);
+    const [isOpenUsers, setIsOpenUsers] = useState(true);
     const [selected,setSelected]= useState(0)
-
+    useEffect( ()=>{
+      console.log(selected);
+      let selectedUserId = localStorage.getItem('selectedUserId');
+      if(selectedUserId){
+        setSelected(selectedUserId);
+        chakUser(selectedUserId);
+      }
+     
+    },[]);
     const changeChanalsStatus = ()=>{
       setIsOpenChanels(!isOpenChanels)
     }
@@ -73,12 +61,14 @@ function SideBar() {
       if(id){
         
         history.push(`/room/${id}`);
-        setSelected(id)
+        setSelected(id);
+        
         if(type==='channel'){
           chekChannel(id)
         };
         if(type==='user'){
-          chakUser(id)
+          chakUser(id);
+          localStorage.setItem('selectedUserId',id)
         }
       }
       else {
@@ -92,7 +82,7 @@ function SideBar() {
               <h2>{team&&team.team_name}</h2>
                 <h3>
                     <FiberManualRecordIcon/>
-                    Gagulik
+                    {userAcountData?`${userAcountData.firstname} ${userAcountData.lastname}`:'Gagulik'}
                 </h3>
               </div>
                 <CreateIcon/>

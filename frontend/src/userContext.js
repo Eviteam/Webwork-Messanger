@@ -5,31 +5,31 @@ const TeamContext = React.createContext();
 export const  UseTeam= ()=>{
     return useContext(TeamContext)
 }
-const Chek_User = 'chekUser';
-const Chek_Channel = 'chekChannel'
+const Select_User = 'selectUser';
+const Selec_Channel = 'selectChannel'
 const reducer = (state,action)=> {
-    console.log(action)
     switch (action.type){
-        case Chek_User:return{...state,isChakedUser:true,chekedUserId:action.id,ischekChannel:false,chekedChannelId:''};
-        case Chek_Channel:return{...state,isChakedUser:false,chekedUserId:'',ischekChannel:true,chekedChannelId:action.id}
+        case Select_User:return{...state,isSelectedUser:true,selectedUserId:action.id,isSelectChannel:false,selectedChannelId:''};
+        case Selec_Channel:return{...state,isSelectedUser:false,selectedUserId:'',isSelectChannel:true,selectedChannelId:action.id}
         default:return state
     }
 }
 
 export const UserProvider = ({children})=>{
   let [responseData, setResponseData] = useState(null);
+  let [userAcountData, setUserAcountData] = useState(null);
   const [state,dispach]= useReducer(reducer,{
-    isChakedUser:false,
-    chekedUserId:"",
-    ischekChannel:false,
-    chekedChannelId:''
+    isSelectedUser:false,
+    selectedUserId:"",
+    isSelectChannel:false,
+    selectedChannelId:''
 })
 const chakUser = (id)=>dispach({
-    type:Chek_User,
+    type:Select_User,
     id
 })
 const chekChannel = (id)=>dispach({
-    type:Chek_Channel,
+    type:Selec_Channel,
     id
 })
   const fetchData = useCallback(() => {
@@ -39,16 +39,32 @@ const chekChannel = (id)=>dispach({
     })
     .then((response) => {
       setResponseData(response.data)
-      
+      console.log(response.data)
+      let id = response.data[0].user_id;
+      // localStorage.setItem('selectedUserId',id)
+      axios({
+        "method": "GET",
+        "url": `https://localhost:3000/api/users/${id}`,
+      })
+      .then((response) => {
+        setUserAcountData(response.data)
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+        
+      })
     })
     .catch((error) => {
       console.log(error)
       
     })
   }, [])
+  
+    
+  
 useEffect(() => {
-    fetchData()
-    console.log(responseData,'usercontext')
+    fetchData();
   }, [fetchData])
     return(
             <TeamContext.Provider 
@@ -59,16 +75,19 @@ useEffect(() => {
                        team_id:responseData[0].team_id,
                        team_name:responseData[0].team_name,
                        updatedAt:responseData[0].updatedAt,
-                       _id:responseData[0]._id
+                       _id:responseData[0]._id,
+                       user_id:responseData[0].user_id,
                    }:{},
                    users:responseData?responseData[0].users:[],
+                   userAcountData:userAcountData?userAcountData[0]:[],
                    chakedInfo:{
-                    isChakedUser:state.isChakedUser,
-                    chekedUserId:state.chekedUserId,
-                    ischekChannel:state.ischekChannel,
-                    chekedChannelId:state.chekedChannelId
-                   },chakUser,chekChannel
-
+                    isSelectedUser:state.isSelectedUser,
+                    selectedUserId:state.selectedUserId,
+                    isSelectChannel:state.isSelectChannel,
+                    selectedChannelId:state.selectedChannelId
+                   },chakUser,chekChannel,
+                   selectedUserInfo:state.isSelectedUser&&responseData?responseData[0].users.find(users => users.id==state.selectedUserId):{}
+                   
                 }
               }>
                 {children}
