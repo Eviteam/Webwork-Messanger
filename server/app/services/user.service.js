@@ -27,6 +27,7 @@ function createUser(newTeamData) {
     });
   }).catch(err => console.log(err))
 }
+
 module.exports = {
   createUser
 }
