@@ -94,7 +94,7 @@
                 }
             }
         },
-        "/api/chat/{id}": {
+        "/api/chat/{team_id}/{receiver_id}": {
             "get": {
                 "tags": [
                     "Chat"
@@ -102,7 +102,14 @@
                 "summary": "Get messages of two users",
                 "parameters":[
                     {
-                        "name":"id",
+                        "name":"team_id",
+                        "in":"path",
+                        "required": true,
+                        "description":"Get messages of two users",
+                        "type": "string"
+                    },
+                    {
+                        "name":"receiver_id",
                         "in":"path",
                         "required": true,
                         "description":"Get messages of two users",
@@ -140,6 +147,32 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/Chat"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/chat/send-message/channel": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Send message to channel",
+                "parameters":[
+                    {
+                        "name":"message",
+                        "in":"body",
+                        "description":"Send message to channel",
+                        "schema":{
+                            "$ref":"#/definitions/Channel_Messages"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Channel_Messages"
                         }
                     }
                 }
@@ -200,13 +233,20 @@
                 }
             }
         },
-        "/api/channel/{channel_id}": {
+        "/api/channel/{team_id}/{channel_id}": {
             "get": {
                 "tags": [
                     "Channel"
                 ],
                 "summary": "Get channel messages",
                 "parameters":[
+                    {
+                        "name":"team_id",
+                        "in":"path",
+                        "required": true,
+                        "description":"Get messages of two users",
+                        "type": "string"
+                    },
                     {
                         "name":"channel_id",
                         "in":"path",
@@ -320,10 +360,6 @@
             }
         },
         "Chat": {
-            "required":[
-                "message",
-                "sender"
-            ],
             "properties": {
                 "_id": {
                     "type": "string",
@@ -339,6 +375,30 @@
                     "type": "string"
                 },
                 "channel": { 
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "Channel_Messages": {
+            "required":[
+                "message",
+                "user_id"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "uniqueItems": true
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "channel_id": {
                     "type": "string"
                 },
                 "createdAt": {

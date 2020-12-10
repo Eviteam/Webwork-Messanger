@@ -9,7 +9,6 @@ router.get(`/:id`, (req, res) => {
   const id = req.params.id;
   connect.then(db => {
     TeamSchema.find({ team_id: id }).then(team => {
-      console.log(team, "team")
       res.send(team)
     })
   })

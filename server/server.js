@@ -40,7 +40,7 @@ const server = https.createServer(
   app
 );
 
-server.listen(PORT, async () =>  {
+server.listen(PORT, () => {
   webWorkService.getTeamData().then(() => {
     app.use('/api/team', teamController);
     app.use('/api/users', userController);
