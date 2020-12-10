@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 const connect = require("../helpers/db");
 const userService = require("../services/user.service");
-const ChannelSchema = require("../models/ChannelSchema");
-const { teamId } = require("../services/user.service");
+const ChannelSchema = require("../models/ChannelSchema"); 
 const UserSchema = require("../models/UserSchema");
+const Channel_ChatSchema = require("../models/Channel_ChatSchema");
+const TeamSchema = require("../models/TeamSchema");
 
 // GET CHANNELS 
 router.get(`/:teamId`, (req, res) => {
@@ -18,6 +19,7 @@ router.get(`/:teamId`, (req, res) => {
   });
 });
 
+// TODO
 // GET SINGLE CHANNEL
 router.get(`/:teamId/:userId`, (req, res) => {
   const userId = req.params.userId;
@@ -41,11 +43,18 @@ router.get(`/:teamId/:userId`, (req, res) => {
 });
 
 // GET CHANNEL MESSAGES
-router.get(`/:channel_id`, (req, res) => {
+router.get(`/:team_id/:channel_id`, (req, res) => {
   const channel_id = req.params.channel_id;
+  const team_id = req.params.team_id;
   connect.then(db => {
-    ChannelSchema.findById(channel_id).then(data => {
-      data ? res.send(data) : res.status(404).send('Not found');
+    TeamSchema.find({ team_id }).then(team => {
+      if (!team) {
+        res.status(404).send('Not found');
+      } else {
+        Channel_ChatSchema.find({ channel_id }).then(data => {
+          res.send(data);
+        })
+      }
     })
   })
 })
@@ -54,6 +63,7 @@ router.get(`/:channel_id`, (req, res) => {
 // CREATE CHANNEL
 router.post(`/create-channel`, (req, res) => {
   const data = req.body;
+  data.isGlobal = false;
   connect.then(db => {
     const newChannel = new ChannelSchema(data);
     newChannel.save();
