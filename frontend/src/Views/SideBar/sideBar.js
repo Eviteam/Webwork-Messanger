@@ -1,19 +1,18 @@
-import React,{ useState,useContext, useEffect } from "react";
+import React,{ useState,useContext, useEffect, useCallback } from "react";
 import axios from 'axios';
 import './sideBar.css';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import CreateIcon from '@material-ui/icons/Create';
 import Channels from '../Components/Channel/Chanels';
 import Users from '../Components/Direct Messeges/users'
-import PersonIcon from '@material-ui/icons/Person';
-import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import GroupIcon from '@material-ui/icons/Group';
 import {useHistory} from "react-router-dom";
 import {UseTeam} from "../../userContext"
 function SideBar() {
+ 
     const history = useHistory();
-    const {team,users,chakUser,chekChannel,chakedInfo,userAcountData} = UseTeam();
-    
+    const {team,users,chakUser,chekChannel,userAcountData,FetchMessageData} = UseTeam();
+   
     const [channels, setChats] = useState([
       {
         channel:'firstChat',
@@ -34,23 +33,39 @@ function SideBar() {
         channel:'fourthChat',
         icon:GroupIcon,
         id:"channel-4"
-      },
-      
-        
+      },  
     ]);
-    
     const [isOpenChanels, setIsOpenChanels] = useState(false);
     const [isOpenUsers, setIsOpenUsers] = useState(true);
-    const [selected,setSelected]= useState(0)
-    useEffect( ()=>{
-      console.log(selected);
-      let selectedUserId = localStorage.getItem('selectedUserId');
-      if(selectedUserId){
-        setSelected(selectedUserId);
-        chakUser(selectedUserId);
-      }
+    const [selected,setSelected]= useState(0);
+    const [selectedTeam,setSelectedTeam]= useState(0);
+
      
+      
+          
+        
+      
+   
+    useEffect( ()=>{
+      let selectedUserId = localStorage.getItem('selectedUserId');
+      let selectedTeamId = localStorage.getItem('selectedTeamId');
+      if(selectedUserId){
+      
+        setSelected(selectedUserId);
+        setSelectedTeam(selectedTeamId)
+        chakUser(selectedUserId);
+        
+        
+        
+      }
     },[]);
+    useEffect( ()=>{
+    
+      FetchMessageData(selectedTeam,selected)
+     
+     
+      
+    },[selectedTeam]);
     const changeChanalsStatus = ()=>{
       setIsOpenChanels(!isOpenChanels)
     }
@@ -62,13 +77,16 @@ function SideBar() {
         
         history.push(`/room/${id}`);
         setSelected(id);
+       
         
         if(type==='channel'){
           chekChannel(id)
         };
         if(type==='user'){
           chakUser(id);
-          localStorage.setItem('selectedUserId',id)
+          localStorage.setItem('selectedUserId',id);
+          
+          FetchMessageData(team.team_id,id)
         }
       }
       else {

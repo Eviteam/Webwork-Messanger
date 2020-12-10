@@ -6,26 +6,30 @@ import "./socetIo.css";
 import axios from 'axios';
 import {UseTeam} from "../userContext"
 import ReactHtmlParser from 'react-html-parser';
+import { teal } from "@material-ui/core/colors";
 const socket = io.connect("https://localhost:3000");
 
 
 function SocetIo() {
 console.log(999)
-  const {chakedInfo} = UseTeam()
+  const {selectedInfo,team,userAcountData,messages} = UseTeam()
   const [sender,setSender] = useState('Ashot Amiraghyan');
   const [msg,setMsg] = useState('');
   const [chat,setChat]= useState([]);
   useEffect(()=>{
-    console.log(chat)
     socket.on("chatMessage", ({ sender, msg }) => {
       chat.push({ sender, msg })
       let newChat = [...chat]
-      setChat(newChat) 
+      setChat(newChat);
     });
   },[]);
   
   
-
+// useEffect(()=>{
+// if(team&&team._id){
+//   setSender(team._id)
+// }
+// },[])
   // onTextChange = e => {
   //   this.setState({ [e.target.name]: e.target.value });
   // };
@@ -34,10 +38,10 @@ console.log(999)
    
     socket.emit("chatMessage", { sender, msg });
     axios.post(`https://localhost:3000/api/chat/send-message`, { 
-    receiver_id: chakedInfo.chekedUserId,
+    receiver_id: selectedInfo.selectedUserId,
     message: msg,
-    sender:sender,
-    channel:chakedInfo.ischekChannel?chakedInfo.chekedChannelId:null
+    sender:userAcountData._id,
+    channel:selectedInfo.isSelectChannel?selectedInfo.selectedChannelId:null
      });
      setMsg('')
     
@@ -45,17 +49,7 @@ console.log(999)
   const changeMessage = (data)=>{
     setMsg(data);
   }
-  // const renderChat= ()=> {
-    
-  //   return chat.map(({ sender, msg }, idx) => (
-      
-  //   ));
-  // } 
-//   const keyPress= (e)=>{
-//     if(e.keyCode == 13){
-//       onMessageSubmit()
-//     }
-//  }
+ 
   
     return (
       <div className = "soket_io">
@@ -70,8 +64,13 @@ console.log(999)
         <CKEditorMessage message = {msg} changeMessage={changeMessage} onMessageSubmit ={onMessageSubmit}/>
         <div className = 'message_continer'>
         {
-          chat.length? <Message data={chat}/>:null
+          messages.length? <Message data={messages}/>:null
         }
+        {
+          // chat.length? <Message data={chat}/>:null
+          
+        }
+       
           </div>
         
           

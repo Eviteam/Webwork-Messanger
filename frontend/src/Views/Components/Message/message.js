@@ -4,11 +4,11 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ReactHtmlParser from 'react-html-parser';
 
 function Message({data,icon}) {
-        
     return (
       <>
+      
       {
-        data.map(({ sender, msg }, idx) => (
+        data.map(({ sender, msg,message, }, idx) => (
          
             
             
@@ -24,7 +24,8 @@ function Message({data,icon}) {
         </div>
         <div className = 'MassegeText_continer'>
          <strong>{sender}</strong>
-         <div className = "massage_text">{ReactHtmlParser(msg)}</div>
+         {msg?<div className = "massage_text">{ReactHtmlParser(msg)}</div>:
+         <div className = "massage_text">{ReactHtmlParser(message)}</div>}
         </div>
       
         

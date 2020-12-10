@@ -32,6 +32,7 @@ function CKEditorMessage({changeMessage,message,onMessageSubmit}) {
                                 onMessageSubmit(text)
                                 data.preventDefault();
                                 evt.stop();
+                                editor.editing.view.scrollToTheSelection();
                             }
                         })
                         // editor.editing.view.document.on( 'enter', ( evt, data ) => {

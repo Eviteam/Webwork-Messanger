@@ -26,7 +26,7 @@ function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
             {isOpenUsers && users.map((item,index)=>{
                
                     return (
-                        <User key = {index} title = {`${item.firstname} ${item.lastname}`} Icon = {item.icon}  id = {item.id} selectUser = {selectUser} selected ={selected}/>
+                        <User key = {index} title = {`${item.firstname} ${item.lastname}`} Icon = {item.icon}  id = {item._id} selectUser = {selectUser} selected ={selected}/>
                     )
                    
                 })}
