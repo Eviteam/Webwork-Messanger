@@ -37,10 +37,14 @@ router.get(`/:team_id/:receiver_id`, (req, res) => {
 router.post(`/send-message`, (req, res) => {
   const data = req.body;
   connect.then(db => {
-    const chatSchema = new ChatSchema(data);
-    chatSchema.save();
+    const user_id = data.sender;
+    UserSchema.findById(user_id).then(user => {
+      data.sender = user;
+      const chatSchema = new ChatSchema(data);
+      chatSchema.save();
+      res.json({ data });
+    })
   })
-  res.json({ data });
 });
 
 // SEND MESSAGE TO CHANNEL
