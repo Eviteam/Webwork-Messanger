@@ -11,7 +11,7 @@ const chatSchema = new Schema({
     required: true
   },
   sender: {
-    type: String,
+    type: Object,
     required: true
   },
   channel: {

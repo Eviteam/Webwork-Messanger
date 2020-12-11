@@ -15,7 +15,11 @@ const channelSchema = new Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }
-    ]
+    ],
+    isGlobal: {
+        type: Boolean,
+        required: true
+    }
 }, {
     versionKey: false,
     timestamps: true

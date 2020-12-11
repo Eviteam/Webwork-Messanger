@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const connect = require("../helpers/db");
 const userService = require("../services/user.service");
-const ChannelSchema = require("../models/ChannelSchema"); 
+const ChannelSchema = require("../models/ChannelSchema");
 const UserSchema = require("../models/UserSchema");
 const Channel_ChatSchema = require("../models/Channel_ChatSchema");
 const TeamSchema = require("../models/TeamSchema");
@@ -63,10 +63,18 @@ router.get(`/:team_id/:channel_id`, (req, res) => {
 // CREATE CHANNEL
 router.post(`/create-channel`, (req, res) => {
   const data = req.body;
-  data.isGlobal = false;
   connect.then(db => {
     const newChannel = new ChannelSchema(data);
     newChannel.save();
+    newChannel.users.map(user => {
+      UserSchema.findById(user).then(res => {
+        if (!res.channels.includes(newChannel._id)) {
+          res.channels.push(newChannel._id);
+        }
+        const userSchema = new UserSchema(res);
+        userSchema.save();
+      })
+    })
   });
   res.json({ data });
 });
