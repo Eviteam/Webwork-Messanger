@@ -407,9 +407,6 @@
                         "type": "string"
                     }
                 },
-                "message": {
-                    "type": "string"
-                },
                 "isGlobal": { 
                     "type": "boolean"
                 }
