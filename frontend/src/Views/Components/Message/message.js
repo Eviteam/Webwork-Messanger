@@ -4,6 +4,7 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ReactHtmlParser from 'react-html-parser';
 
 function Message({data,icon}) {
+  console.log(data)
     return (
       <>
       

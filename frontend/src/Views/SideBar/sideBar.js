@@ -11,30 +11,30 @@ import {UseTeam} from "../../userContext"
 function SideBar() {
  
     const history = useHistory();
-    const {team,users,chakUser,chekChannel,userAcountData,FetchMessageData} = UseTeam();
+    const {team,users,chakUser,chekChannel,userAcountData,FetchMessageData,channels} = UseTeam();
    
-    const [channels, setChats] = useState([
-      {
-        channel:'firstChat',
-        icon:GroupIcon,
-        id:"channel-1"
-      },
-      {
-        channel:'secondChat',
-        icon:GroupIcon,
-        id:"channel-2"
-      },
-      {
-        channel:'thirdChat',
-        icon:GroupIcon,
-        id:"channel-3"
-      },
-      {
-        channel:'fourthChat',
-        icon:GroupIcon,
-        id:"channel-4"
-      },  
-    ]);
+    // const [channels, setChats] = useState([
+    //   {
+    //     channel:'firstChat',
+    //     icon:GroupIcon,
+    //     id:"channel-1"
+    //   },
+    //   {
+    //     channel:'secondChat',
+    //     icon:GroupIcon,
+    //     id:"channel-2"
+    //   },
+    //   {
+    //     channel:'thirdChat',
+    //     icon:GroupIcon,
+    //     id:"channel-3"
+    //   },
+    //   {
+    //     channel:'fourthChat',
+    //     icon:GroupIcon,
+    //     id:"channel-4"
+    //   },  
+    // ]);
     const [isOpenChanels, setIsOpenChanels] = useState(false);
     const [isOpenUsers, setIsOpenUsers] = useState(true);
     const [selected,setSelected]= useState(0);

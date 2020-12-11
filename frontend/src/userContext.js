@@ -26,7 +26,9 @@ const selectUserReducer = (state,action)=> {
 export const UserProvider = ({children})=>{
   let [responseData, setResponseData] = useState(null);
   let [usersData,setUsersData]= useState([]);
+  let [channelsData,setChannelsData]= useState([]);
   let [userAcountData, setUserAcountData] = useState(null);
+  const [selectedTeam,setSelectedTeam]= useState(null);
   const [selectedInfo,dispach]= useReducer(selectUserReducer,{
     isSelectedUser:false,
     selectedUserId:"",
@@ -55,7 +57,7 @@ const FetchMessageData = useCallback ((team_id,recevier_id) => {
     .then((response) =>{
      
       let data = response.data
-     
+     console.log(data)
       dispach({
         type:Take_messages,
         data
@@ -75,17 +77,22 @@ const FetchMessageData = useCallback ((team_id,recevier_id) => {
     })
     .then((response) => {
       setResponseData(response.data)
-      // console.log(response.data)
+     
+      console.log(response.data)
       let id = response.data[0].user_id;
+      setSelectedTeam(response.data[0].team_id)
+
       localStorage.setItem('selectedTeamId',response.data[0].team_id)
       // localStorage.setItem('selectedUserId',id)
+      fetchChannelsData(response.data[0].team_id)
       axios({
         "method": "GET",
         "url": `https://localhost:3000/api/users/${id}`,
       })
       .then((response) => {
-        setUserAcountData(response.data)
         
+        setUserAcountData(response.data)
+        console.log(response.data)
       })
       .catch((error) => {
         console.log(error)
@@ -104,7 +111,23 @@ const FetchMessageData = useCallback ((team_id,recevier_id) => {
     })
     .then((response) => {
       setUsersData(response.data)
-     
+      console.log(response.data)
+    })
+    .catch((error) => {
+      console.log(error)
+      
+    })
+  }, []);
+  const fetchChannelsData = useCallback((selectedTeam) => {
+   
+    axios({
+      "method": "GET",
+      "url": `https://localhost:3000/api/channel/${selectedTeam}`,
+    })
+    .then((response) => {
+      setChannelsData(response.data)
+      console.log('chanels',selectedTeam,response.data)
+      
     })
     .catch((error) => {
       console.log(error)
@@ -116,12 +139,11 @@ const FetchMessageData = useCallback ((team_id,recevier_id) => {
   
 useEffect( () => {
     fetchData();
-    fetchUsersData();
+    fetchUsersData();   
+  }, [fetchData,fetchUsersData,]);
     
-    
-   
-    
-  }, [fetchData,fetchUsersData,])
+
+
     return(
             <TeamContext.Provider 
             value = {
@@ -135,6 +157,7 @@ useEffect( () => {
                        user_id:responseData[0].id,
                    }:{},
                    users:responseData?usersData:[],
+                   channels:channelsData,
                    userAcountData:userAcountData?userAcountData[0]:[],
                    selectedInfo:{
                     isSelectedUser:selectedInfo.isSelectedUser,
