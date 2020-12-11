@@ -43,7 +43,7 @@ router.get(`/:teamId/:userId`, (req, res) => {
 });
 
 // GET CHANNEL MESSAGES
-router.get(`/:team_id/:channel_id`, (req, res) => {
+router.get(`/:channel_id`, (req, res) => {
   const channel_id = req.params.channel_id;
   const team_id = req.params.team_id;
   connect.then(db => {
@@ -64,19 +64,25 @@ router.get(`/:team_id/:channel_id`, (req, res) => {
 router.post(`/create-channel`, (req, res) => {
   const data = req.body;
   connect.then(db => {
-    const newChannel = new ChannelSchema(data);
-    newChannel.save();
-    newChannel.users.map(user => {
-      UserSchema.findById(user).then(res => {
-        if (!res.channels.includes(newChannel._id)) {
-          res.channels.push(newChannel._id);
-        }
-        const userSchema = new UserSchema(res);
-        userSchema.save();
-      })
+    ChannelSchema.find({channelName: data.channelName}).then(channel => {
+      if (channel) {
+        res.status(400).send('There are a channel available with same name')
+      } else {
+        const newChannel = new ChannelSchema(data);
+        newChannel.save();
+        newChannel.users.map(user => {
+          UserSchema.findById(user).then(res => {
+            if (!res.channels.includes(newChannel._id)) {
+              res.channels.push(newChannel._id);
+            }
+            const userSchema = new UserSchema(res);
+            userSchema.save();
+          })
+        })
+        res.json({ data });
+      }
     })
   });
-  res.json({ data });
 });
 
 module.exports = router;
