@@ -320,12 +320,6 @@
                 },
                 "team_id": {
                     "type": "integer"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
                 }
             }
         },
@@ -350,12 +344,6 @@
                         "type": "object",
                         "$ref": "#/definitions/User"
                     }
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
                 }
             }
         },
@@ -376,12 +364,6 @@
                 },
                 "channel": { 
                     "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
                 }
             }
         },
@@ -399,12 +381,6 @@
                     "type": "string"
                 },
                 "channel_id": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -428,8 +404,7 @@
                 "users": {
                     "type": "array",
                     "items": {
-                        "type": "object",
-                        "$ref": "#/definitions/User"
+                        "type": "string"
                     }
                 },
                 "message": {
@@ -437,12 +412,6 @@
                 },
                 "isGlobal": { 
                     "type": "boolean"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
                 }
             }
         }
