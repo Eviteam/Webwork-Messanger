@@ -233,20 +233,13 @@
                 }
             }
         },
-        "/api/channel/{team_id}/{channel_id}": {
+        "/api/channel/message/{channel_id}": {
             "get": {
                 "tags": [
                     "Channel"
                 ],
                 "summary": "Get channel messages",
                 "parameters":[
-                    {
-                        "name":"team_id",
-                        "in":"path",
-                        "required": true,
-                        "description":"Get messages of two users",
-                        "type": "string"
-                    },
                     {
                         "name":"channel_id",
                         "in":"path",
@@ -258,7 +251,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Channel"
+                            "$ref": "#/definitions/Channel_Messages"
                         }
                     }
                 }
@@ -298,10 +291,6 @@
         },
         "User": {
             "properties": {
-                "_id": {
-                    "type": "string",
-                    "uniqueItems": true
-                },
                 "channels": {
                     "type": "array",
                     "items": {
@@ -325,10 +314,6 @@
         },
         "Team": {
             "properties": {
-                "_id": {
-                    "type": "string",
-                    "uniqueItems": true
-                },
                 "team_name": {
                     "type": "string"
                 },
@@ -349,10 +334,6 @@
         },
         "Chat": {
             "properties": {
-                "_id": {
-                    "type": "string",
-                    "uniqueItems": true
-                },
                 "receiver_id": {
                     "type": "string"
                 },
@@ -373,14 +354,13 @@
                 "user_id"
             ],
             "properties": {
-                "_id": {
-                    "type": "string",
-                    "uniqueItems": true
-                },
                 "user_id": {
                     "type": "string"
                 },
                 "channel_id": {
+                    "type": "string"
+                },
+                "message": {
                     "type": "string"
                 }
             }
@@ -391,10 +371,6 @@
                 "teamId"
             ],
             "properties": {
-                "_id": {
-                    "type": "string",
-                    "uniqueItems": true
-                },
                 "channelName": {
                     "type": "string"
                 },

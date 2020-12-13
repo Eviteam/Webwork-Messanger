@@ -21,40 +21,34 @@ router.get(`/:teamId`, (req, res) => {
 
 // TODO
 // GET SINGLE CHANNEL
-router.get(`/:teamId/:userId`, (req, res) => {
-  const userId = req.params.userId;
-  const teamId = req.params.teamId;
-  const data = {};
-  connect.then(db => {
-    UserSchema.findById(userId).populate('channels').then(users => {
-      data.privateChannels = users.channels.filter(item => {
-        if (item.teamId === teamId && item.isGlobal === false) {
-          return item
-        }
-      });
-      data.globalCHannels = users.channels.filter(item => {
-        if (item.isGlobal && item.teamId === teamId) {
-          return item
-        }
-      })
-      data ? res.send(data) : res.status(404).send('Not found');
-    })
-  })
-});
+// router.get(`/:teamId/:userId`, (req, res) => {
+//   const userId = req.params.userId;
+//   const teamId = req.params.teamId;
+//   const data = {};
+//   connect.then(db => {
+//     UserSchema.findById(userId).populate('channels').then(users => {
+//       data.privateChannels = users.channels.filter(item => {
+//         if (item.teamId === teamId && item.isGlobal === false) {
+//           return item
+//         }
+//       });
+//       data.globalCHannels = users.channels.filter(item => {
+//         if (item.isGlobal && item.teamId === teamId) {
+//           return item
+//         }
+//       })
+//       data ? res.send(data) : res.status(404).send('Not found');
+//     })
+//   })
+// });
 
 // GET CHANNEL MESSAGES
-router.get(`/:channel_id`, (req, res) => {
+router.get(`/message/:channel_id`, (req, res) => {
   const channel_id = req.params.channel_id;
-  const team_id = req.params.team_id;
+  console.log(channel_id)
   connect.then(db => {
-    TeamSchema.find({ team_id }).then(team => {
-      if (!team) {
-        res.status(404).send('Not found');
-      } else {
-        Channel_ChatSchema.find({ channel_id }).then(data => {
-          res.send(data);
-        })
-      }
+    Channel_ChatSchema.find({}).then(data => {
+      res.send(data);
     })
   })
 })
@@ -64,24 +58,18 @@ router.get(`/:channel_id`, (req, res) => {
 router.post(`/create-channel`, (req, res) => {
   const data = req.body;
   connect.then(db => {
-    ChannelSchema.find({channelName: data.channelName}).then(channel => {
-      if (channel) {
-        res.status(400).send('There are a channel available with same name')
-      } else {
-        const newChannel = new ChannelSchema(data);
-        newChannel.save();
-        newChannel.users.map(user => {
-          UserSchema.findById(user).then(res => {
-            if (!res.channels.includes(newChannel._id)) {
-              res.channels.push(newChannel._id);
-            }
-            const userSchema = new UserSchema(res);
-            userSchema.save();
-          })
-        })
-        res.json({ data });
-      }
+    const newChannel = new ChannelSchema(data);
+    newChannel.save();
+    newChannel.users.map(user => {
+      UserSchema.findById(user).then(res => {
+        if (!res.channels.includes(newChannel._id)) {
+          res.channels.push(newChannel._id);
+        }
+        const userSchema = new UserSchema(res);
+        userSchema.save();
+      })
     })
+    res.json({ data });
   });
 });
 

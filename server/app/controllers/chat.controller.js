@@ -20,9 +20,9 @@ router.get(`/:team_id/:receiver_id`, (req, res) => {
           ChatSchema.find({}).then(messages => {
             const allMessages = [];
             messages.map(message => {
-              if ((user[0]._id == message.sender && receiver_id == message.receiver_id)
-                || (user[0]._id == message.receiver_id && receiver_id == message.sender)) {
-                allMessages.push(message)
+              if ((user[0]._id.toString() == message.sender._id.toString() && receiver_id.toString() == message.receiver_id.toString())
+                || (user[0]._id.toString() == message.receiver_id.toString() && receiver_id.toString() == message.sender._id.toString())) {
+                allMessages.push(message);
               }
             })
             res.send(allMessages)
@@ -52,7 +52,8 @@ router.post(`/send-message/channel`, (req, res) => {
   const data = req.body;
   connect.then(db => {
     const channelMessages = new Channel_ChatSchema(data);
-    channelMessages.save()
+    channelMessages.save();
+    res.json({ data });
   })
 })
 
