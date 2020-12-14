@@ -77,11 +77,12 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
   
   axios({
     "method": "GET",
-    "url": `https://localhost:3000/api/channel/${Channal_id}`,
+    "url": `https://localhost:3000/api/channel/message/${Channal_id}`,
   })
   .then((response) =>{
    
     let data = response.data
+    console.log(data,'000')
     dispach({
       type:Take_Channal_Messages,
       data
@@ -186,7 +187,8 @@ useEffect( () => {
                     selectedChannelId:selectedInfo.selectedChannelId
                    },chakUser,chekChannel,FetchMessageData,FetchChannalMessageData,
                    selectedUserInfo:selectedInfo.isSelectedUser&&usersData?usersData.find(users => users._id==selectedInfo.selectedUserId):{},
-                   messages:selectedInfo.messages
+                   messages:selectedInfo.messages,
+                   channalMesseges:selectedInfo.channalMesseges
                    
                 }
               }>

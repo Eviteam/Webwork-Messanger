@@ -9,8 +9,8 @@ const socket = io.connect("https://localhost:3000");
 
 
 function SocetIo() {
-console.log(999)
-  const {selectedInfo,team,userAcountData,messages} = UseTeam()
+console.log(999,)
+  const {selectedInfo,team,userAcountData,messages,channalMesseges} = UseTeam()
   const [sender,setSender] = useState('Ashot Amiraghyan');
   const [msg,setMsg] = useState('');
   const [chat,setChat]= useState([]);
@@ -72,13 +72,21 @@ console.log(999)
         {/* <input value = {msg} onChange={e=>changeMessage(e)} onKeyDown={keyPress}></input> */}
         <CKEditorMessage message = {msg} changeMessage={changeMessage} onMessageSubmit ={onMessageSubmit}/>
         <div className = 'message_continer'>
-        {
-          messages.length? <Message data={messages}/>:null
-        }
-        {
-          chat.length? <Message data={chat}/>:null
           
-        }
+            {
+              selectedInfo &&selectedInfo.isSelectChannel?
+              channalMesseges.length? <Message data={channalMesseges} isChannal={true}/>:null
+               :messages.length? <Message data={messages}/>:null
+                
+            }
+             
+            
+             
+          
+            
+          
+          
+        
        
           </div>
         
