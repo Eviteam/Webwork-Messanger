@@ -3,7 +3,7 @@ import './message.css';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ReactHtmlParser from 'react-html-parser';
 
-function Message({data,icon}) {
+function Message({data,icon,isChannal}) {
   console.log(data)
     return (
       <>
@@ -24,7 +24,8 @@ function Message({data,icon}) {
             }
         </div>
         <div className = 'MassegeText_continer'>
-         <strong>{sender}</strong>
+          {!isChannal?<strong>{`${sender.firstname} ${sender.lastname}`}</strong>:<strong>{` Karen Sargsyan`}</strong>}
+         
          {msg?<div className = "massage_text">{ReactHtmlParser(msg)}</div>:
          <div className = "massage_text">{ReactHtmlParser(message)}</div>}
         </div>

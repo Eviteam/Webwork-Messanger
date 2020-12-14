@@ -8,7 +8,8 @@ import {UseTeam} from "../../userContext";
 import Message from "../Components/Message/message"
 function Chat() {
     const {roomId} = useParams()
-    const {selectedUserInfo,messages} = UseTeam();
+    const {selectedUserInfo,messages,selectedChannelInfo} = UseTeam();
+console.log(selectedChannelInfo)
     return (
       <div className = "Chat_continer">
         <div className = "chat_header">
@@ -22,7 +23,7 @@ function Chat() {
             <p><InfoOutlinedIcon/>Detils</p>
           </div>
         </div>
-        <h2>send message to {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:'Gagul'}</h2>
+        <h2>send message to {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:`${selectedChannelInfo.channelName} channel`}</h2>
         <SocetIo/>
         
       </div>
