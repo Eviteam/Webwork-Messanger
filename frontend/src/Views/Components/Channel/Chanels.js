@@ -25,7 +25,7 @@ function Channels({isOpenChanels,channels,changeChanalsStatus,selectChannel,sele
 
             {isOpenChanels && channels.map((item,index)=>{
                     return (
-                        <Channel key = {index} title = {item.channel} Icon = {item.icon} id = {item.id} selectChannel = {selectChannel} selected ={selected}/>
+                        <Channel key = {index} title = {item.channelName} Icon = {item.icon} id = {item._id} selectChannel = {selectChannel} selected ={selected}/>
                     )
                    
                 })

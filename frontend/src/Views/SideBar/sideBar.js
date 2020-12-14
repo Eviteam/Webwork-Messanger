@@ -1,60 +1,75 @@
-import React,{ useState } from "react";
+import React,{ useState,useContext, useEffect, useCallback } from "react";
+import axios from 'axios';
 import './sideBar.css';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import CreateIcon from '@material-ui/icons/Create';
 import Channels from '../Components/Channel/Chanels';
 import Users from '../Components/Direct Messeges/users'
-import PersonIcon from '@material-ui/icons/Person';
-import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import GroupIcon from '@material-ui/icons/Group';
-import {useHistory} from "react-router-dom"
+import {useHistory} from "react-router-dom";
+import {UseTeam} from "../../userContext"
 function SideBar() {
-  const history = useHistory();
-    const [channels, setChats] = useState([
-      {
-        channel:'firstChat',
-        icon:GroupIcon,
-        id:"channel-1"
-      },
-      {
-        channel:'secondChat',
-        icon:GroupIcon,
-        id:"channel-2"
-      },
-      {
-        channel:'thirdChat',
-        icon:GroupIcon,
-        id:"channel-3"
-      },
-      {
-        channel:'fourthChat',
-        icon:GroupIcon,
-        id:"channel-4"
-      },
-      
-        
-    ]);
-    const [users, setUsers] = useState([
-      {user:'User1',icon:PersonIcon,id:"User1111"},
-      {user:'User1',icon:PersonIcon,id:"User2222"},
-      {user:'User1',icon:PersonOutlineIcon,id:"User3333"},
-      {user:'User1',icon:PersonIcon,id:"User4444"},
-  ]);
-    const [isOpenChanels, setIsOpenChanels] = useState(false);
-    const [isOpenUsers, setIsOpenUsers] = useState(false);
-    const [selected,setSelected]= useState(0)
+ 
+    const history = useHistory();
+    const {team,users,chakUser,chekChannel,userAcountData,FetchMessageData,channels,selectedInfo,FetchChannalMessageData} = UseTeam();
+   
+    const [isOpenChanels, setIsOpenChanels] = useState(true);
+    const [isOpenUsers, setIsOpenUsers] = useState(true);
+    const [selected,setSelected]= useState(0);
+    const [selectedTeam,setSelectedTeam]= useState(0);
 
+  
+    useEffect( ()=>{
+      let selectedUserId = localStorage.getItem('selectedUserId');
+      let selectedTeamId = localStorage.getItem('selectedTeamId');
+      let selectedChannelId = localStorage.getItem('selectedChannelId');
+      setSelectedTeam(selectedTeamId)
+      if(selectedUserId){
+        setSelected(selectedUserId);
+        chakUser(selectedUserId);
+      }
+      if(selectedChannelId){
+        setSelected(selectedChannelId);
+        chekChannel(selectedChannelId)
+      }
+    },[]);
+    useEffect( ()=>{
+      console.log(selectedInfo,'selectedInfo')
+      if(selectedInfo.isSelectedUser){
+        FetchMessageData(selectedTeam,selected)
+      }
+      if(selectedInfo.isSelectChannel){
+        FetchChannalMessageData(selectedTeam,selected)
+      }
+      
+    },[selectedTeam]);
     const changeChanalsStatus = ()=>{
       setIsOpenChanels(!isOpenChanels)
     }
     const changeUsersStatus = ()=>{
       setIsOpenUsers(!isOpenUsers)
     }
-    const selectHandler = (id)=>{
+    const selectHandler = (id,type)=>{
       if(id){
         
         history.push(`/room/${id}`);
-        setSelected(id)
+        setSelected(id);
+       
+        
+        if(type==='channel'){
+          chekChannel(id)
+          console.log(id,'channel');
+          localStorage.setItem('selectedChannelId',id);
+          localStorage.removeItem('selectedUserId');
+          FetchChannalMessageData(team.team_id,id)
+        };
+        if(type==='user'){
+          console.log(id,'user');
+          chakUser(id);
+          localStorage.setItem('selectedUserId',id);
+          localStorage.removeItem('selectedChannelId');
+          FetchMessageData(team.team_id,id)
+        }
       }
       else {
         history.push('channel')
@@ -64,17 +79,17 @@ function SideBar() {
       <div className = "sidebar">
           <div className = "sidebar_header">
               <div className = "sidebar_info">
-              <h2>Programer</h2>
+              <h2>{team&&team.team_name}</h2>
                 <h3>
                     <FiberManualRecordIcon/>
-                    Gagulik
+                    {userAcountData?`${userAcountData.firstname} ${userAcountData.lastname}`:'Gagulik'}
                 </h3>
               </div>
                 <CreateIcon/>
           </div>
           
                <Channels isOpenChanels = {isOpenChanels} channels = {channels} changeChanalsStatus = {changeChanalsStatus} selectChannel={selectHandler} selected ={selected} />
-               <Users isOpenUsers = {isOpenUsers} users = {users} changeUsersStatus = {changeUsersStatus} selectUser={selectHandler} selected ={selected}/>
+               <Users isOpenUsers = {isOpenUsers} users = {users?users:[]} changeUsersStatus = {changeUsersStatus} selectUser={selectHandler} selected ={selected}/>
       </div>
     );
   }

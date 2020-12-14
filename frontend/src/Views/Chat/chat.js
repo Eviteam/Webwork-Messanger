@@ -3,15 +3,18 @@ import './chat.css';
 import {useParams} from "react-router-dom"
 import StarBorderOutlinedIcon from '@material-ui/icons/StarBorderOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import SocetIo from "../../SocketIo/socket.io"
+import SocetIo from "../../SocketIo/socket.ioHooks"
+import {UseTeam} from "../../userContext";
+import Message from "../Components/Message/message"
 function Chat() {
     const {roomId} = useParams()
+    const {selectedUserInfo,messages} = UseTeam();
     return (
       <div className = "Chat_continer">
         <div className = "chat_header">
         <div className = "chat_headerLeft">
           <h4 className = "chat_channelName">
-            <strong># general</strong>
+            {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:'general'}
             <StarBorderOutlinedIcon/>
           </h4>
           </div>
@@ -19,8 +22,9 @@ function Chat() {
             <p><InfoOutlinedIcon/>Detils</p>
           </div>
         </div>
-        <h2>you are in the {roomId} room</h2>
+        <h2>send message to {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:'Gagul'}</h2>
         <SocetIo/>
+        
       </div>
     );
   }

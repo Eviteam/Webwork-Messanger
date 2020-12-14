@@ -6,7 +6,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import User from './user'
 import AddIcon from '@material-ui/icons/Add';
 function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
- 
+   
     return (
       <div className = "users">
        <div className = "users_div">
@@ -24,8 +24,9 @@ function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
        <div className = 'users_continer'>
 
             {isOpenUsers && users.map((item,index)=>{
+               
                     return (
-                        <User key = {index} title = {item.user} Icon = {item.icon}  id = {item.id} selectUser = {selectUser} selected ={selected}/>
+                        <User key = {index} title = {`${item.firstname} ${item.lastname}`} Icon = {item.icon}  id = {item._id} selectUser = {selectUser} selected ={selected}/>
                     )
                    
                 })}

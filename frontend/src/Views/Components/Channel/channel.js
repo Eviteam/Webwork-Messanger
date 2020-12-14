@@ -4,7 +4,7 @@ function Channel({Icon,title,id,selectChannel,selected}) {
   
     return (
       <div className = {id!==selected?"channel":"channel selected"} onClick = {()=>{
-        selectChannel(id);
+        selectChannel(id,'channel');
       }}>
         {Icon&&<Icon className = "channel_icon"/>}
         {Icon? (
