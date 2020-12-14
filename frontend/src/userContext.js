@@ -147,6 +147,7 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
       "url": `https://localhost:3000/api/channel/${selectedTeam}`,
     })
     .then((response) => {
+      console.log(response,'222')
       setChannelsData(response.data)
       
     })
@@ -184,9 +185,11 @@ useEffect( () => {
                     isSelectedUser:selectedInfo.isSelectedUser,
                     selectedUserId:selectedInfo.selectedUserId,
                     isSelectChannel:selectedInfo.isSelectChannel,
-                    selectedChannelId:selectedInfo.selectedChannelId
+                    selectedChannelId:selectedInfo.selectedChannelId,
+                    
                    },chakUser,chekChannel,FetchMessageData,FetchChannalMessageData,
                    selectedUserInfo:selectedInfo.isSelectedUser&&usersData?usersData.find(users => users._id==selectedInfo.selectedUserId):{},
+                   selectedChannelInfo:selectedInfo.isSelectChannel&&channelsData.length?channelsData.find(channel => channel._id==selectedInfo.selectedChannelId):{},
                    messages:selectedInfo.messages,
                    channalMesseges:selectedInfo.channalMesseges
                    
