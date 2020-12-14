@@ -11,59 +11,36 @@ import {UseTeam} from "../../userContext"
 function SideBar() {
  
     const history = useHistory();
-    const {team,users,chakUser,chekChannel,userAcountData,FetchMessageData,channels} = UseTeam();
+    const {team,users,chakUser,chekChannel,userAcountData,FetchMessageData,channels,selectedInfo,FetchChannalMessageData} = UseTeam();
    
-    // const [channels, setChats] = useState([
-    //   {
-    //     channel:'firstChat',
-    //     icon:GroupIcon,
-    //     id:"channel-1"
-    //   },
-    //   {
-    //     channel:'secondChat',
-    //     icon:GroupIcon,
-    //     id:"channel-2"
-    //   },
-    //   {
-    //     channel:'thirdChat',
-    //     icon:GroupIcon,
-    //     id:"channel-3"
-    //   },
-    //   {
-    //     channel:'fourthChat',
-    //     icon:GroupIcon,
-    //     id:"channel-4"
-    //   },  
-    // ]);
-    const [isOpenChanels, setIsOpenChanels] = useState(false);
+    const [isOpenChanels, setIsOpenChanels] = useState(true);
     const [isOpenUsers, setIsOpenUsers] = useState(true);
     const [selected,setSelected]= useState(0);
     const [selectedTeam,setSelectedTeam]= useState(0);
 
-     
-      
-          
-        
-      
-   
+  
     useEffect( ()=>{
       let selectedUserId = localStorage.getItem('selectedUserId');
       let selectedTeamId = localStorage.getItem('selectedTeamId');
+      let selectedChannelId = localStorage.getItem('selectedChannelId');
+      setSelectedTeam(selectedTeamId)
       if(selectedUserId){
-      
         setSelected(selectedUserId);
-        setSelectedTeam(selectedTeamId)
         chakUser(selectedUserId);
-        
-        
-        
+      }
+      if(selectedChannelId){
+        setSelected(selectedChannelId);
+        chekChannel(selectedChannelId)
       }
     },[]);
     useEffect( ()=>{
-    
-      FetchMessageData(selectedTeam,selected)
-     
-     
+      console.log(selectedInfo,'selectedInfo')
+      if(selectedInfo.isSelectedUser){
+        FetchMessageData(selectedTeam,selected)
+      }
+      if(selectedInfo.isSelectChannel){
+        FetchChannalMessageData(selectedTeam,selected)
+      }
       
     },[selectedTeam]);
     const changeChanalsStatus = ()=>{
@@ -81,11 +58,16 @@ function SideBar() {
         
         if(type==='channel'){
           chekChannel(id)
+          console.log(id,'channel');
+          localStorage.setItem('selectedChannelId',id);
+          localStorage.removeItem('selectedUserId');
+          FetchChannalMessageData(team.team_id,id)
         };
         if(type==='user'){
+          console.log(id,'user');
           chakUser(id);
           localStorage.setItem('selectedUserId',id);
-          
+          localStorage.removeItem('selectedChannelId');
           FetchMessageData(team.team_id,id)
         }
       }

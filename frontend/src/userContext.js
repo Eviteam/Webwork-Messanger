@@ -8,12 +8,14 @@ export const  UseTeam= ()=>{
 const Select_User = 'selectUser';
 const Selec_Channel = 'selectChannel';
 const Take_messages = 'takeMessages'
+const Take_Channal_Messages = 'takeChannalMessages'
 
 const selectUserReducer = (state,action)=> {
     switch (action.type){
         case Select_User:return{...state,isSelectedUser:true,selectedUserId:action.id,isSelectChannel:false,selectedChannelId:''};
         case Selec_Channel:return{...state,isSelectedUser:false,selectedUserId:'',isSelectChannel:true,selectedChannelId:action.id};
-        case Take_messages:return{...state,messages:action.data}
+        case Take_messages:return{...state,messages:action.data};
+        case Take_Channal_Messages:return{...state,channalMesseges:action.data}
         default:return state
     }
 }
@@ -35,6 +37,7 @@ export const UserProvider = ({children})=>{
     isSelectChannel:false,
     selectedChannelId:'',
     messages:[],
+    channalMesseges:[]
 })
 // const [directMessage,dispach]= useReducer(selectUserReducer,{
  
@@ -49,7 +52,7 @@ const chekChannel = (id)=>dispach({
 });
 const FetchMessageData = useCallback ((team_id,recevier_id) => {
   
-
+console.log(team_id,recevier_id)
     axios({
       "method": "GET",
       "url": `https://localhost:3000/api/chat/${team_id}/${recevier_id}`,
@@ -57,7 +60,7 @@ const FetchMessageData = useCallback ((team_id,recevier_id) => {
     .then((response) =>{
      
       let data = response.data
-     console.log(data)
+     console.log(response)
       dispach({
         type:Take_messages,
         data
@@ -70,6 +73,27 @@ const FetchMessageData = useCallback ((team_id,recevier_id) => {
   
   
 }, []);
+const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
+  
+  axios({
+    "method": "GET",
+    "url": `https://localhost:3000/api/channel/${Channal_id}`,
+  })
+  .then((response) =>{
+   
+    let data = response.data
+    dispach({
+      type:Take_Channal_Messages,
+      data
+    })
+  } )
+  .catch((error) => {
+    console.log(error)
+    
+  })
+
+
+}, []);
   const fetchData = useCallback(() => {
     axios({
       "method": "GET",
@@ -78,7 +102,6 @@ const FetchMessageData = useCallback ((team_id,recevier_id) => {
     .then((response) => {
       setResponseData(response.data)
      
-      console.log(response.data)
       let id = response.data[0].user_id;
       setSelectedTeam(response.data[0].team_id)
 
@@ -92,7 +115,6 @@ const FetchMessageData = useCallback ((team_id,recevier_id) => {
       .then((response) => {
         
         setUserAcountData(response.data)
-        console.log(response.data)
       })
       .catch((error) => {
         console.log(error)
@@ -111,7 +133,6 @@ const FetchMessageData = useCallback ((team_id,recevier_id) => {
     })
     .then((response) => {
       setUsersData(response.data)
-      console.log(response.data)
     })
     .catch((error) => {
       console.log(error)
@@ -126,7 +147,6 @@ const FetchMessageData = useCallback ((team_id,recevier_id) => {
     })
     .then((response) => {
       setChannelsData(response.data)
-      console.log('chanels',selectedTeam,response.data)
       
     })
     .catch((error) => {
@@ -164,7 +184,7 @@ useEffect( () => {
                     selectedUserId:selectedInfo.selectedUserId,
                     isSelectChannel:selectedInfo.isSelectChannel,
                     selectedChannelId:selectedInfo.selectedChannelId
-                   },chakUser,chekChannel,FetchMessageData,
+                   },chakUser,chekChannel,FetchMessageData,FetchChannalMessageData,
                    selectedUserInfo:selectedInfo.isSelectedUser&&usersData?usersData.find(users => users._id==selectedInfo.selectedUserId):{},
                    messages:selectedInfo.messages
                    

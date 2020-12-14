@@ -5,8 +5,6 @@ import Message from "../Views/Components/Message/message"
 import "./socetIo.css";
 import axios from 'axios';
 import {UseTeam} from "../userContext"
-import ReactHtmlParser from 'react-html-parser';
-import { teal } from "@material-ui/core/colors";
 const socket = io.connect("https://localhost:3000");
 
 
@@ -24,7 +22,6 @@ console.log(999)
     });
   },[]);
   
-  
 // useEffect(()=>{
 // if(team&&team._id){
 //   setSender(team._id)
@@ -35,15 +32,27 @@ console.log(999)
   // };
 
   const onMessageSubmit = async (msg) => {
-   
     socket.emit("chatMessage", { sender, msg });
-    axios.post(`https://localhost:3000/api/chat/send-message`, { 
-    receiver_id: selectedInfo.selectedUserId,
-    message: msg,
-    sender:userAcountData._id,
-    channel:selectedInfo.isSelectChannel?selectedInfo.selectedChannelId:null
-     });
-     setMsg('')
+    console.log(selectedInfo,'selectedInfo999')
+    if(selectedInfo.isSelectChannel){
+    
+        axios.post(`https://localhost:3000/api/chat/send-message/channel`, { 
+          channel_id: selectedInfo.selectedChannelId,
+          message: msg,
+          User_id:userAcountData._id,
+           });
+           setMsg('')
+     
+    }
+    else{
+      axios.post(`https://localhost:3000/api/chat/send-message`, { 
+        receiver_id: selectedInfo.selectedUserId,
+        message: msg,
+        sender:userAcountData._id,
+        channel:selectedInfo.isSelectChannel?selectedInfo.selectedChannelId:null
+         });
+         setMsg('')
+    }
     
   };
   const changeMessage = (data)=>{
@@ -67,7 +76,7 @@ console.log(999)
           messages.length? <Message data={messages}/>:null
         }
         {
-          // chat.length? <Message data={chat}/>:null
+          chat.length? <Message data={chat}/>:null
           
         }
        
