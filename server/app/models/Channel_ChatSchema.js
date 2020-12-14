@@ -7,8 +7,10 @@ const channelMessages = new Schema({
     ref: 'Channel'
   },
   user_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    type: String
+  },
+  sender: {
+    type: Object,
   },
   message: {
     type: String
