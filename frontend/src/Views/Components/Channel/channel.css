@@ -52,3 +52,13 @@
 .add_channel>h3{
     margin-left: 10px;
 }
+.create-channel-modal{
+    width: 500px;
+    height: 300px;
+    background-color: white;
+    margin: 200px auto;
+    padding: 30px;
+}
+.create-channel-modal >p{
+    margin-bottom: 20px;
+}

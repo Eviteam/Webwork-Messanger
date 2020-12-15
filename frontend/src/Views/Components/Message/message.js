@@ -4,7 +4,6 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ReactHtmlParser from 'react-html-parser';
 
 function Message({data,icon,isChannal}) {
-  console.log(data)
     return (
       <>
       

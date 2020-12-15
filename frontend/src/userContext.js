@@ -13,7 +13,7 @@ const Take_Channal_Messages = 'takeChannalMessages'
 const selectUserReducer = (state,action)=> {
     switch (action.type){
         case Select_User:return{...state,isSelectedUser:true,selectedUserId:action.id,isSelectChannel:false,selectedChannelId:''};
-        case Selec_Channel:return{...state,isSelectedUser:false,selectedUserId:'',isSelectChannel:true,selectedChannelId:action.id};
+        case Selec_Channel:return{...state,isSelectChannel:true,selectedChannelId:action.id,isSelectedUser:false,selectedUserId:'',};
         case Take_messages:return{...state,messages:action.data};
         case Take_Channal_Messages:return{...state,channalMesseges:action.data}
         default:return state
@@ -35,7 +35,7 @@ export const UserProvider = ({children})=>{
     isSelectedUser:false,
     selectedUserId:"",
     isSelectChannel:false,
-    selectedChannelId:'',
+    selectedChannelId:"",
     messages:[],
     channalMesseges:[]
 })
@@ -46,13 +46,16 @@ const chakUser = (id)=>dispach({
     type:Select_User,
     id
 })
-const chekChannel = (id)=>dispach({
+const chekChannel = (id)=>{
+  console.log(id,23323212312)
+  dispach({
     type:Selec_Channel,
     id
 });
+}
 const FetchMessageData = useCallback ((team_id,recevier_id) => {
   
-console.log(team_id,recevier_id)
+
     axios({
       "method": "GET",
       "url": `https://localhost:3000/api/chat/${team_id}/${recevier_id}`,
@@ -60,7 +63,7 @@ console.log(team_id,recevier_id)
     .then((response) =>{
      
       let data = response.data
-     console.log(response)
+
       dispach({
         type:Take_messages,
         data
@@ -74,7 +77,7 @@ console.log(team_id,recevier_id)
   
 }, []);
 const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
-  
+  // console.log(777777777,Channal_id)
   axios({
     "method": "GET",
     "url": `https://localhost:3000/api/channel/message/${Channal_id}`,
@@ -82,7 +85,6 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
   .then((response) =>{
    
     let data = response.data
-    console.log(data,'000')
     dispach({
       type:Take_Channal_Messages,
       data
@@ -114,7 +116,7 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
         "url": `https://localhost:3000/api/users/${id}`,
       })
       .then((response) => {
-        
+       
         setUserAcountData(response.data)
       })
       .catch((error) => {
@@ -147,7 +149,7 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
       "url": `https://localhost:3000/api/channel/${selectedTeam}`,
     })
     .then((response) => {
-      console.log(response,'222')
+      
       setChannelsData(response.data)
       
     })

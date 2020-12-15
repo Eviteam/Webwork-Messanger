@@ -57,6 +57,7 @@ function SideBar() {
        
         
         if(type==='channel'){
+          console.log(id,'channel')
           chekChannel(id)
           console.log(id,'channel');
           localStorage.setItem('selectedChannelId',id);
@@ -71,9 +72,7 @@ function SideBar() {
           FetchMessageData(team.team_id,id)
         }
       }
-      else {
-        history.push('channel')
-      }
+     
     }
     return (
       <div className = "sidebar">

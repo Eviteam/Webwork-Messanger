@@ -9,36 +9,35 @@ const socket = io.connect("https://localhost:3000");
 
 
 function SocetIo() {
-console.log(999,)
-  const {selectedInfo,team,userAcountData,messages,channalMesseges} = UseTeam()
-  const [sender,setSender] = useState('Ashot Amiraghyan');
+
+  const {selectedInfo,team,userAcountData,messages,channalMesseges,FetchMessageData} = UseTeam()
+  // const [sender,setSender] = useState('');
   const [msg,setMsg] = useState('');
   const [chat,setChat]= useState([]);
+  const[selectedChannel,setSelectedChannel]= useState('')
   useEffect(()=>{
+    console.log(selectedInfo.selectedChannelId,selectedInfo.selectedUserId,'11111')
     socket.on("chatMessage", ({ sender, msg }) => {
-      chat.push({ sender, msg })
-      let newChat = [...chat]
-      setChat(newChat);
+      // chat.push({ sender, msg })
+      // let newChat = [...chat]
+      // setChat(newChat);
+      FetchMessageData(team.team_id,sender)
     });
-    console.log(selectedInfo)
+   
   },[]);
   
-// useEffect(()=>{
-// if(team&&team._id){
-//   setSender(team._id)
-// }
-// },[])
-  // onTextChange = e => {
-  //   this.setState({ [e.target.name]: e.target.value });
-  // };
+useEffect(()=>{
+ 
+  setSelectedChannel(selectedInfo.selectedChannelId)
+  },[selectedInfo.selectedChannelId]);
 
   const onMessageSubmit = async (msg) => {
+    let sender = userAcountData._id;
     socket.emit("chatMessage", { sender, msg });
-    
     if(selectedInfo.isSelectChannel){
-    console.log(userAcountData._id,'gagul',selectedInfo)
+      // console.log(selectedInfo.selectedChannelId)
         axios.post(`https://localhost:3000/api/chat/send-message/channel`, { 
-          channel_id: selectedInfo.selectedChannelId,
+          channel_id:  selectedChannel,
           message: msg,
           user_id:userAcountData._id,
            });
@@ -46,13 +45,15 @@ console.log(999,)
      
     }
     else{
+      // console.log(selectedInfo.selectedUserId)
       axios.post(`https://localhost:3000/api/chat/send-message`, { 
         receiver_id: selectedInfo.selectedUserId,
         message: msg,
         sender:userAcountData._id,
         channel:selectedInfo.isSelectChannel?selectedInfo.selectedChannelId:null
          });
-         setMsg('')
+         setMsg('');
+         FetchMessageData(team.team_id,selectedInfo.selectedUserId)
     }
     
   };
@@ -79,21 +80,8 @@ console.log(999,)
               channalMesseges.length? <Message data={channalMesseges} isChannal={true}/>:null
                :messages.length? <Message data={messages}/>:null
                 
-            }
-             
-            
-             
-          
-            
-          
-          
-        
-       
-          </div>
-        
-          
-        
-        
+            }  
+          </div>      
       </div>
       
     );
