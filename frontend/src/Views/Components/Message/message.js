@@ -23,7 +23,7 @@ function Message({data,icon,isChannal}) {
             }
         </div>
         <div className = 'MassegeText_continer'>
-          {!isChannal?<strong>{`${sender.firstname} ${sender.lastname}`}</strong>:<strong>{` Karen Sargsyan`}</strong>}
+          {<strong>{`${sender.firstname} ${sender.lastname}`}</strong>}
          
          {msg?<div className = "massage_text">{ReactHtmlParser(msg)}</div>:
          <div className = "massage_text">{ReactHtmlParser(message)}</div>}
