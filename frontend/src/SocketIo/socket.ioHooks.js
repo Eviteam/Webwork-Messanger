@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback } from "react";
 import io from "socket.io-client";
 import CKEditorMessage from "../Views/Components/Message/ckEditor"
 import Message from "../Views/Components/Message/message"
@@ -10,50 +10,69 @@ const socket = io.connect("https://localhost:3000");
 
 function SocetIo() {
 
-  const {selectedInfo,team,userAcountData,messages,channalMesseges,FetchMessageData} = UseTeam()
+  const {team,userAcountData,messages,channalMesseges,FetchMessageData,selectedInfo,FetchChannalMessageData} = UseTeam()
   // const [sender,setSender] = useState('');
   const [msg,setMsg] = useState('');
   const [chat,setChat]= useState([]);
-  const[selectedChannel,setSelectedChannel]= useState('')
+  const[selectedChannel,setSelectedChannel]= useState('');
+  const[selectedUserId,setSelectedUser]= useState('')
   useEffect(()=>{
-    console.log(selectedInfo.selectedChannelId,selectedInfo.selectedUserId,'11111')
+  
     socket.on("chatMessage", ({ sender, msg }) => {
-      // chat.push({ sender, msg })
-      // let newChat = [...chat]
-      // setChat(newChat);
-      FetchMessageData(team.team_id,sender)
+      chat.push({ sender, msg })
+      let newChat = [...chat]
+      setChat(newChat);
+      // FetchMessageData(team.team_id,sender)
     });
    
-  },[]);
+  },[selectedInfo]);
   
-useEffect(()=>{
- 
-  setSelectedChannel(selectedInfo.selectedChannelId)
-  },[selectedInfo.selectedChannelId]);
+  // const sendUserMessage = useCallback((mess,info) => {
+  //   // console.log(info)
+  //   axios.post(`https://localhost:3000/api/chat/send-message`, { 
+  //       receiver_id: info.selectedUserId,
+  //       message: mess,
+  //       sender:userAcountData._id,
+  //       channel:info.isSelectChannel?info.selectedChannelId:null
+  //        });
+  // },[selectedInfo]);
+  // const sendChannelMessage = useCallback((mess,info) => {
+  //   console.log(mess,info,'mess,info')
+    //  axios.post(`https://localhost:3000/api/chat/send-message/channel`, { 
+    //       channel_id:  info.selectedChannelId,
+    //       message: mess,
+    //       user_id:userAcountData._id,
+    //        });
+  // },[])
+   
 
-  const onMessageSubmit = async (msg) => {
+  const onMessageSubmit = async (msg,info) => {
+    
     let sender = userAcountData._id;
-    socket.emit("chatMessage", { sender, msg });
-    if(selectedInfo.isSelectChannel){
-      // console.log(selectedInfo.selectedChannelId)
-        axios.post(`https://localhost:3000/api/chat/send-message/channel`, { 
-          channel_id:  selectedChannel,
-          message: msg,
-          user_id:userAcountData._id,
-           });
+    await socket.emit("chatMessage", {msg });
+     const channelId =  await localStorage.getItem('selectedChannelId');
+     const userId =  await localStorage.getItem('selectedUserId') 
+    if(channelId){
+      await axios.post(`https://localhost:3000/api/chat/send-message/channel`, { 
+        channel_id: channelId,
+        message: msg,
+        user_id:userAcountData._id,
+         });
+      // sendChannelMessage(msg,info)
            setMsg('')
-     
+           FetchChannalMessageData(team.team_id,channelId)
     }
     else{
-      // console.log(selectedInfo.selectedUserId)
-      axios.post(`https://localhost:3000/api/chat/send-message`, { 
-        receiver_id: selectedInfo.selectedUserId,
+     
+     
+     await axios.post(`https://localhost:3000/api/chat/send-message`, { 
+        receiver_id: userId,
         message: msg,
         sender:userAcountData._id,
-        channel:selectedInfo.isSelectChannel?selectedInfo.selectedChannelId:null
+        channel:null
          });
          setMsg('');
-         FetchMessageData(team.team_id,selectedInfo.selectedUserId)
+        FetchMessageData(team.team_id,userId)
     }
     
   };
