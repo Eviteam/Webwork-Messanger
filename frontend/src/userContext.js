@@ -47,7 +47,7 @@ const chakUser = (id)=>dispach({
     id
 })
 const chekChannel = (id)=>{
-  console.log(id,23323212312)
+ 
   dispach({
     type:Selec_Channel,
     id
