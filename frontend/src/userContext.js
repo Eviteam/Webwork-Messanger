@@ -141,7 +141,8 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
       
     })
   }, []);
-  const fetchChannelsData = useCallback((selectedTeam) => {
+   
+  const fetchChannelsData = (selectedTeam) => {
    
     axios({
       "method": "GET",
@@ -156,8 +157,7 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
       console.log(error)
       
     })
-  }, [])
-  
+  };
     
   
 useEffect( () => {
@@ -188,9 +188,9 @@ useEffect( () => {
                     isSelectChannel:selectedInfo.isSelectChannel,
                     selectedChannelId:selectedInfo.selectedChannelId,
                     
-                   },chakUser,chekChannel,FetchMessageData,FetchChannalMessageData,
-                   selectedUserInfo:selectedInfo.isSelectedUser&&usersData?usersData.find(users => users._id==selectedInfo.selectedUserId):{},
-                   selectedChannelInfo:selectedInfo.isSelectChannel&&channelsData.length?channelsData.find(channel => channel._id==selectedInfo.selectedChannelId):{},
+                   },chakUser,chekChannel,FetchMessageData,FetchChannalMessageData,fetchChannelsData,
+                   selectedUserInfo:selectedInfo.isSelectedUser&&usersData?usersData.find(users => users._id===selectedInfo.selectedUserId):{},
+                   selectedChannelInfo:selectedInfo.isSelectChannel&&channelsData.length?channelsData.find(channel => channel._id===selectedInfo.selectedChannelId):{},
                    messages:selectedInfo.messages,
                    channalMesseges:selectedInfo.channalMesseges
                    

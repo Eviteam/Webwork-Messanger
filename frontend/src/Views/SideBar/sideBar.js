@@ -1,11 +1,9 @@
-import React,{ useState,useContext, useEffect, useCallback } from "react";
-import axios from 'axios';
+import React,{ useState, useEffect, } from "react";
 import './sideBar.css';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import CreateIcon from '@material-ui/icons/Create';
 import Channels from '../Components/Channel/Chanels';
 import Users from '../Components/Direct Messeges/users'
-import GroupIcon from '@material-ui/icons/Group';
 import {useHistory} from "react-router-dom";
 import {UseTeam} from "../../userContext"
 function SideBar() {
@@ -34,7 +32,7 @@ function SideBar() {
       }
     },[]);
     useEffect( ()=>{
-      console.log(selectedInfo,'selectedInfo')
+     
       if(selectedInfo.isSelectedUser){
         FetchMessageData(selectedTeam,selected)
       }

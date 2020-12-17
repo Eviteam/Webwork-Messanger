@@ -7,15 +7,21 @@ import Channel from './channel'
 import AddIcon from '@material-ui/icons/Add';
 import {Modal,TextField,Button} from '@material-ui/core/';
 import axios from 'axios';
+import {UseTeam} from "../../../userContext";
+// import FixedOptions  from "../Selector/selector"
 // import CreatChannelModal from '../Modals/CreatChannelModal'
-function Channels({isOpenChanels,channels,changeChanalsStatus,selectChannel,selected}) {
-  const [isOpanChannel,setIsOpenCHannel] = useState(false);
+function Channels({isOpenChanels,channels,changeChanalsStatus,selectChannel,selected,}) {
+  const {fetchChannelsData} = UseTeam()
+  const [isOpanCreatChannel,setIsOpanCreatChannel] = useState(false);
+  const [isOpanAddUssers,setIsOpanAddUssers] = useState(false);
+
   const [channelName,setChannelName] = useState('')
-  const handleClose = ()=>{
-    setIsOpenCHannel(false)
+  const handleClose = (name)=>{
+    
+    setIsOpanCreatChannel(false)
   }
-const createChannel = ()=>{
-    axios.post(`https://localhost:3000/api/channel/create-channel`, { 
+const createChannel = async ()=>{
+   await axios.post(`https://localhost:3000/api/channel/create-channel`, { 
         
             channelName: channelName,
             teamId: '71',
@@ -25,15 +31,18 @@ const createChannel = ()=>{
           
      });
      setChannelName('');
-     setIsOpenCHannel('')
+     setIsOpanCreatChannel(false);
+     const teamId = await localStorage.getItem('selectedTeamId');
+     console.log(fetchChannelsData)
+     fetchChannelsData(teamId)
 }
   
   
     return (
         <>
-      
+
 <Modal
-  open={isOpanChannel}
+  open={isOpanCreatChannel}
   onClose={handleClose}
   aria-labelledby="modal-title"
   aria-describedby="modal-description"
@@ -70,7 +79,7 @@ const createChannel = ()=>{
                 }
                  {isOpenChanels?<div className = 'add_channel'>
                      <AddIcon/>
-                     <h3 onClick = {()=>{setIsOpenCHannel(true)}}>Add Channel</h3>
+                     <h3 onClick = {()=>{setIsOpanCreatChannel(true)}}>Add Channel</h3>
                  </div>:null}
                 
        </div>

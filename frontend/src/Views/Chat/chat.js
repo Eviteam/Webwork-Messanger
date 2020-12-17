@@ -8,7 +8,7 @@ import {UseTeam} from "../../userContext";
 import Message from "../Components/Message/message"
 function Chat() {
     // const {roomId} = useParams()
-    const {selectedUserInfo,messages,selectedChannelInfo,selectedInfo} = UseTeam();
+    const {selectedUserInfo,messages,selectedChannelInfo,} = UseTeam();
     return (
       <div className = "Chat_continer">
         <div className = "chat_header">

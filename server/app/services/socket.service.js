@@ -1,7 +1,5 @@
 const connect = require("../helpers/db");
 const ChatSchema = require("../models/ChatSchema");
-const UserSchema = require("../models/UserSchema");
-const { user_id } = require("../services/web-work.service");
 
 // TODO change hardcoded data
 const rooms = ["global", "javascript"];
@@ -24,15 +22,10 @@ function connectToSocket(io) {
       io.sockets.emit('chatMessage', message);
 
       //save chat to the database
-      // connect.then(db => {
-      //   console.log(message, "message")
-      //   const user_id = message.sender;
-      //   UserSchema.findById(user_id).then(user => {
-      //     message.sender = user;
-      //     const chatMessage = new ChatSchema(message);
-      //     chatMessage.save();
-      //   })
-      // });
+      connect.then(db => {
+        const chatMessage = new ChatSchema({ message });
+        chatMessage.save();
+      });
     });
     io.emit('rooms', rooms);
   });
