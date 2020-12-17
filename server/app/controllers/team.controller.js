@@ -12,7 +12,6 @@ router.get(`/:id`, (req, res) => {
     TeamSchema.find({ team_id: id }).then(team => {
       Global_UserSchema.find({}).then(currentUser => {
         if (currentUser.length) {
-          console.log(currentUser, "444")
           res.send({'team': team, 'user_id' : currentUser[0].user_id})
         }
       })
