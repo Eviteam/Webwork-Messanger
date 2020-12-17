@@ -105,12 +105,11 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
     .then((response) => {
       setResponseData(response.data)
      
-      let id = response.data[0].user_id;
-      setSelectedTeam(response.data[0].team_id)
+      let id = response.data.user_id;
+      setSelectedTeam(response.data.team[0].team_id)
 
-      localStorage.setItem('selectedTeamId',response.data[0].team_id)
-      // localStorage.setItem('selectedUserId',id)
-      fetchChannelsData(response.data[0].team_id)
+      localStorage.setItem('selectedTeamId',response.data.team[0].team_id)
+      fetchChannelsData(response.data.team[0].team_id)
       axios({
         "method": "GET",
         "url": `https://localhost:3000/api/users/${id}`,
@@ -173,12 +172,12 @@ useEffect( () => {
             value = {
                 {
                    team:responseData?
-                   {   createdAt:responseData[0].createdAt,
-                       team_id:responseData[0].team_id,
-                       team_name:responseData[0].team_name,
-                       updatedAt:responseData[0].updatedAt,
-                       _id:responseData[0]._id,
-                       user_id:responseData[0].id,
+                   {   createdAt:responseData.team[0].createdAt,
+                       team_id:responseData.team[0].team_id,
+                       team_name:responseData.team[0].team_name,
+                       updatedAt:responseData.team[0].updatedAt,
+                       _id:responseData.team[0]._id,
+                       user_id:responseData.user_id,
                    }:{},
                    users:responseData?usersData:[],
                    channels:channelsData,

@@ -12,6 +12,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const webWorkService = require("./app/services/web-work.service");
 const socketService = require("./app/services/socket.service");
+const globalUserController = require('./app/controllers/globalUser.controller');
 const userController = require('./app/controllers/user.controller');
 const teamController = require('./app/controllers/team.controller');
 const channelController = require('./app/controllers/channel.controller');
@@ -42,6 +43,7 @@ const server = https.createServer(
 
 server.listen(PORT, () => {
   webWorkService.getTeamData().then(() => {
+    app.use('/api/current_user', globalUserController);
     app.use('/api/team', teamController);
     app.use('/api/users', userController);
     app.use('/api/channel', channelController);

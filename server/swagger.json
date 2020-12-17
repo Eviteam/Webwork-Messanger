@@ -18,8 +18,8 @@
         }
     ],
     "schemes": [
-        "http",
-        "https"
+        "https",
+        "http"
     ],
     "consumes": [
         "application/json"
@@ -28,6 +28,31 @@
         "application/json"
     ],
     "paths": {
+        "/api/current_user/{user_id}": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Send current user id",
+                "parameters":[
+                    {
+                        "name":"user_id",
+                        "in":"path",
+                        "required": true,
+                        "description":"Send current user id",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/CurrentUser"
+                        }
+                    }
+                }
+            }
+        },
         "/api/users": {
             "get": {
                 "tags": [
@@ -285,6 +310,13 @@
         }
     },
     "definitions": {
+        "CurrentUser": {
+            "properties": {
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
         "Users": {
             "type": "array",
             "$ref": "#/definitions/User"
