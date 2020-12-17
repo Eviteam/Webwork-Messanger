@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import CKEditorMessage from "../Views/Components/Message/ckEditor"
 import Message from "../Views/Components/Message/message"
@@ -13,19 +13,29 @@ function SocetIo() {
   const {team,userAcountData,messages,channalMesseges,FetchMessageData,selectedInfo,FetchChannalMessageData} = UseTeam()
   // const [sender,setSender] = useState('');
   const [msg,setMsg] = useState('');
-  const [chat,setChat]= useState([]);
-  const[selectedChannel,setSelectedChannel]= useState('');
-  const[selectedUserId,setSelectedUser]= useState('')
+  // const [chat,setChat]= useState([]);
+  // const[selectedChannel,setSelectedChannel]= useState('');
+  // const[selectedUserId,setSelectedUser]= useState('')
   useEffect(()=>{
   
-    socket.on("chatMessage", ({ sender, msg }) => {
-      chat.push({ sender, msg })
-      let newChat = [...chat]
-      setChat(newChat);
-      // FetchMessageData(team.team_id,sender)
+    socket.on("chatMessage", async({ sender, msg }) => {
+      console.log(sender);
+      const channelId =  await localStorage.getItem('selectedChannelId');
+     const userId =  await localStorage.getItem('selectedUserId') 
+    if(channelId){
+           FetchChannalMessageData(team.team_id,channelId)
+    }
+    else{
+     
+        FetchMessageData(team.team_id,userId)
+    }
+      // chat.push({ sender, msg })
+      // // let newChat = [...chat]
+      // // setChat(newChat);
+      // //  FetchMessageData(team.team_id,sender)
     });
    
-  },[selectedInfo]);
+  },[]);
   
   // const sendUserMessage = useCallback((mess,info) => {
   //   // console.log(info)
@@ -49,7 +59,7 @@ function SocetIo() {
   const onMessageSubmit = async (msg,info) => {
     
     let sender = userAcountData._id;
-    await socket.emit("chatMessage", {msg });
+    await socket.emit("chatMessage", {msg,sender });
      const channelId =  await localStorage.getItem('selectedChannelId');
      const userId =  await localStorage.getItem('selectedUserId') 
     if(channelId){
