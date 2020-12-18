@@ -30,6 +30,7 @@ export const UserProvider = ({children})=>{
   let [usersData,setUsersData]= useState([]);
   let [channelsData,setChannelsData]= useState([]);
   let [userAcountData, setUserAcountData] = useState(null);
+  let[currentUserSavedId,setCurrentUserSavedId]=useState(null)
   const [selectedTeam,setSelectedTeam]= useState(0);
   const [selectedInfo,dispach]= useReducer(selectUserReducer,{
     isSelectedUser:false,
@@ -53,16 +54,18 @@ const chekChannel = (id)=>{
     id
 });
 }
-const FetchMessageData = useCallback ((team_id,recevier_id) => {
+const FetchMessageData = useCallback (async (team_id,recevier_id) => {
+ 
+  const CurrentUserId = await localStorage.getItem('user_id');
+  console.log('currentUserSavedId',CurrentUserId)
   
-
     axios({
       "method": "GET",
-      "url": `https://localhost:3000/api/chat/${team_id}/${recevier_id}`,
+      "url": `https://localhost:3000/api/chat/${team_id}/${CurrentUserId}/${recevier_id}`,
     })
     .then((response) =>{
      
-      let data = response.data
+      let data = response.data  
 
       dispach({
         type:Take_messages,
@@ -114,6 +117,7 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
           "url": `https://localhost:3000/api/users/${id}`,
         })
         .then((response) => {
+         console.log(response.data,5555)
          
           setUserAcountData(response.data)
         })
@@ -162,6 +166,7 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
     
   
 useEffect( async() => {
+  
   if(selectedTeam){
     console.log(selectedTeam,2);
    const id= await localStorage.getItem('selectedTeamId')
@@ -171,6 +176,9 @@ useEffect( async() => {
     }
     
   }
+  // const CurrentUserId = await localStorage.getItem('user_id');
+  //   console.log('currentUserSavedId',CurrentUserId)
+  //   setCurrentUserSavedId(CurrentUserId)
     // fetchData();
     // fetchUsersData(); 
     // console.log(selectedTeam,1);

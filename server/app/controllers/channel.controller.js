@@ -45,7 +45,6 @@ router.get(`/:teamId`, (req, res) => {
 // GET CHANNEL MESSAGES
 router.get(`/message/:channel_id`, (req, res) => {
   const channel_id = req.params.channel_id;
-  console.log(channel_id)
   connect.then(db => {
     Channel_ChatSchema.find({}).then(data => {
       res.send(data);
