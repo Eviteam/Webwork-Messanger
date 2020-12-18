@@ -8,7 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 import {Modal,TextField,Button} from '@material-ui/core/';
 import axios from 'axios';
 import {UseTeam} from "../../../userContext";
-// import FixedOptions  from "../Selector/selector"
+import FixedOptions  from "../Selector/selector"
 // import CreatChannelModal from '../Modals/CreatChannelModal'
 function Channels({isOpenChanels,channels,changeChanalsStatus,selectChannel,selected,}) {
   const {fetchChannelsData} = UseTeam()
