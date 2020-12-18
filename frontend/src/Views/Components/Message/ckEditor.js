@@ -29,10 +29,13 @@ function CKEditorMessage({changeMessage,message,onMessageSubmit}) {
                         editor.editing.view.document.on( 'keydown', ( evt, data ) => {
                             if(data.domEvent.key === 'Enter'){
                                 let text = editor.getData()
-                                onMessageSubmit(text)
-                                data.preventDefault();
-                                evt.stop();
-                                editor.editing.view.scrollToTheSelection();
+                                if(text){
+                                    onMessageSubmit(text)
+                                    data.preventDefault();
+                                    evt.stop();
+                                    editor.editing.view.scrollToTheSelection();
+                                }
+                                
                             }
                         })
                         // editor.editing.view.document.on( 'enter', ( evt, data ) => {
