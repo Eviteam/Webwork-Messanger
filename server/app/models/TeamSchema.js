@@ -13,6 +13,9 @@ const team = new Schema({
     users:  {
         type: Array
     },
+    // team: {
+    //     type: Array
+    // },
     user_id: {
         type: String
     }

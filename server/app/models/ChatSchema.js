@@ -7,12 +7,10 @@ const chatSchema = new Schema({
     type: String
   },
   message: {
-    type: String,
-    required: true
+    type: String
   },
   sender: {
-    type: Object,
-    required: true
+    type: Object
   },
   channel: {
     type: String
