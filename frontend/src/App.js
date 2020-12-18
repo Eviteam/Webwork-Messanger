@@ -6,6 +6,7 @@ import Sidebar from "./Views/SideBar/sideBar"
 import Chat from "./Views/Chat/chat"
 import {UserProvider} from './userContext';
 import axios from 'axios';
+import {UseTeam} from "./userContext";
 function App() {
   const [userId,setUserId]= useState('');
   const [isRenderApp,setIsRenderApp] = useState(false)
@@ -24,8 +25,12 @@ useEffect( async()=>{
 useEffect(()=>{
   if(userId.length && !isRenderApp){axios.post(`https://localhost:3000/api/current_user/${userId}`, {
          }).then((response)=>{
-          console.log(response)
-           if(response.status ===200){
+          
+           if(response.data ){
+             console.log(response.data.team[0].team_id)
+             setUserId(response.data.user_id);
+             localStorage.setItem('selectedTeamId',response.data.team[0].team_id);
+             localStorage.setItem('user_id',response.data.user_id);
             setIsRenderApp(true)
            }
          })
