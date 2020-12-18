@@ -42,14 +42,14 @@ const server = https.createServer(
 );
 
 server.listen(PORT, () => {
-  webWorkService.getTeamData().then(() => {
+  // webWorkService.getTeamData().then(() => {
     app.use('/api/current_user', globalUserController);
     app.use('/api/team', teamController);
     app.use('/api/users', userController);
     app.use('/api/channel', channelController);
     app.use('/api/chat', chatController);
     console.log(`Server runing on port ${PORT}`);
-  });
+  // });
 });
 
 // Connect to socket

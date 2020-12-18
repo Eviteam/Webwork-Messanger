@@ -9,6 +9,7 @@ import axios from 'axios';
 function App() {
   const [userId,setUserId]= useState('');
   const [isRenderApp,setIsRenderApp] = useState(false)
+
 useEffect( async()=>{
   const savedId = await localStorage.getItem('user_id');
   if(savedId){
@@ -32,8 +33,7 @@ useEffect(()=>{
 },[userId])
   
      if(isRenderApp){
-       
-      
+
       return ( 
         <UserProvider>
          <div className="App">
