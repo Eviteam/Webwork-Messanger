@@ -14,7 +14,6 @@ router.post(`/:id`, (req, res) => {
     connect.then(db => {
       Global_UserSchema.find({user_id}).then(currentUser => {
         if (!currentUser.length) {
-          localStorage.setItem('user_id', user_id)
           const user = Global_UserSchema({user_id})
           user.save();
         }
