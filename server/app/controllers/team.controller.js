@@ -6,15 +6,16 @@ const TeamSchema = require("../models/TeamSchema");
 const Global_UserSchema = require("../models/Global_UserSchema");
 
 // GET SINGLE TEAM
-router.get(`/:id`, (req, res) => {
-  const id = req.params.id;
+router.get(`/:user_id/:team_id`, (req, res) => {
+  const team_id = req.params.team_id;
+  const user_id = req.params.user_id;
   connect.then(db => {
-    TeamSchema.find({ team_id: id }).then(team => {
-      Global_UserSchema.find({}).then(currentUser => {
-        if (currentUser.length) {
-          res.send({'team': team, 'user_id' : currentUser[0].user_id})
-        }
-      })
+    TeamSchema.find({ team_id }).then(team => {
+      const teamUsers = team[0].users.map(user => user.id)
+      teamUsers.includes(user_id)
+        ? res.send({ 'team': team, 'user_id': user_id })
+        : res.status(404).send("Team not found")
+
     })
   })
 });
