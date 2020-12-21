@@ -8,7 +8,8 @@ const TeamSchema = require("../models/TeamSchema");
 const UserSchema = require("../models/UserSchema");
 
 // GET CHAT MESSAGES
-router.get(`/:team_id/:receiver_id`, (req, res) => {
+router.get(`/:team_id/:user_id/:receiver_id`, (req, res) => {
+  const user_id = req.params.user_id;
   const team_id = req.params.team_id;
   const receiver_id = req.params.receiver_id;
   connect.then(db => {
@@ -18,7 +19,7 @@ router.get(`/:team_id/:receiver_id`, (req, res) => {
       } else {
         Global_UserSchema.find({}).then(currentUser => {
           if (currentUser.length) {
-            UserSchema.find({ id: currentUser[0].user_id }).then(user => {
+            UserSchema.find({ id: user_id }).then(user => {
               ChatSchema.find({}).then(messages => {
                 const allMessages = [];
                 messages.map(message => {
