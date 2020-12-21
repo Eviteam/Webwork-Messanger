@@ -12,9 +12,7 @@
     padding: 20px;
     border-bottom: 1px solid #D4EAF5;
 }
-.chat_channelName  {
-    text-transform: lowercase;
-}
+
 .chat_channelName .MuiSvgIcon-root{  
     margin-left: 10px;
     font-size: 18px;

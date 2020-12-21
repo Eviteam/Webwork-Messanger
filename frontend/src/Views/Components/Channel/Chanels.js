@@ -57,7 +57,6 @@ const createChannel = async ()=>{
     })
   })
  
-  console.log(newUsersData)
     return (
         <>
 

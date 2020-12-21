@@ -5,7 +5,7 @@
     justify-content: flex-start;
 }
 .users_div >span>h3{
-    width:180px;
+    width:160px;
 }
 .users_continer{
     padding: 10px 0px;
@@ -13,8 +13,12 @@
 .user{
     display: flex;
     align-items: center;
-    padding: 0 10px;
-    margin: 5px;
+    padding: 6px 15px;
+    
+};
+.channel>p{
+    font-size: 15px;
+    font-family: Slack-Lato, appleLogo, sans-serif;
 }
 .user:hover{
     background-color: #303946;

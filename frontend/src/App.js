@@ -43,7 +43,7 @@ useEffect(()=>{
         <UserProvider>
          <div className="App">
          <Router>
-         <Header/>
+         {/* <Header/> */}
           <div className="app_body">
           <Sidebar />
          <Switch>

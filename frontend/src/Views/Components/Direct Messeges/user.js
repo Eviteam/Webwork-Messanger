@@ -6,9 +6,9 @@ function User({Icon,title,id,selectUser,selected}) {
       <div className ={id!==selected?"user":"user selected"} onClick = {()=>selectUser(id,'user')}>
         {Icon&&<Icon className = "user_icon"/>}
         {Icon? (
-            <h3>{title}</h3>
+            <p>{title}</p>
         ):
-        <h4># {title}</h4>
+        <p># {title}</p>
         }
       </div>
     );

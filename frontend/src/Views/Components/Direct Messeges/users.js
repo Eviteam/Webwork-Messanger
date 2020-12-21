@@ -30,10 +30,10 @@ function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
                     )
                    
                 })}
-                  {isOpenUsers?<div className = 'add_user'>
+                  {/* {isOpenUsers?<div className = 'add_user'>
                      <AddIcon/>
                      <h3>Add Teammates</h3>
-                 </div>:null}
+                 </div>:null} */}
        </div>
        
        
