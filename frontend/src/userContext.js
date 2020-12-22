@@ -8,14 +8,17 @@ export const  UseTeam= ()=>{
 const Select_User = 'selectUser';
 const Selec_Channel = 'selectChannel';
 const Take_messages = 'takeMessages'
-const Take_Channal_Messages = 'takeChannalMessages'
+const Take_Channal_Messages = 'takeChannalMessages';
+const Add_Usser = 'addUsers';
+// const Change_Users = 'changeUsers'
 
 const selectUserReducer = (state,action)=> {
     switch (action.type){
         case Select_User:return{...state,isSelectedUser:true,selectedUserId:action.id,isSelectChannel:false,selectedChannelId:''};
         case Selec_Channel:return{...state,isSelectChannel:true,selectedChannelId:action.id,isSelectedUser:false,selectedUserId:'',};
         case Take_messages:return{...state,messages:action.data};
-        case Take_Channal_Messages:return{...state,channalMesseges:action.data}
+        case Take_Channal_Messages:return{...state,channalMesseges:action.data};
+        case Add_Usser :return {...state,users:action.data}
         default:return state
     }
 }
@@ -38,7 +41,8 @@ export const UserProvider = ({children})=>{
     isSelectChannel:false,
     selectedChannelId:"",
     messages:[],
-    channalMesseges:[]
+    channalMesseges:[],
+    users:[]
 })
 // const [directMessage,dispach]= useReducer(selectUserReducer,{
  
@@ -53,11 +57,30 @@ const chekChannel = (id)=>{
     type:Selec_Channel,
     id
 });
-}
+};
+const ChangeUsers = (oldData,id)=>{
+  //   console.log(selectedInfo)
+  //   const reseverUser = oldData.find(user=>user._id = id)
+  //   const data = oldData.map(user=>{
+
+  //     if(user._id  === id){
+  //       user.isNewMassage = true
+  //       return user
+  //   }
+  //   else return user
+  // }
+  //   )
+  // //   dispach({
+  // //     type:Selec_Channel,
+  // //     data
+  // // });
+  //   console.log(data,'reseverUser',reseverUser);
+    
+};
 const FetchMessageData = useCallback (async (team_id,recevier_id) => {
- 
+ console.log(team_id,recevier_id)
   const CurrentUserId = await localStorage.getItem('user_id');
-  console.log('currentUserSavedId',CurrentUserId)
+ 
   
     axios({
       "method": "GET",
@@ -100,26 +123,30 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
 
 
 }, []);
-  const fetchData = useCallback((savedTeamID) => {
+  const fetchData = useCallback(async (savedTeamID) => {
+    let id = await localStorage.getItem('user_id')
     if(savedTeamID){
-      console.log('asds')
+     
       axios({
         "method": "GET",
-        "url": `https://localhost:3000/api/team/${savedTeamID}`,
+        "url": `https://localhost:3000/api/team/${id}/${savedTeamID}`,
       })
       .then(async (response) => {
+        console.log(response.data)
         setResponseData(response.data)
        
-        let id = await localStorage.getItem('user_id')
+        
         fetchChannelsData(savedTeamID)
         axios({
           "method": "GET",
           "url": `https://localhost:3000/api/users/${id}`,
         })
         .then((response) => {
-         console.log(response.data,5555)
+        
+         let carrentUser = response.data.find(user=>user.id =id );
+          setUserAcountData(carrentUser);
+          localStorage.setItem('user_long_id',carrentUser._id)
          
-          setUserAcountData(response.data)
         })
         .catch((error) => {
           console.log(error)
@@ -133,13 +160,19 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
     }
   
   }, []);
-  const fetchUsersData = useCallback(() => {
+  const fetchUsersData = useCallback(async () => {
+    let id = await localStorage.getItem('user_id')
     axios({
       "method": "GET",
-      "url": "https://localhost:3000/api/users",
+      "url": `https://localhost:3000/api/users/${id}`,
     })
     .then((response) => {
-      setUsersData(response.data)
+      let data = response.data 
+      // setUsersData(response.data)
+      dispach({
+        type:Add_Usser,
+        data
+    });
     })
     .catch((error) => {
       console.log(error)
@@ -168,7 +201,7 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
 useEffect( async() => {
   
   if(selectedTeam){
-    console.log(selectedTeam,2);
+   
    const id= await localStorage.getItem('selectedTeamId')
     if (id){
       await fetchData(id);
@@ -188,12 +221,11 @@ useEffect( async() => {
 useEffect(async()=>{
   const savedTeam = await localStorage.getItem('selectedTeamId');
   if(savedTeam){
-    console.log(savedTeam)
     setSelectedTeam(savedTeam);
      
   }
   
-},[])
+},[]);
 
     return(
             <TeamContext.Provider 
@@ -207,17 +239,17 @@ useEffect(async()=>{
                        _id:responseData.team[0]._id,
                        user_id:responseData.user_id,
                    }:{},
-                   users:responseData?usersData:[],
+                   users:selectedInfo.users,
                    channels:channelsData,
-                   userAcountData:userAcountData?userAcountData[0]:[],
+                   userAcountData:userAcountData,
                    selectedInfo:{
                     isSelectedUser:selectedInfo.isSelectedUser,
                     selectedUserId:selectedInfo.selectedUserId,
                     isSelectChannel:selectedInfo.isSelectChannel,
                     selectedChannelId:selectedInfo.selectedChannelId,
                     
-                   },fetchData,chakUser,chekChannel,FetchMessageData,FetchChannalMessageData,fetchChannelsData,
-                   selectedUserInfo:selectedInfo.isSelectedUser&&usersData?usersData.find(users => users._id===selectedInfo.selectedUserId):{},
+                   },fetchData,chakUser,chekChannel,FetchMessageData,FetchChannalMessageData,fetchChannelsData,ChangeUsers,
+                   selectedUserInfo:selectedInfo.isSelectedUser&&selectedInfo?selectedInfo.users.find(users => users._id===selectedInfo.selectedUserId):{},
                    selectedChannelInfo:selectedInfo.isSelectChannel&&channelsData.length?channelsData.find(channel => channel._id===selectedInfo.selectedChannelId):{},
                    messages:selectedInfo.messages,
                    channalMesseges:selectedInfo.channalMesseges

@@ -30,3 +30,11 @@
 .Chat_continer>h2{
     padding-left: 20px;
 }
+.chat_headerLeft{
+    display: flex;
+    align-items: center;
+}
+.chat_headerLeft > .MuiSvgIcon-root{
+margin-left: 10px;
+font-size: 20px;
+}

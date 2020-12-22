@@ -15,8 +15,8 @@ function Chat() {
         <div className = "chat_headerLeft">
           <h4 className = "chat_channelName">
             {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:'general'}
-            <StarBorderOutlinedIcon/>
           </h4>
+          <StarBorderOutlinedIcon/>
           </div>
           <div className = "chat_headerRight">
             <p><InfoOutlinedIcon/>Detils</p>

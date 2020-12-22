@@ -26,10 +26,12 @@ function SideBar() {
       if(selectedUserId){
         setSelected(selectedUserId);
         chakUser(selectedUserId);
+        selectHandler(selectedUserId,'user')
       }
       else if(selectedChannelId){
         setSelected(selectedChannelId);
         chekChannel(selectedChannelId);
+        selectHandler(selectedChannelId,'channel')
       }
       else {
         console.log(channels)
@@ -37,8 +39,10 @@ function SideBar() {
           if(channels.length){
             let generalChannel = channels.find(channel=>channel.channelName === 'general');
           console.log(generalChannel);
-          setSelected(generalChannel._id)
-          localStorage.setItem('selectedChannelId',generalChannel._id)
+          // setSelected(generalChannel._id);
+          // chakUser(generalChannel._id);
+          // localStorage.setItem('selectedChannelId',generalChannel._id)
+          selectHandler(generalChannel._id,'channel')
           }
         
           
@@ -67,15 +71,16 @@ function SideBar() {
         setSelected(id);
        
         
-        if(type==='channel'){
+        if(type==='channel' ){
           console.log(id,'channel')
           chekChannel(id)
           console.log(id,'channel');
           localStorage.setItem('selectedChannelId',id);
           localStorage.removeItem('selectedUserId');
-          FetchChannalMessageData(team.team_id,id)
+          FetchChannalMessageData(selectedTeam,selected)
+            
         };
-        if(type==='user'){
+        if(type==='user' && team.team_id){
           console.log(id,'user');
           chakUser(id);
           localStorage.setItem('selectedUserId',id);

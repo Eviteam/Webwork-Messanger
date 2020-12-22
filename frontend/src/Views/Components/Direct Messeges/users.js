@@ -26,7 +26,7 @@ function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
             {isOpenUsers && users.map((item,index)=>{
                
                     return (
-                        <User key = {index} title = {`${item.firstname} ${item.lastname}`} Icon = {item.icon}  id = {item._id} selectUser = {selectUser} selected ={selected}/>
+                        <User key = {index} title = {`${item.firstname} ${item.lastname}`} Icon = {item.icon}  id = {item._id} selectUser = {selectUser} selected ={selected} newMassage= {item.newMassage}/>
                     )
                    
                 })}
@@ -42,3 +42,4 @@ function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
   }
   
   export default Users;
+  
