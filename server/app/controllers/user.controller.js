@@ -4,8 +4,11 @@ const connect = require("../helpers/db");
 const UserSchema = require("../models/UserSchema");
 
 // GET ALL USERS
-router.get(`/`, (req, res) => {
-  connect.then(db => UserSchema.find({}).then(users => res.send(users)))
+router.get(`/:team_id`, (req, res) => {
+  const team_id = req.params.team_id;
+  connect.then(db => {
+    UserSchema.find({ team_id }).then(users => res.send(users))
+  })
 })
 
 // GET SINGLE USER

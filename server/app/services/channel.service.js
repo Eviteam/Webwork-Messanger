@@ -1,14 +1,14 @@
 const connect = require("../helpers/db");
 const https = require('https');
 const ChannelSchema = require("../models/ChannelSchema");
-// TODO change in prod
+// TODO change in prod   'http://localhost:3000' ||
 const BASE_URL = `${process.env.BASE_API}`;
 const axios = require('axios');
 const UserSchema = require("../models/UserSchema");
 
 function createGeneralChannel(team_id) {
   connect.then(db => {
-    ChannelSchema.find({ channelName: 'general' }).then(channel => {
+    ChannelSchema.find({ channelName: 'general', team_id: team_id }).then(channel => {
       if (!channel.length) {
         UserSchema.find({ team_id }).then(users => {
           axios

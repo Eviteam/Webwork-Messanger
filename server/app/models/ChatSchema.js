@@ -14,6 +14,9 @@ const chatSchema = new Schema({
   },
   channel: {
     type: String
+  },
+  isSeen: {
+    type: Boolean
   }
 }, {
   versionKey: false,

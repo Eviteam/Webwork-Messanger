@@ -45,6 +45,9 @@ router.post(`/send-message`, (req, res) => {
     const user_id = data.sender;
     UserSchema.findById(user_id).then(user => {
       data.sender = user;
+      if (!data.isSeen) {
+        data.isSeen = false;
+      }
       const chatSchema = new ChatSchema(data);
       chatSchema.save();
       res.json({ data });

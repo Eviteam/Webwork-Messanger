@@ -9,6 +9,7 @@ function createUser(newTeamData) {
         const newTeam = new TeamSchema(newTeamData);
         newTeam.save();
         newTeamData.users.map(user => {
+          user.team_id = newTeamData.team_id;
           const newUsers = new UserSchema(user);
           newUsers.save();
         });

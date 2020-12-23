@@ -19,13 +19,16 @@ function connectToSocket(io) {
 
     socket.on('chatMessage', message => {
       io.emit('message', message);
+      if (!message.isSeen) {
+        io.emit(`${message.receiver}`, message)
+      }
       io.sockets.emit('chatMessage', message);
 
       //save chat to the database
-      connect.then(db => {
-        const chatMessage = new ChatSchema({ message });
-        chatMessage.save();
-      });
+      // connect.then(db => {
+      //   const chatMessage = new ChatSchema({ message });
+      //   chatMessage.save();
+      // });
     });
     io.emit('rooms', rooms);
   });
