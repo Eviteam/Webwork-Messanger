@@ -46,7 +46,7 @@ function SocetIo() {
       
     });
    
-  },[users]);
+  },[users,]);
   
   // const sendUserMessage = useCallback((mess,info) => {
   //   // console.log(info)
@@ -68,7 +68,7 @@ function SocetIo() {
    
 
   const onMessageSubmit = async (msg,info) => {
-    
+    const teamId =  await localStorage.getItem('selectedTeamId');
     let sender = userAcountData._id;
     const receiver =  await localStorage.getItem('selectedUserId') 
     await socket.emit("chatMessage", {msg,sender,receiver });
@@ -79,10 +79,12 @@ function SocetIo() {
         channel_id: channelId,
         message: msg,
         user_id:userAcountData._id,
+        receiver_id:null,
+        team_id:teamId
          });
       // sendChannelMessage(msg,info)
            setMsg('')
-           FetchChannalMessageData(team.team_id,channelId)
+           FetchChannalMessageData(team.team_id,userId)
     }
     else{
      
@@ -91,7 +93,8 @@ function SocetIo() {
         receiver_id: receiver,
         message: msg,
         sender:userAcountData._id,
-        channel:null
+        channel_id:null,
+        team_id:teamId
          });
          setMsg('');
         FetchMessageData(team.team_id,userId)

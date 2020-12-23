@@ -15,9 +15,9 @@ function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
            
            </span>
            <span>
-               <h3>DirectMesseges</h3>
+               <p>DirectMesseges</p>
            </span>
-           <span className = 'AddCircleIcon'>
+           <span className = 'AddCircleIcon_user'>
            <AddCircleIcon/>
            </span>
        </div>

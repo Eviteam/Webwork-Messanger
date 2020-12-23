@@ -28,12 +28,15 @@ function CKEditorMessage({changeMessage,message,onMessageSubmit}) {
                     onFocus={ ( event, editor ) => {
                         editor.editing.view.document.on( 'keydown', ( evt, data ) => {
                             if(data.domEvent.key === 'Enter'){
-                                let text = editor.getData()
+                                let text = editor.getData().replace(/\s/g, "")
+                                console.log(text)
                                 if(text){
                                     onMessageSubmit(text)
                                     data.preventDefault();
-                                    evt.stop();
                                     editor.editing.view.scrollToTheSelection();
+                                    evt.stop();
+                                }
+                                else{
                                 }
                                 
                             }

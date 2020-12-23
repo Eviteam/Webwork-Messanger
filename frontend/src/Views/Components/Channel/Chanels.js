@@ -102,9 +102,9 @@ const createChannel = async ()=>{
            
            </span>
            <span>
-               <h3>Channels</h3>
+               <p>Channels</p>
            </span>
-           <span className = 'AddCircleIcon'>
+           <span className = 'AddCircleIcon_channel'>
            <AddCircleIcon/>
            </span>
        </div>
@@ -119,7 +119,7 @@ const createChannel = async ()=>{
                 }
                  {isOpenChanels?<div className = 'add_channel'>
                      <AddIcon/>
-                     <h3 onClick = {()=>{setIsOpanCreatChannel(true)}}>Add Channel</h3>
+                     <p onClick = {()=>{setIsOpanCreatChannel(true)}}>Add Channel</p>
                  </div>:null}
                 
        </div>

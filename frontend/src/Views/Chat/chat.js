@@ -22,7 +22,8 @@ function Chat() {
             <p><InfoOutlinedIcon/>Detils</p>
           </div>
         </div>
-        <h2>send message to {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:`${selectedChannelInfo.channelName} channel`}</h2>
+        <h2>send message to {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:
+       selectedChannelInfo&&selectedChannelInfo.channelName?`${selectedChannelInfo.channelName} channel`:null}</h2>
         <SocetIo />
         
       </div>

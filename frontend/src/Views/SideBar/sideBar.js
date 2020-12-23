@@ -100,7 +100,7 @@ function SideBar() {
                     {userAcountData&&userAcountData.firstname?`${userAcountData.firstname} ${userAcountData.lastname}`:''}
                 </h3>
               </div>
-                <CreateIcon/>
+                {/* <CreateIcon/> */}
           </div>
           
                <Channels isOpenChanels = {isOpenChanels} channels = {channels} changeChanalsStatus = {changeChanalsStatus} selectChannel={selectHandler} selected ={selected} />

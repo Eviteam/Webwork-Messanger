@@ -125,6 +125,7 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
 }, []);
   const fetchData = useCallback(async (savedTeamID) => {
     let id = await localStorage.getItem('user_id')
+    
     if(savedTeamID){
      
       axios({
@@ -137,21 +138,19 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
        
         
         fetchChannelsData(savedTeamID)
-        axios({
-          "method": "GET",
-          "url": `https://localhost:3000/api/users/${id}`,
-        })
-        .then((response) => {
-        
-         let carrentUser = response.data.find(user=>user.id =id );
-          setUserAcountData(carrentUser);
-          localStorage.setItem('user_long_id',carrentUser._id)
+        // axios({
+        //   "method": "GET",
+        //   "url": `https://localhost:3000/api/users/${id}`,
+        // })
+        // .then((response) => {
+        // console.log(response)
          
-        })
-        .catch((error) => {
-          console.log(error)
+         
+        // })
+        // .catch((error) => {
+        //   console.log(error)
           
-        })
+        // })
       })
       .catch((error) => {
         console.log(error)
@@ -161,7 +160,8 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
   
   }, []);
   const fetchUsersData = useCallback(async () => {
-    let id = await localStorage.getItem('user_id')
+    let id = await localStorage.getItem('selectedTeamId');
+    let userId = await localStorage.getItem('user_id');
     axios({
       "method": "GET",
       "url": `https://localhost:3000/api/users/${id}`,
@@ -173,6 +173,11 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
         type:Add_Usser,
         data
     });
+           let carrentUser = data.find(user=>{ 
+            return user.id == userId
+             });
+          setUserAcountData(carrentUser);
+           localStorage.setItem('user_long_id',carrentUser._id)
     })
     .catch((error) => {
       console.log(error)
