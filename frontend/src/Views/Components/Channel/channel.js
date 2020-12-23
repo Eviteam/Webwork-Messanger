@@ -8,9 +8,9 @@ function Channel({Icon,title,id,selectChannel,selected}) {
       }}>
         {Icon&&<Icon className = "channel_icon"/>}
         {Icon? (
-            <h3>{title}</h3>
+            <p>{title}</p>
         ):
-        <h3># {title}</h3>
+        <p># {title}</p>
         }
       </div>
     );

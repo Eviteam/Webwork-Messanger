@@ -15,9 +15,9 @@ function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
            
            </span>
            <span>
-               <h3>DirectMesseges</h3>
+               <p>DirectMesseges</p>
            </span>
-           <span className = 'AddCircleIcon'>
+           <span className = 'AddCircleIcon_user'>
            <AddCircleIcon/>
            </span>
        </div>
@@ -26,14 +26,14 @@ function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
             {isOpenUsers && users.map((item,index)=>{
                
                     return (
-                        <User key = {index} title = {`${item.firstname} ${item.lastname}`} Icon = {item.icon}  id = {item._id} selectUser = {selectUser} selected ={selected}/>
+                        <User key = {index} title = {`${item.firstname} ${item.lastname}`} Icon = {item.icon}  id = {item._id} selectUser = {selectUser} selected ={selected} newMassage= {item.newMassage}/>
                     )
                    
                 })}
-                  {isOpenUsers?<div className = 'add_user'>
+                  {/* {isOpenUsers?<div className = 'add_user'>
                      <AddIcon/>
                      <h3>Add Teammates</h3>
-                 </div>:null}
+                 </div>:null} */}
        </div>
        
        
@@ -42,3 +42,4 @@ function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
   }
   
   export default Users;
+  

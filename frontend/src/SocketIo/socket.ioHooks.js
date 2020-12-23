@@ -10,7 +10,7 @@ const socket = io.connect("https://localhost:3000");
 
 function SocetIo() {
 
-  const {team,userAcountData,messages,channalMesseges,FetchMessageData,selectedInfo,FetchChannalMessageData} = UseTeam()
+  const {team,userAcountData,messages,channalMesseges,FetchMessageData,selectedInfo,FetchChannalMessageData,users,ChangeUsers} = UseTeam()
   // const [sender,setSender] = useState('');
   const [msg,setMsg] = useState('');
   // const [chat,setChat]= useState([]);
@@ -18,24 +18,35 @@ function SocetIo() {
   // const[selectedUserId,setSelectedUser]= useState('')
   useEffect(()=>{
   
-    socket.on("chatMessage", async({ sender, msg }) => {
-      console.log(sender);
-      const channelId =  await localStorage.getItem('selectedChannelId');
-     const userId =  await localStorage.getItem('selectedUserId') 
+    socket.on("chatMessage", async({ sender, msg,receiver }) => {
+      
+     const channelId =  await localStorage.getItem('selectedChannelId');
+     const userLongId =  await localStorage.getItem('user_long_id');
+     const teamId =  await localStorage.getItem('selectedTeamId');
+    //  console.log(sender,userId);
     if(channelId){
-           FetchChannalMessageData(team.team_id,channelId)
+           FetchChannalMessageData(teamId,channelId)
     }
     else{
-     
-        FetchMessageData(team.team_id,userId)
+      console.log(receiver,'receiver');
+        // await FetchMessageData(teamId,sender);
+        
+        // if(receiver === channelId){
+        //   console.log(5555555555555)
+        //   ChangeUsers(users,sender)
+        // }
+        
+          
     }
       // chat.push({ sender, msg })
       // // let newChat = [...chat]
       // // setChat(newChat);
       // //  FetchMessageData(team.team_id,sender)
+      
+      
     });
    
-  },[]);
+  },[users,]);
   
   // const sendUserMessage = useCallback((mess,info) => {
   //   // console.log(info)
@@ -57,9 +68,10 @@ function SocetIo() {
    
 
   const onMessageSubmit = async (msg,info) => {
-    
+    const teamId =  await localStorage.getItem('selectedTeamId');
     let sender = userAcountData._id;
-    await socket.emit("chatMessage", {msg,sender });
+    const receiver =  await localStorage.getItem('selectedUserId') 
+    await socket.emit("chatMessage", {msg,sender,receiver });
      const channelId =  await localStorage.getItem('selectedChannelId');
      const userId =  await localStorage.getItem('selectedUserId') 
     if(channelId){
@@ -67,19 +79,22 @@ function SocetIo() {
         channel_id: channelId,
         message: msg,
         user_id:userAcountData._id,
+        receiver_id:null,
+        team_id:teamId
          });
       // sendChannelMessage(msg,info)
            setMsg('')
-           FetchChannalMessageData(team.team_id,channelId)
+           FetchChannalMessageData(team.team_id,userId)
     }
     else{
      
      
      await axios.post(`https://localhost:3000/api/chat/send-message`, { 
-        receiver_id: userId,
+        receiver_id: receiver,
         message: msg,
         sender:userAcountData._id,
-        channel:null
+        channel_id:null,
+        team_id:teamId
          });
          setMsg('');
         FetchMessageData(team.team_id,userId)

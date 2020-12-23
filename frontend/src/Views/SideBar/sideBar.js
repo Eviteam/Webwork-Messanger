@@ -15,22 +15,39 @@ function SideBar() {
     const [isOpenUsers, setIsOpenUsers] = useState(true);
     const [selected,setSelected]= useState(0);
     const [selectedTeam,setSelectedTeam]= useState(0);
+    const [generalId,setGeneralId] = useState(0) 
 
   
-    useEffect( ()=>{
-      let selectedUserId = localStorage.getItem('selectedUserId');
-      let selectedTeamId = localStorage.getItem('selectedTeamId');
-      let selectedChannelId = localStorage.getItem('selectedChannelId');
+    useEffect( async()=>{
+      let selectedUserId = await localStorage.getItem('selectedUserId');
+      let selectedTeamId = await localStorage.getItem('selectedTeamId');
+      let selectedChannelId  = await localStorage.getItem('selectedChannelId');
       setSelectedTeam(selectedTeamId)
       if(selectedUserId){
         setSelected(selectedUserId);
         chakUser(selectedUserId);
+        selectHandler(selectedUserId,'user')
       }
-      if(selectedChannelId){
+      else if(selectedChannelId){
         setSelected(selectedChannelId);
-        chekChannel(selectedChannelId)
+        chekChannel(selectedChannelId);
+        selectHandler(selectedChannelId,'channel')
       }
-    },[]);
+      else {
+        console.log(channels)
+        
+          if(channels.length){
+            let generalChannel = channels.find(channel=>channel.channelName === 'general');
+          console.log(generalChannel);
+          // setSelected(generalChannel._id);
+          // chakUser(generalChannel._id);
+          // localStorage.setItem('selectedChannelId',generalChannel._id)
+          selectHandler(generalChannel._id,'channel')
+          }
+        
+          
+      }
+    },[channels]);
     useEffect( ()=>{
      
       if(selectedInfo.isSelectedUser){
@@ -54,15 +71,16 @@ function SideBar() {
         setSelected(id);
        
         
-        if(type==='channel'){
+        if(type==='channel' ){
           console.log(id,'channel')
           chekChannel(id)
           console.log(id,'channel');
           localStorage.setItem('selectedChannelId',id);
           localStorage.removeItem('selectedUserId');
-          FetchChannalMessageData(team.team_id,id)
+          FetchChannalMessageData(selectedTeam,selected)
+            
         };
-        if(type==='user'){
+        if(type==='user' && team.team_id){
           console.log(id,'user');
           chakUser(id);
           localStorage.setItem('selectedUserId',id);
@@ -76,13 +94,13 @@ function SideBar() {
       <div className = "sidebar">
           <div className = "sidebar_header">
               <div className = "sidebar_info">
-              <h2>{team&&team.team_name}</h2>
+              <h2>{team&&team.team_name?team.team_name:''}</h2>
                 <h3>
                     <FiberManualRecordIcon/>
-                    {userAcountData?`${userAcountData.firstname} ${userAcountData.lastname}`:'Gagulik'}
+                    {userAcountData&&userAcountData.firstname?`${userAcountData.firstname} ${userAcountData.lastname}`:''}
                 </h3>
               </div>
-                <CreateIcon/>
+                {/* <CreateIcon/> */}
           </div>
           
                <Channels isOpenChanels = {isOpenChanels} channels = {channels} changeChanalsStatus = {changeChanalsStatus} selectChannel={selectHandler} selected ={selected} />
