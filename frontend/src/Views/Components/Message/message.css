@@ -17,3 +17,6 @@
 .massegeText_continer{
 color: #474F5C;
 }
+.massage_text>p{
+    max-width: 80%;
+}

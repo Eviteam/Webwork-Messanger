@@ -15,14 +15,15 @@ function Chat() {
         <div className = "chat_headerLeft">
           <h4 className = "chat_channelName">
             {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:'general'}
-            <StarBorderOutlinedIcon/>
           </h4>
+          <StarBorderOutlinedIcon/>
           </div>
           <div className = "chat_headerRight">
             <p><InfoOutlinedIcon/>Detils</p>
           </div>
         </div>
-        <h2>send message to {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:`${selectedChannelInfo.channelName} channel`}</h2>
+        <h2>send message to {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:
+       selectedChannelInfo&&selectedChannelInfo.channelName?`${selectedChannelInfo.channelName} channel`:null}</h2>
         <SocetIo />
         
       </div>

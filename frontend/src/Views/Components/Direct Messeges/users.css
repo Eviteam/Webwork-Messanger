@@ -3,23 +3,43 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    font-size: 15px;
+    font-family: Slack-Lato, appleLogo, sans-serif;
+    cursor: pointer;
 }
-.users_div >span>h3{
-    width:180px;
+.users_div >span>p{
+    width:160px;
 }
 .users_continer{
     padding: 10px 0px;
 }
+.AddCircleIcon_user{
+    display: none;
+}
+
+.users_div:hover {
+    background-color: #303946 !important    ;
+    color:#b5c1c4 ;
+    cursor: pointer;
+} 
+.users_div:hover .AddCircleIcon_user{
+    display: inline-block;
+};
 .user{
     display: flex;
     align-items: center;
-    padding: 0 10px;
-    margin: 5px;
-}
-.user:hover{
-    background-color: #303946;
-    color:#E8F2F7 ;
-}
+    padding: 6px 15px;
+    font-size: 15px;
+    font-family: Slack-Lato, appleLogo, sans-serif;
+    position: relative;
+    
+};
+
+ .user:hover{
+    background-color: #303946    ;
+    color:#b5c1c4 ;
+    cursor: pointer;
+} 
 
 .user_icon{
     margin-right: 10px;
@@ -29,6 +49,8 @@
     align-items: center;
     padding: 0 10px;
     margin: 5px;
+    font-size: 15px;
+    font-family: Slack-Lato, appleLogo, sans-serif;
 
 }
 .add_user:hover{
@@ -38,3 +60,14 @@
 .add_user>h3{
     margin-left: 10px;
 }
+/* .message_notification{
+    position: absolute;
+    background-color: red;
+    width: 24px;
+    height: 18px;
+    right: 10px;
+    border-radius: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */

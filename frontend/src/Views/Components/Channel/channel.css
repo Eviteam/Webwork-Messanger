@@ -7,23 +7,37 @@
     padding: 8px;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    font-size: 15px;
+    font-family: Slack-Lato, appleLogo, sans-serif;  
 }
-.AddCircleIcon{
-    margin-left: 10px;
+.chanels_div:hover{
+        cursor: pointer;       
+}
+.chanels_div:hover .AddCircleIcon_channel{
+    display:inline-block
+}
+.AddCircleIcon_channel{
+    display: none;
+    margin-left: 97px;
 }
 .chanels_div >span>h3{
-    width:180px;
+    width:160px;
 }
+/* .AddCircleIcon{
+    display: none;
+} */
 .channels_continer{
     padding: 0px 0px;
 }
 
 .channel{
-    margin: 5px;
     display: flex;
     align-items: center;
-    padding: 0 10px;
+    padding: 6px 15px;
+    font-size: 15px;
+    font-family: Slack-Lato, appleLogo, sans-serif;
+    
+
 }
 .selected{
     background-color:#00a3e3;
@@ -31,8 +45,9 @@
    
 }
 .channel:hover{
-    background-color: #92ebf7;
+    background-color: #303946;
     color:#b5c1c4 ;
+    cursor: pointer;
 }
 .channel_icon{
     margin-right: 10px;
@@ -43,11 +58,13 @@
     align-items: center;
     padding: 0 10px;
     margin: 5px;
-    
+    font-size: 15px;
+    font-family: Slack-Lato, appleLogo, sans-serif;
 }
 .add_channel:hover{
-    background-color: #92ebf7;
+    background-color: #303946;
     color:#b5c1c4 ;
+    cursor: pointer;
 }
 .add_channel>h3{
     margin-left: 10px;
