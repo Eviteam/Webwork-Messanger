@@ -12,7 +12,7 @@ router.get(`/:team_id`, (req, res) => {
 })
 
 // GET SINGLE USER
-router.get(`/:id`, (req, res) => {
+router.get(`single_user/:id`, (req, res) => {
   connect.then(db => {
     const id = req.params.id;
     UserSchema.find({ id }).then(user => res.send(user));

@@ -33,11 +33,11 @@ app.get(`/`, (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/build/index.html'))
 });
 
-const server = https.createServer(
-  {
-    key: fs.readFileSync(process.env.KEY, 'utf8'),
-    cert: fs.readFileSync(process.env.CERT, 'utf8')
-  },
+const server = http.createServer(
+  // {
+  //   key: fs.readFileSync(process.env.KEY, 'utf8'),
+  //   cert: fs.readFileSync(process.env.CERT, 'utf8')
+  // },
   app
 );
 
