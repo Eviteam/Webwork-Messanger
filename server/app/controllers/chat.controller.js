@@ -20,7 +20,7 @@ router.get(`/:team_id/:user_id/:receiver_id`, (req, res) => {
         Global_UserSchema.find({}).then(currentUser => {
           if (currentUser.length) {
             UserSchema.find({ id: user_id }).then(user => {
-              ChatSchema.find({}).then(messages => {
+              ChatSchema.find({ team_id }).then(messages => {
                 const allMessages = [];
                 messages.map(message => {
                   if ((user[0]._id.toString() == message.sender._id.toString() && receiver_id.toString() == message.receiver_id.toString())
@@ -45,6 +45,9 @@ router.post(`/send-message`, (req, res) => {
     const user_id = data.sender;
     UserSchema.findById(user_id).then(user => {
       data.sender = user;
+      if (!data.isSeen) {
+        data.isSeen = false;
+      }
       const chatSchema = new ChatSchema(data);
       chatSchema.save();
       res.json({ data });
