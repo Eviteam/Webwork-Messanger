@@ -1,7 +1,7 @@
 import React, {  } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
+import "./message.css"
 
 function CKEditorMessage({changeMessage,message,onMessageSubmit}) {
     
@@ -10,7 +10,12 @@ function CKEditorMessage({changeMessage,message,onMessageSubmit}) {
                 
                 <CKEditor
                     editor={ ClassicEditor }
-                    data={message}
+                    data={message} 
+                    config = {{
+                        ignoreEmptyParagraph:true
+                    }
+                        
+                        }                   
                     // onReady={ editor => {
                        
                     //     console.log( 'Editor is ready to use!', editor );
@@ -21,15 +26,18 @@ function CKEditorMessage({changeMessage,message,onMessageSubmit}) {
                         
                         changeMessage(data)
                     } }
-                   
+                    
                     // onBlur={ ( event, editor ) => {
                     //     console.log( 'Blur.', editor,event );
                     // } }
                     onFocus={ ( event, editor ) => {
+                       
+                        
                         editor.editing.view.document.on( 'keydown', ( evt, data ) => {
                             if(data.domEvent.key === 'Enter'){
-                                let text = editor.getData().replace(/\s/g, "")
-                                console.log(text)
+                                // editor.data.trim()
+                                let text = editor.getData()
+                                console.log()
                                 if(text){
                                     onMessageSubmit(text)
                                     data.preventDefault();

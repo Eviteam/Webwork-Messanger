@@ -4,6 +4,8 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ReactHtmlParser from 'react-html-parser';
 
 function Message({data,icon,isChannal}) {
+
+  // console.log(data[0].message,data,ReactHtmlParser(data[40].message))
     return (
       <>
       
@@ -22,7 +24,7 @@ function Message({data,icon,isChannal}) {
                 <AccountBoxIcon/>
             }
         </div>
-        <div className = 'MassegeText_continer'>
+        <div className = 'massegeText_continer'>
         <strong>{`${sender.firstname} ${sender.lastname}`}</strong>
  
          

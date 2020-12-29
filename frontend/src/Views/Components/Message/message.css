@@ -1,6 +1,6 @@
 .messege_continer{
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 }
 .user_iconDiv > .MuiSvgIcon-root {
     width: 60px;
@@ -16,7 +16,21 @@
 }
 .massegeText_continer{
 color: #474F5C;
+margin-top: 10px;
 }
 .massage_text>p{
     max-width: 80%;
+}
+.ckEditor{
+    
+    background-color: white;
+    margin: 0 ;
+    position: fixed;
+    width: 60%;
+    bottom: 0;
+    padding: 30px 25px;
+    
+}
+.massage_text > p >br{
+    display: none;
 }

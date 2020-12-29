@@ -84,7 +84,7 @@ const FetchMessageData = useCallback (async (team_id,recevier_id) => {
   
     axios({
       "method": "GET",
-      "url": `https://localhost:3000/api/chat/${team_id}/${CurrentUserId}/${recevier_id}`,
+      "url": `http://localhost:3000/api/chat/${team_id}/${CurrentUserId}/${recevier_id}`,
     })
     .then((response) =>{
      
@@ -106,7 +106,7 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
   // console.log(777777777,Channal_id)
   axios({
     "method": "GET",
-    "url": `https://localhost:3000/api/channel/message/${Channal_id}`,
+    "url": `http://localhost:3000/api/channel/message/${Channal_id}`,
   })
   .then((response) =>{
    
@@ -130,7 +130,7 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
      
       axios({
         "method": "GET",
-        "url": `https://localhost:3000/api/team/${id}/${savedTeamID}`,
+        "url": `http://localhost:3000/api/team/${id}/${savedTeamID}`,
       })
       .then(async (response) => {
         console.log(response.data)
@@ -164,7 +164,7 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
     let userId = await localStorage.getItem('user_id');
     axios({
       "method": "GET",
-      "url": `https://localhost:3000/api/users/${id}`,
+      "url": `http://localhost:3000/api/users/${id}`,
     })
     .then((response) => {
       let data = response.data 
@@ -189,7 +189,7 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
    
     axios({
       "method": "GET",
-      "url": `https://localhost:3000/api/channel/${selectedTeam}`,
+      "url": `http://localhost:3000/api/channel/${selectedTeam}`,
     })
     .then((response) => {
       

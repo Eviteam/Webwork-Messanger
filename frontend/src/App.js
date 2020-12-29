@@ -23,7 +23,7 @@ useEffect( async()=>{
   
 },[]);
 useEffect(()=>{
-  if(userId.length && !isRenderApp){axios.post(`https://localhost:3000/api/current_user/${userId}`, {
+  if(userId.length && !isRenderApp){axios.post(`http://localhost:3000/api/current_user/${userId}`, {
          }).then((response)=>{
           
            if(response.data ){
