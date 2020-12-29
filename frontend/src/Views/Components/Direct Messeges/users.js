@@ -3,6 +3,7 @@ import './users.css';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import User from './user'
 import AddIcon from '@material-ui/icons/Add';
 function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
@@ -26,7 +27,7 @@ function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
             {isOpenUsers && users.map((item,index)=>{
                
                     return (
-                        <User key = {index} title = {`${item.firstname} ${item.lastname}`} Icon = {item.icon}  id = {item._id} selectUser = {selectUser} selected ={selected} newMassage= {item.newMassage}/>
+                        <User key = {index} title = {`${item.firstname} ${item.lastname}`} Icon = {AccountBoxIcon}  id = {item._id} selectUser = {selectUser} selected ={selected} newMassage= {item.newMassage}/>
                     )
                    
                 })}

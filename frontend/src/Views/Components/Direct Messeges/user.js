@@ -9,7 +9,7 @@ function User({Icon,title,id,selectUser,selected,isNewMassage}) {
             <p>{title}</p>
         ):
         
-        <p># {title}</p>
+        <p>{title}</p>
         }
         {/* {isNewMassage && <span className = 'message_notification'> 1 </span>} */}
         

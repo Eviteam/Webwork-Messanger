@@ -3,6 +3,7 @@ import './channel.css';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import GroupIcon from '@material-ui/icons/Group';
 import Channel from './channel'
 import AddIcon from '@material-ui/icons/Add';
 import {Modal,TextField,Button} from '@material-ui/core/';
@@ -112,7 +113,7 @@ const createChannel = async ()=>{
 
             {isOpenChanels && channels.map((item,index)=>{
                     return (
-                        <Channel key = {index} title = {item.channelName} Icon = {item.icon} id = {item._id} selectChannel = {selectChannel} selected ={selected}/>
+                        <Channel key = {index} title = {item.channelName} Icon = {GroupIcon} id = {item._id} selectChannel = {selectChannel} selected ={selected}/>
                     )
                    
                 })

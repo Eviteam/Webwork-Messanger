@@ -5,7 +5,7 @@ import Message from "../Views/Components/Message/message"
 import "./socetIo.css";
 import axios from 'axios';
 import {UseTeam} from "../userContext"
-const socket = io.connect("https://localhost:3000");
+const socket = io.connect("http://localhost:3000");
 
 
 function SocetIo() {
@@ -75,7 +75,7 @@ function SocetIo() {
      const channelId =  await localStorage.getItem('selectedChannelId');
      const userId =  await localStorage.getItem('selectedUserId') 
     if(channelId){
-      await axios.post(`https://localhost:3000/api/chat/send-message/channel`, { 
+      await axios.post(`http://localhost:3000/api/chat/send-message/channel`, { 
         channel_id: channelId,
         message: msg,
         user_id:userAcountData._id,
@@ -89,7 +89,7 @@ function SocetIo() {
     else{
      
      
-     await axios.post(`https://localhost:3000/api/chat/send-message`, { 
+     await axios.post(`http://localhost:3000/api/chat/send-message`, { 
         receiver_id: receiver,
         message: msg,
         sender:userAcountData._id,
