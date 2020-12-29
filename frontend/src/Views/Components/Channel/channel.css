@@ -11,7 +11,9 @@
     font-family: Slack-Lato, appleLogo, sans-serif;  
 }
 .chanels_div:hover{
-        cursor: pointer;       
+    background-color: #303946;
+    color:#b5c1c4 ;
+    cursor: pointer;
 }
 .chanels_div:hover .AddCircleIcon_channel{
     display:inline-block
@@ -59,11 +61,9 @@
 
 }
 .add_channel{
-    
     display: flex;
     align-items: center;
-    padding: 0 10px;
-    margin: 5px;
+    padding: 0 25px;
     font-size: 15px;
     font-family: Slack-Lato, appleLogo, sans-serif;
 }
@@ -72,8 +72,8 @@
     color:#b5c1c4 ;
     cursor: pointer;
 }
-.add_channel>h3{
-    margin-left: 10px;
+.add_channel>p{
+    margin-left: 5px;
 }
 .create-channel-modal{
     width: 500px;

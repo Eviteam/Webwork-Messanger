@@ -26,9 +26,9 @@ margin-top: 10px;
     background-color: white;
     margin: 0 ;
     position: fixed;
-    width: 60%;
+    width:calc(100vw - 295px);
     bottom: 0;
-    padding: 30px 25px;
+    padding: 30px 5px;
     
 }
 .massage_text > p >br{

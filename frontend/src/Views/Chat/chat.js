@@ -8,12 +8,12 @@ import {UseTeam} from "../../userContext";
 import Message from "../Components/Message/message";
 
 function Chat() {
-  const {selectedUserInfo,messages,selectedChannelInfo,} = UseTeam();
+  const {selectedUserInfo,messages,selectedChannelInfo,channalMesseges} = UseTeam();
     useEffect(()=>{
       let chat = document.getElementById("chat");
       console.log(chat)
-      chat.scrollTop = chat.scrollHeight;
-    },[messages])
+      chat.scrollTop = chat.scrollHeight ;
+    },[messages,channalMesseges])
     // const {roomId} = useParams()
    
     return (
@@ -29,8 +29,8 @@ function Chat() {
             <p><InfoOutlinedIcon/>Detils</p>
           </div>
         </div>
-        <h2>send message to {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:
-       selectedChannelInfo&&selectedChannelInfo.channelName?`${selectedChannelInfo.channelName} channel`:null}</h2>
+        {/* <h2>send message to {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:
+       selectedChannelInfo&&selectedChannelInfo.channelName?`${selectedChannelInfo.channelName} channel`:null}</h2> */}
         <SocetIo />
         
       </div>
