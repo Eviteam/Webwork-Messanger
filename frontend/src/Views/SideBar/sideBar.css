@@ -3,10 +3,10 @@
     max-width: 260px;
     color: #E8F2F7;
     min-height: 100vh;
-    min-width: 240px;
+    min-width: 245px;
     overflow-x: hidden;
     overflow-y: scroll;
-   
+   padding-bottom: 20px;
 }
 /* .sidebar::-webkit-scrollbar {
     width: 1em;

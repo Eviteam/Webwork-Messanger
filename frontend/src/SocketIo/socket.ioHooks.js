@@ -125,7 +125,9 @@ function SocetIo() {
                :messages.length? <Message data={messages}/>:null
                 
             }  
-          </div>      
+            
+          </div> 
+               
       </div>
       
     );

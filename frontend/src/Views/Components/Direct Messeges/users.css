@@ -6,12 +6,13 @@
     font-size: 15px;
     font-family: Slack-Lato, appleLogo, sans-serif;
     cursor: pointer;
+    
 }
 .users_div >span>p{
     width:160px;
 }
 .users_continer{
-    padding: 10px 0px;
+    padding-bottom: 20px;
 }
 .AddCircleIcon_user{
     display: none;

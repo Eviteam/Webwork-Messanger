@@ -3,8 +3,8 @@
     flex-grow: 1;
     padding-bottom: 0;
     overflow-y: scroll;
-   
-
+    color: #303946;
+    font-family: Slack-Lato, appleLogo, sans-serif;
 }
 .chat_header{
     display: flex;
