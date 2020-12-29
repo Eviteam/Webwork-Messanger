@@ -15,6 +15,9 @@ const chatSchema = new Schema({
   channel: {
     type: String
   },
+  team_id: {
+    type: String
+  },
   isSeen: {
     type: Boolean
   }
