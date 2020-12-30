@@ -254,7 +254,7 @@ useEffect(async()=>{
                     selectedChannelId:selectedInfo.selectedChannelId,
                     
                    },fetchData,chakUser,chekChannel,FetchMessageData,FetchChannalMessageData,fetchChannelsData,ChangeUsers,
-                   selectedUserInfo:selectedInfo.isSelectedUser&&selectedInfo?selectedInfo.users.find(users => users._id===selectedInfo.selectedUserId):{},
+                   selectedUserInfo:selectedInfo.isSelectedUser&&selectedInfo?selectedInfo.users.find(users => users.id===selectedInfo.selectedUserId):{},
                    selectedChannelInfo:selectedInfo.isSelectChannel&&channelsData.length?channelsData.find(channel => channel._id===selectedInfo.selectedChannelId):{},
                    messages:selectedInfo.messages,
                    channalMesseges:selectedInfo.channalMesseges

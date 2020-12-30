@@ -78,7 +78,7 @@ function SocetIo() {
       await axios.post(`http://localhost:3000/api/chat/send-message/channel`, { 
         channel_id: channelId,
         message: msg,
-        user_id:userAcountData._id,
+        user_id:userAcountData.id,
         receiver_id:null,
         team_id:teamId
          });
