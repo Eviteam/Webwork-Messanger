@@ -59,7 +59,7 @@ router.post(`/send-message`, (req, res) => {
 router.post(`/send-message/channel`, (req, res) => {
   const data = req.body;
   connect.then(db => {
-    UserSchema.findById(data.user_id).then(user => {
+    UserSchema.find({id: data.user_id}).then(user => {
       data.sender = user
       const channelMessages = new Channel_ChatSchema(data);
       channelMessages.save();
