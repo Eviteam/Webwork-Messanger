@@ -21,7 +21,7 @@ function SocetIo() {
     socket.on("chatMessage", async({ sender, msg,receiver }) => {
       
      const channelId =  await localStorage.getItem('selectedChannelId');
-     const userLongId =  await localStorage.getItem('user_long_id');
+    //  const userLongId =  await localStorage.getItem('user_long_id');
      const teamId =  await localStorage.getItem('selectedTeamId');
     //  console.log(sender,userId);
     if(channelId){
@@ -69,7 +69,7 @@ function SocetIo() {
 
   const onMessageSubmit = async (msg,info) => {
     const teamId =  await localStorage.getItem('selectedTeamId');
-    let sender = userAcountData._id;
+    let sender = userAcountData.id;
     const receiver =  await localStorage.getItem('selectedUserId') 
     await socket.emit("chatMessage", {msg,sender,receiver });
      const channelId =  await localStorage.getItem('selectedChannelId');
@@ -92,7 +92,7 @@ function SocetIo() {
      await axios.post(`http://localhost:3000/api/chat/send-message`, { 
         receiver_id: receiver,
         message: msg,
-        sender:userAcountData._id,
+        sender:userAcountData.id,
         channel_id:null,
         team_id:teamId
          });

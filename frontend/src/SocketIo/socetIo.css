@@ -4,11 +4,10 @@
 .soket_io{
     display: flex;
     flex-direction: column-reverse;
-    padding: 20px;
-  
-    
+    padding: 20px 0;
 }
 .message_continer{
+    margin-top: 50px;
     min-height: 380px;
-    margin-bottom: 125px;
+    margin-bottom: 125px;  
 }
