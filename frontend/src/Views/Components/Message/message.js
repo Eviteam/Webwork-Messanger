@@ -25,7 +25,7 @@ function Message({data,icon,isChannal}) {
             }
         </div>
         <div className = 'massegeText_continer'>
-        <strong>{`${sender.firstname} ${sender.lastname}`}</strong>
+        <strong>{`${sender[0].firstname} ${sender[0].lastname}`}</strong>
  
          
          {msg?<div className = "massage_text">{ReactHtmlParser(msg)}</div>:
