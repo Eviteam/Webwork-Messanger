@@ -106,7 +106,7 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
   // console.log(777777777,Channal_id)
   axios({
     "method": "GET",
-    "url": `http://localhost:3000/api/channel/message/${Channal_id}`,
+    "url": `http://localhost:3000/api/channel/message/${team_id}`,
   })
   .then((response) =>{
    
