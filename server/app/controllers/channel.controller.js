@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const connect = require("../helpers/db");
-const userService = require("../services/user.service");
 const ChannelSchema = require("../models/ChannelSchema");
 const UserSchema = require("../models/UserSchema");
 const Channel_ChatSchema = require("../models/Channel_ChatSchema");
@@ -43,10 +42,10 @@ router.get(`/:teamId`, (req, res) => {
 // });
 
 // GET CHANNEL MESSAGES
-router.get(`/message/:channel_id`, (req, res) => {
-  const channel_id = req.params.channel_id;
+router.get(`/message/:team_id`, (req, res) => {
+  const team_id = req.params.team_id;
   connect.then(db => {
-    Channel_ChatSchema.find({}).then(data => {
+    Channel_ChatSchema.find({ team_id }).then(data => {
       res.send(data);
     })
   })

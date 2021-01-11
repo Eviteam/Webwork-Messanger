@@ -14,6 +14,9 @@ const channelMessages = new Schema({
   },
   message: {
     type: String
+  },
+  team_id: {
+    type: String
   }
 }, {
   versionKey: false,
