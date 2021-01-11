@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React,{useEffect, useState} from "react";
 import './chat.css';
 import {useParams} from "react-router-dom"
 import StarBorderOutlinedIcon from '@material-ui/icons/StarBorderOutlined';
@@ -9,20 +9,20 @@ import Message from "../Components/Message/message";
 
 function Chat() {
   const {selectedUserInfo,messages,selectedChannelInfo,channalMesseges} = UseTeam();
+  console.log(selectedChannelInfo,selectedUserInfo,1)
     useEffect(()=>{
       let chat = document.getElementById("chat");
-      console.log(chat)
       chat.scrollTop = chat.scrollHeight ;
     },[messages,channalMesseges])
-    // const {roomId} = useParams()
-   
+    
     return (
       <div className = "Chat_continer" id = 'chat'>
         <div className = "chat_header">
         <div className = "chat_headerLeft">
-          <h4 className = "chat_channelName">
-            {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:'general'}
-          </h4>
+        {selectedUserInfo||selectedChannelInfo.channelName? <h4 className = "chat_channelName">
+            {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:selectedChannelInfo.channelName}
+          </h4>:null}
+         
           <StarBorderOutlinedIcon/>
           </div>
           <div className = "chat_headerRight">

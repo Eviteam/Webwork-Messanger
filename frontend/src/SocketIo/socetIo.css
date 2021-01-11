@@ -4,10 +4,16 @@
 .soket_io{
     display: flex;
     flex-direction: column-reverse;
-    padding: 20px 0;
+    /* padding: 20px 0; */
+  
+   
 }
-.message_continer{
-    margin-top: 50px;
-    min-height: 380px;
-    margin-bottom: 125px;  
+.messages_continer{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 578px;
+    
+    /* overflow-y: scroll;
+    overflow-x: hidden; */
 }

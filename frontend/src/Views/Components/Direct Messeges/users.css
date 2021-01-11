@@ -1,5 +1,5 @@
 .users_div{
-    padding: 8px;
+    padding: 5.5px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -19,12 +19,14 @@
 }
 
 .users_div:hover {
-    background-color: #303946 !important;
-    color:#b5c1c4 ;
+    /* background-color: #303946 !important;
+    color:#b5c1c4 ; */
     cursor: pointer;
 } 
 .users_div:hover .AddCircleIcon_user{
     display: inline-block;
+    width: 22px;
+    height: 22px;
 }
 .user{
     display: flex;
@@ -77,4 +79,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+} */
+/* .arrow{
+    width: 20px !important;
+    height: 20px !important;
+    margin-left: 10px;
+    margin-right: 8px;
+    margin-top: 2px;
 } */

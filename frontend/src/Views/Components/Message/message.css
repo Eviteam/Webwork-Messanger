@@ -21,15 +21,21 @@ margin-top: 10px;
 .massage_text>p{
     max-width: 80%;
 }
-.ckEditor{
+.ckEditor-continer{
     
     background-color: white;
-    margin: 0 ;
     position: fixed;
-    width:calc(100vw - 268px);
+    /* width:calc(100vw - 245px); */
     bottom: 0;
-    padding: 30px 5px;
+    width: calc(100% - 300px);
+    bottom: 0;
+    padding: 0px 20px 20px 20px;
+    display: flex;
+    justify-content: center;
     
+}
+.ckEditor{
+    width: 100%;
 }
 .massage_text > p >br{
     display: none;

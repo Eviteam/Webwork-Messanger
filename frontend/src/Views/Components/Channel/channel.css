@@ -1,18 +1,19 @@
 .channels{
- border-top: 1px solid whitesmoke;
+ border-top: 1px solid grey;
  padding-top: 10px;
- padding-bottom: 10px;
+ padding-bottom: 12px;
 }
 .chanels_div{
-    padding: 8px;
+    padding: 5.5px;
     display: flex;
     align-items: center;
     font-size: 15px;
-    font-family: Slack-Lato, appleLogo, sans-serif;  
+    font-family: Slack-Lato, appleLogo, sans-serif;
+    font-weight: 500;
 }
 .chanels_div:hover{
-    background-color: #303946;
-    color:#b5c1c4 ;
+    /* background-color: #303946;
+    color:#b5c1c4 ; */
     cursor: pointer;
 }
 .chanels_div:hover .AddCircleIcon_channel{
@@ -21,6 +22,8 @@
 .AddCircleIcon_channel{
     display: none;
     margin-left: 97px;
+    width: 22px;
+    height: 22px;
 }
 .chanels_div >span>h3{
     width:160px;
@@ -63,7 +66,7 @@
 .add_channel{
     display: flex;
     align-items: center;
-    padding: 0 25px;
+    padding: 2px 25px;
     font-size: 15px;
     font-family: Slack-Lato, appleLogo, sans-serif;
 }
@@ -75,6 +78,10 @@
 .add_channel>p{
     margin-left: 5px;
 }
+.add_channel>svg{
+    width: 20px;
+    height: 20px;
+}
 .create-channel-modal{
     width: 500px;
     height: 300px;
@@ -84,4 +91,26 @@
 }
 .create-channel-modal >p{
     margin-bottom: 20px;
+    
+}
+.arrow{
+    width: 20px !important;
+    height: 20px !important;
+    margin-left: 10px;
+    margin-right: 7px;
+    margin-top: 4px;
+}
+.channel >p{
+    margin-left: 6px;
+}
+.channels-before{
+    width: 20px;
+    height: 20px;
+    /* margin-left: 5px; */
+    /* font-family: Slack v2; */
+    /* font-size: 20px; */
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    margin-right: 7px;
 }

@@ -106,7 +106,7 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
   // console.log(777777777,Channal_id)
   axios({
     "method": "GET",
-    "url": `http://localhost:3000/api/channel/message/${Channal_id}`,
+    "url": `http://localhost:3000/api/channel/message/${team_id}`,
   })
   .then((response) =>{
    
@@ -254,7 +254,7 @@ useEffect(async()=>{
                     selectedChannelId:selectedInfo.selectedChannelId,
                     
                    },fetchData,chakUser,chekChannel,FetchMessageData,FetchChannalMessageData,fetchChannelsData,ChangeUsers,
-                   selectedUserInfo:selectedInfo.isSelectedUser&&selectedInfo?selectedInfo.users.find(users => users.id===selectedInfo.selectedUserId):{},
+                   selectedUserInfo:selectedInfo.isSelectedUser&&selectedInfo.selectedUserId&&selectedInfo.users.length?selectedInfo.users.find(user => user.id==selectedInfo.selectedUserId):{},
                    selectedChannelInfo:selectedInfo.isSelectChannel&&channelsData.length?channelsData.find(channel => channel._id===selectedInfo.selectedChannelId):{},
                    messages:selectedInfo.messages,
                    channalMesseges:selectedInfo.channalMesseges

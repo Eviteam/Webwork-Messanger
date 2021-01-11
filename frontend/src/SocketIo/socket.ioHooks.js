@@ -117,7 +117,7 @@ function SocetIo() {
         <button onClick={this.onMessageSubmit}>Send</button> */}
         {/* <input value = {msg} onChange={e=>changeMessage(e)} onKeyDown={keyPress}></input> */}
         <CKEditorMessage message = {msg} changeMessage={changeMessage} onMessageSubmit ={onMessageSubmit}/>
-        <div className = 'message_continer'>
+        <div className = 'messages_continer'>
           
             {
               selectedInfo &&selectedInfo.isSelectChannel?

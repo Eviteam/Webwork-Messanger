@@ -1,31 +1,33 @@
 .Chat_continer{
     flex:0.7;
     flex-grow: 1;
-    padding-bottom: 0;
+    padding-bottom: 0;    
+    color: #303946;
+    background-color: white;
+    font-family: Slack-Lato, appleLogo, sans-serif;
     overflow-y: scroll;
     overflow-x: hidden;
-    color: #303946;
-    font-family: Slack-Lato, appleLogo, sans-serif;
+    scrollbar-width: thin; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    margin-bottom: 115px;
+    margin-top: 65px;
+    /* padding-top: 80px; */
+    /* scrollbar-color:white; */
 }
-/* .Chat_continer::-webkit-scrollbar {
-    width: 1em;
-    
-    outline: 5px solid white;
-}  */
- /* .Chat_continer::-webkit-scrollbar {
-    width: 12px;
-} */
+
+ .Chat_continer::-webkit-scrollbar {
+    width: 8px !important;
+    background-color: transparent;
+}
  
-/* .Chat_continer::-webkit-scrollbar-thumb {
-  background-color:gray;
-  outline: 1px solid #474F5C;
-  height: 20px;
-  margin-top: 50px;
-  border-radius: 5px;
+.Chat_continer::-webkit-scrollbar-thumb {
+    background-color: #acacac;
+    border-radius: 5px;
 }
-.Chat_continer:hover .sidebar::-webkit-scrollbar-thumb{
-    background-color: gainsboro;
-} */
+.Chat_continer::-webkit-scrollbar-track {
+    -webkit-box-shadow: none !important;
+    background-color: transparent !important;
+  }
 .chat_header{
     display: flex;
     align-items: center;
@@ -35,6 +37,8 @@
     position: fixed;
     background-color: white;
     width: 100%;
+    position: fixed;
+    top: 0;
 }
 
 .chat_channelName .MuiSvgIcon-root{  

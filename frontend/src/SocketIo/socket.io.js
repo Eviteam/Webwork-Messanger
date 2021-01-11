@@ -54,7 +54,7 @@ class SocetIo extends Component {
         />
         <button onClick={this.onMessageSubmit}>Send</button> */}
         <CKEditorMessage message = {this.state.msg} changeMessage={this.changeMessage} onMessageSubmit ={this.onMessageSubmit}/>
-        <div className = 'message_continer'>{this.renderChat()}</div>
+        <div className = 'messages_continer'>{this.renderChat()}</div>
 
       </div>
 

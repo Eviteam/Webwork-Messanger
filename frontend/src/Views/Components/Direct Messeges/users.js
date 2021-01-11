@@ -12,11 +12,11 @@ function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
       <div className = "users">
        <div className = "users_div">
            <span onClick = {changeUsersStatus}>
-               {isOpenUsers?<ArrowDropDownIcon/>:<ArrowRightIcon/>}
+               {isOpenUsers?<ArrowDropDownIcon className= 'arrow'/>:<ArrowRightIcon className= 'arrow'/>}
            
            </span>
            <span>
-               <p>DirectMesseges</p>
+               <p>Direct Messeges</p>
            </span>
            <span className = 'AddCircleIcon_user'>
            <AddCircleIcon/>
