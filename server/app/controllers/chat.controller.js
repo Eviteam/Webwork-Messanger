@@ -9,8 +9,8 @@ const UserSchema = require("../models/UserSchema");
 
 // GET CHAT MESSAGES
 router.get(`/:team_id/:user_id/:receiver_id`, (req, res) => {
-  const user_id = req.params.user_id;
   const team_id = req.params.team_id;
+  const user_id = req.params.user_id;
   const receiver_id = req.params.receiver_id;
   connect.then(db => {
     TeamSchema.find({ team_id }).then(data => {
@@ -43,7 +43,8 @@ router.post(`/send-message`, (req, res) => {
   const data = req.body;
   connect.then(db => {
     const user_id = data.sender;
-    UserSchema.find({id: user_id}).then(user => {
+    const team_id = data.team_id;
+    UserSchema.find({id: user_id, team_id: team_id}).then(user => {
       data.sender = user;
       if (!data.isSeen) {
         data.isSeen = false;

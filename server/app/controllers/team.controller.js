@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const connect = require("../helpers/db");
-const UserSchema = require("../models/UserSchema");
 const TeamSchema = require("../models/TeamSchema");
-const Global_UserSchema = require("../models/Global_UserSchema");
 
 // GET SINGLE TEAM
 router.get(`/:user_id/:team_id`, (req, res) => {
