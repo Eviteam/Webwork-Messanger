@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const User = require('./UserSchema')
 
 const chatSchema = new Schema({
   receiver_id: {

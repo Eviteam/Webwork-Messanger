@@ -6,6 +6,7 @@ const ChatSchema = require("../models/ChatSchema");
 const Global_UserSchema = require("../models/Global_UserSchema");
 const TeamSchema = require("../models/TeamSchema");
 const UserSchema = require("../models/UserSchema");
+const webWorkService = require("../services/web-work.service");
 
 // GET CHAT MESSAGES
 router.get(`/:team_id/:user_id/:receiver_id`, (req, res) => {
@@ -13,18 +14,20 @@ router.get(`/:team_id/:user_id/:receiver_id`, (req, res) => {
   const user_id = req.params.user_id;
   const receiver_id = req.params.receiver_id;
   connect.then(db => {
-    TeamSchema.find({ team_id }).then(data => {
-      if (!data) {
+    TeamSchema.find({ team_id }).then(team => {
+      if (!team) {
         res.status(404).send('Not found');
       } else {
         Global_UserSchema.find({}).then(currentUser => {
           if (currentUser.length) {
-            UserSchema.find({ id: user_id }).then(user => {
+            // UserSchema.find({ id: user_id }).then(user => {
+              webWorkService.getTeamData(user_id).then(data => {
+              const singleUser = data.team.users.find(user => user.id == user_id);
               ChatSchema.find({ team_id }).then(messages => {
                 const allMessages = [];
                 messages.map(message => {
-                  if ((user[0].id.toString() == message.sender[0].id.toString() && receiver_id.toString() == message.receiver_id.toString())
-                    || (user[0].id.toString() == message.receiver_id.toString() && receiver_id.toString() == message.sender[0].id.toString())) {
+                  if ((singleUser.id.toString() == message.sender[0].id.toString() && receiver_id.toString() == message.receiver_id.toString())
+                    || (singleUser.id.toString() == message.receiver_id.toString() && receiver_id.toString() == message.sender[0].id.toString())) {
                     allMessages.push(message);
                   }
                 })
@@ -44,14 +47,19 @@ router.post(`/send-message`, (req, res) => {
   connect.then(db => {
     const user_id = data.sender;
     const team_id = data.team_id;
-    UserSchema.find({id: user_id, team_id: team_id}).then(user => {
-      data.sender = user;
-      if (!data.isSeen) {
-        data.isSeen = false;
+    webWorkService.getTeamData(user_id).then(val => {
+      if (team_id == val.team.team_id) {
+        const singleUser = val.team.users.find(user => user.id == user_id);
+    // })
+    // UserSchema.find({id: user_id, team_id: team_id}).then(user => {
+        data.sender = [singleUser];
+        if (!data.isSeen) {
+          data.isSeen = false;
+        }
+        const chatSchema = new ChatSchema(data);
+        chatSchema.save();
+        res.json({ data });
       }
-      const chatSchema = new ChatSchema(data);
-      chatSchema.save();
-      res.json({ data });
     })
   })
 });
@@ -59,13 +67,16 @@ router.post(`/send-message`, (req, res) => {
 // SEND MESSAGE TO CHANNEL
 router.post(`/send-message/channel`, (req, res) => {
   const data = req.body;
-  connect.then(db => {
-    UserSchema.find({id: data.user_id}).then(user => {
-      data.sender = user
-      const channelMessages = new Channel_ChatSchema(data);
-      channelMessages.save();
-      res.json({ data });
-    })
+  webWorkService.getTeamData(data.user_id).then(val => {
+    const singleUser = val.team.users.find(user => user.id == data.user_id);
+  // })
+  // connect.then(db => {
+  //   UserSchema.find({id: data.user_id}).then(user => {
+    data.sender = [singleUser]
+    const channelMessages = new Channel_ChatSchema(data);
+    channelMessages.save();
+    res.json({ data });
+    // })
   })
 })
 
