@@ -164,11 +164,12 @@ const FetchChannalMessageData = useCallback ((team_id,Channal_id) => {
     let userId = await localStorage.getItem('user_id');
     axios({
       "method": "GET",
-      "url": `http://localhost:3000/api/users/${id}`,
+      "url": `http://localhost:3000/api/users/${userId}`,
     })
     .then((response) => {
-      let data = response.data 
-      // setUsersData(response.data)
+      let data = response.data.team.users
+      console.log(response.data)
+       setUsersData(response.data)
       dispach({
         type:Add_Usser,
         data
