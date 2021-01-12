@@ -4,7 +4,6 @@ const connect = require("../helpers/db");
 const ChannelSchema = require("../models/ChannelSchema");
 const UserSchema = require("../models/UserSchema");
 const Channel_ChatSchema = require("../models/Channel_ChatSchema");
-const TeamSchema = require("../models/TeamSchema");
 
 // GET CHANNELS 
 router.get(`/:teamId`, (req, res) => {

@@ -45,18 +45,18 @@ const createChannel = async ()=>{
      console.log(fetchChannelsData)
      fetchChannelsData(teamId)
 } 
- let newUsersData = []
-  const addFixedKey = users.map(user=>{
-    newUsersData.push({
-      label:`${user.firstname} ${user.lastname}`,
-      id:user.id,
-      _id:user._id,
-      value:`${user.firstname} ${user.lastname}`,
-      firstname:user.firstname,
-      lastname:user.lastname,
-      isFixed:false
-    })
-  })
+//  let newUsersData = []
+  // const addFixedKey = users.map(user=>{
+  //   newUsersData.push({
+  //     label:`${user.firstname} ${user.lastname}`,
+  //     id:user.id,
+  //     _id:user._id,
+  //     value:`${user.firstname} ${user.lastname}`,
+  //     firstname:user.firstname,
+  //     lastname:user.lastname,
+  //     isFixed:false
+  //   })
+  // })
  
     return (
         <>
@@ -87,7 +87,7 @@ const createChannel = async ()=>{
     <div className = 'create-channel-modal'>
     <p>Add ussers</p>
  
- <FixedOptions data= {newUsersData}  addUsers= {setSelectedUsers}/>
+ <FixedOptions data= {users}  addUsers= {setSelectedUsers}/>
  <Button variant="contained"  onClick = {()=>{
   
    setIsOpanAddUssers(false);
