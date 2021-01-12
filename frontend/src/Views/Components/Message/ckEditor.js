@@ -29,6 +29,8 @@ function CKEditorMessage({changeMessage,message,onMessageSubmit}) {
                     config = {{
                         toolbar: [ 'bold', 'italic', 'link','numberedList', 'bulletedList' ],
                         ignoreEmptyParagraph:true,
+                        fillEmptyBlocks :false,
+                        // fillEmpty
                         placeholder: 'Message'
                         }
                     }                 
@@ -52,19 +54,22 @@ function CKEditorMessage({changeMessage,message,onMessageSubmit}) {
                         editor.editing.view.document.on( 'keydown', ( evt, data ) => {
                             if(data.domEvent.keyCode === 13){
                                 
-                                if (!data.domEvent.shiftKey){
+                                if (data.domEvent.shiftKey){
                                      // editor.data.trim()
-                                let text = editor.getData()
+                                       return
+                                }
+                                else{
+                                    let text = editor.getData()
                                 console.log()
                                 if(text){
                                     onMessageSubmit(text)
                                     data.preventDefault();
                                     editor.editing.view.scrollToTheSelection();
                                     evt.stop();
+                                    
                                 }
-                                else{
                                 }
-                                }
+                                
                                
                                 
                             }

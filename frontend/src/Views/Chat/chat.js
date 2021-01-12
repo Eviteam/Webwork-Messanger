@@ -9,7 +9,7 @@ import Message from "../Components/Message/message";
 
 function Chat() {
   const {selectedUserInfo,messages,selectedChannelInfo,channalMesseges} = UseTeam();
-  console.log(selectedChannelInfo,selectedUserInfo,1)
+  // console.log(selectedChannelInfo,selectedUserInfo,1)
     useEffect(()=>{
       let chat = document.getElementById("chat");
       chat.scrollTop = chat.scrollHeight ;

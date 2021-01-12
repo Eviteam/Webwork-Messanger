@@ -5,14 +5,17 @@ import ReactHtmlParser from 'react-html-parser';
 
 function Message({data,icon,isChannal}) {
 
-  // console.log(data[0].message,data,ReactHtmlParser(data[40].message))
+
+   console.log(data,)
+  
     return (
       <>
       
       {
-        data.map(({ sender, msg,message, }, idx) => (
+        
+        data.map(({ sender, msg,message}, idx) => (
          
-            
+          // console.log(msg,message),
             
          <div className ='messege_continer' key={idx}>
         
