@@ -43,11 +43,9 @@ function SideBar() {
           // chakUser(generalChannel._id);
           // localStorage.setItem('selectedChannelId',generalChannel._id)
           selectHandler(generalChannel._id,'channel')
-          }
-        
-          
+          }    
       }
-    },[channels]);
+    },[channels,]);
     useEffect( ()=>{
      
       if(selectedInfo.isSelectedUser){
@@ -72,9 +70,7 @@ function SideBar() {
        
         
         if(type==='channel' ){
-          console.log(id,'channel')
           chekChannel(id)
-          console.log(id,'channel');
           localStorage.setItem('selectedChannelId',id);
           localStorage.removeItem('selectedUserId');
           FetchChannalMessageData(selectedTeam,selected)
@@ -90,23 +86,24 @@ function SideBar() {
       }
      
     }
-    return (
-      <div className = "sidebar">
-          <div className = "sidebar_header">
-              <div className = "sidebar_info">
-              <h2>{team&&team.team_name?team.team_name:''}</h2>
-                <h3>
-                    <FiberManualRecordIcon/>
-                    {userAcountData&&userAcountData.firstname?`${userAcountData.firstname} ${userAcountData.lastname}`:''}
-                </h3>
-              </div>
-                {/* <CreateIcon/> */}
-          </div>
-          
-               <Channels isOpenChanels = {isOpenChanels} channels = {channels} changeChanalsStatus = {changeChanalsStatus} selectChannel={selectHandler} selected ={selected} />
-               <Users isOpenUsers = {isOpenUsers} users = {users?users:[]} changeUsersStatus = {changeUsersStatus} selectUser={selectHandler} selected ={selected}/>
-      </div>
-    );
-  }
+    
+      return (
+        <div className = "sidebar">
+            <div className = "sidebar_header">
+                <div className = "sidebar_info">
+                <h2>{team&&team.team_name?team.team_name:''}</h2>
+                  {/* <h3>
+                      <FiberManualRecordIcon/>
+                      {userAcountData&&userAcountData.firstname?`${userAcountData.firstname} ${userAcountData.lastname}`:''}
+                  </h3> */}
+                </div>
+                  {/* <CreateIcon/> */}
+            </div>
+            
+                 <Channels isOpenChanels = {isOpenChanels} channels = {channels} changeChanalsStatus = {changeChanalsStatus} selectChannel={selectHandler} selected ={selected} />
+                 <Users isOpenUsers = {isOpenUsers} users = {users} changeUsersStatus = {changeUsersStatus} selectUser={selectHandler} selected ={selected}/>
+        </div>
+      );
+      } 
   
   export default SideBar;

@@ -6,11 +6,11 @@ function Channel({Icon,title,id,selectChannel,selected}) {
       <div className = {id!==selected?"channel":"channel selected"} onClick = {()=>{
         selectChannel(id,'channel');
       }}>
-        {Icon&&<Icon className = "channel_icon"/>}
+        {/* {Icon&&<Icon className = "channel_icon"/>} */}
         {Icon? (
             <p>{title}</p>
         ):
-        <p># {title}</p>
+        <p><span className = 'channels-before'>#</span> {title}</p>
         }
       </div>
     );

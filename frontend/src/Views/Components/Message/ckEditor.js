@@ -1,21 +1,39 @@
-import React, {  } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import "./message.css"
-
+import {UseTeam} from "../../../userContext"
 function CKEditorMessage({changeMessage,message,onMessageSubmit}) {
-    
+    const {selectedUserInfo,selectedChannelInfo} = UseTeam()
+    const [placeholder,setPlaceHolder] = useState ('')
+    // useEffect (()=>{
+    //     console.log(placeholder)
+    //     console.log(selectedUserInfo,selectedChannelInfo)
+    //    if(selectedUserInfo&&selectedUserInfo.firstname){
+    //     setPlaceHolder(`Message ${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`)
+    //     console.log(selectedUserInfo,selectedChannelInfo)
+    //    }
+    //    if(selectedChannelInfo&&selectedChannelInfo.channelName){
+    //     setPlaceHolder(`Message #${selectedChannelInfo.channelName}`)
+    //     console.log(selectedUserInfo,selectedChannelInfo)
+    //    }
+    // },[selectedUserInfo,selectedChannelInfo])
+    // if(placeholder.length){
         return (
-            <div className="ckEditor">
-                
+            <div className="ckEditor-continer">
+                <div className = 'ckEditor'>
                 <CKEditor
                     editor={ ClassicEditor }
                     data={message} 
+                       
                     config = {{
-                        ignoreEmptyParagraph:true
-                    }
-                        
-                        }                   
+                        toolbar: [ 'bold', 'italic', 'link','numberedList', 'bulletedList' ],
+                        ignoreEmptyParagraph:true,
+                        fillEmptyBlocks :false,
+                        // fillEmpty
+                        placeholder: 'Message'
+                        }
+                    }                 
                     // onReady={ editor => {
                        
                     //     console.log( 'Editor is ready to use!', editor );
@@ -34,18 +52,25 @@ function CKEditorMessage({changeMessage,message,onMessageSubmit}) {
                        
                         
                         editor.editing.view.document.on( 'keydown', ( evt, data ) => {
-                            if(data.domEvent.key === 'Enter'){
-                                // editor.data.trim()
-                                let text = editor.getData()
+                            if(data.domEvent.keyCode === 13){
+                                
+                                if (data.domEvent.shiftKey){
+                                     // editor.data.trim()
+                                       return
+                                }
+                                else{
+                                    let text = editor.getData()
                                 console.log()
                                 if(text){
                                     onMessageSubmit(text)
                                     data.preventDefault();
                                     editor.editing.view.scrollToTheSelection();
                                     evt.stop();
+                                    
                                 }
-                                else{
                                 }
+                                
+                               
                                 
                             }
                         })
@@ -66,8 +91,14 @@ function CKEditorMessage({changeMessage,message,onMessageSubmit}) {
                      }
                 }
                 />
+
+                </div>
+                
+                
             </div>
         );
+    // }
+    //    else return(null)
     
 }
 

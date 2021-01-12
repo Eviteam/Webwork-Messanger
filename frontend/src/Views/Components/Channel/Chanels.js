@@ -99,7 +99,7 @@ const createChannel = async ()=>{
       <div className = "channels">
        <div className = "chanels_div">
            <span onClick = {changeChanalsStatus}>
-               {isOpenChanels?<ArrowDropDownIcon/>:<ArrowRightIcon/>}
+               {isOpenChanels?<ArrowDropDownIcon className = 'arrow'/>:<ArrowRightIcon className = 'arrow'/>}
            
            </span>
            <span>
@@ -113,7 +113,7 @@ const createChannel = async ()=>{
 
             {isOpenChanels && channels.map((item,index)=>{
                     return (
-                        <Channel key = {index} title = {item.channelName} Icon = {GroupIcon} id = {item._id} selectChannel = {selectChannel} selected ={selected}/>
+                        <Channel key = {index} title = {item.channelName} Icon = {null} id = {item._id} selectChannel = {selectChannel} selected ={selected}/>
                     )
                    
                 })

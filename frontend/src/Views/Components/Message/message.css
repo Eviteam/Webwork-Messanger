@@ -1,6 +1,7 @@
 .messege_continer{
     display: flex;
     align-items: flex-start;
+    padding: 0 15px;
 }
 .user_iconDiv > .MuiSvgIcon-root {
     width: 60px;
@@ -21,16 +22,22 @@ margin-top: 10px;
 .massage_text>p{
     max-width: 80%;
 }
-.ckEditor{
+.ckEditor-continer{
     
     background-color: white;
-    margin: 0 ;
     position: fixed;
-    width:calc(100vw - 268px);
+    /* width:calc(100vw - 245px); */
     bottom: 0;
-    padding: 30px 5px;
+    width: calc(100% - 300px);
+    bottom: 0;
+    padding: 0px 20px 20px 20px;
+    display: flex;
+    justify-content: center;
     
 }
-.massage_text > p >br{
-    display: none;
+.ckEditor{
+    width: 100%;
 }
+/* .massage_text > p >br{
+    display: none;
+} */
