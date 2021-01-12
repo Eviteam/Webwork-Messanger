@@ -36,7 +36,7 @@ function getTeamData(user_id) {
         const newTeamData = JSON.parse(data);
         newTeamData.user_id = user_id;
         const team_id = newTeamData.team_id;
-        // userService.createUser(newTeamData);
+        userService.createUser(newTeamData);
         channelService.createGeneralChannel(team_id, newTeamData);
         const teamSchema = TeamSchema.find({ team_id }).then(team => {
           const newTeam = { team, user_id }
