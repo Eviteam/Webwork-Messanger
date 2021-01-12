@@ -1,10 +1,11 @@
 .channels{
- border-top: 1px solid grey;
+ 
  padding-top: 10px;
  padding-bottom: 12px;
+
 }
 .chanels_div{
-    padding: 5.5px;
+    padding: 4px;
     display: flex;
     align-items: center;
     font-size: 15px;

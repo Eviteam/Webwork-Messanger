@@ -5,42 +5,52 @@
     min-height: 100vh;
     overflow-x: hidden;
     overflow-y: scroll;
-   padding-bottom: 20px;
+    padding-bottom: 20px;
+    scrollbar-width: thin; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    margin-top: 64px;
 }
-/* .sidebar::-webkit-scrollbar {
-    width: 1em;
-    background-color: #474F5C;
-    outline: 5px solid white;
-} */
-/* .sidebar::-webkit-scrollbar {
-    width: 14px;
+.sidebar:hover.sidebar::-webkit-scrollbar-thumb{
+    background-color: #acacac;
+} 
+.sidebar::-webkit-scrollbar {
+    width: 8px !important;
+    background-color: transparent;
 }
  
 .sidebar::-webkit-scrollbar-thumb {
-  background-color:rgba(80, 45, 123, 0.2);
-  outline: 1px solid #474F5C;
-  height: 300px;
- margin-top: 4px;
+    background-color: #474F5C;
+    opacity: 1;
+    margin-left: 2px;
+    border-radius: 5px;
 }
-.sidebar:hover .sidebar::-webkit-scrollbar-thumb{
-    background-color: gainsboro;
-} */
+.sidebar::-webkit-scrollbar-track {
+    -webkit-box-shadow: none !important;
+    background-color: transparent !important;
+  }
 
 .sidebar_header{
     display: flex;
     white-space: nowrap;
-    height: 64px;
+    height: 63px;
+    width: 260px;
     align-items: center;
-    padding-left: 17px;
+    /* padding-left: 17px; */
+    position: fixed;
+    border-bottom: 1px solid #D4EAF5;
+    z-index: 100;
+    background-color:#474F5C ;
+    top: 0;
     
 }
+
 .sidebar_info{  
     flex:1;
 }
 .sidebar_info >h2{
     font-size: 15px;
     font-weight: 900;
-   
+    margin-left: 18px;
 }
 .sidebar_info > h3{
     display: flex;

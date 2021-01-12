@@ -14,14 +14,16 @@
     /* padding-top: 80px; */
     /* scrollbar-color:white; */
 }
-
+.Chat_continer:hover.Chat_continer::-webkit-scrollbar-thumb{
+    background-color: #acacac;
+}
  .Chat_continer::-webkit-scrollbar {
     width: 8px !important;
     background-color: transparent;
 }
  
 .Chat_continer::-webkit-scrollbar-thumb {
-    background-color: #acacac;
+    background-color: white;
     border-radius: 5px;
 }
 .Chat_continer::-webkit-scrollbar-track {
@@ -32,7 +34,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 22px;
+    padding: 21.5px;
     border-bottom: 1px solid #D4EAF5;
     position: fixed;
     background-color: white;

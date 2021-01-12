@@ -1,6 +1,7 @@
 .messege_continer{
     display: flex;
     align-items: flex-start;
+    padding: 0 15px;
 }
 .user_iconDiv > .MuiSvgIcon-root {
     width: 60px;
