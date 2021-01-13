@@ -13,10 +13,10 @@ router.get(`/:team_id/:user_id/:receiver_id`, (req, res) => {
   const user_id = req.params.user_id;
   const receiver_id = req.params.receiver_id;
   connect.then(db => {
-    TeamSchema.find({ team_id }).then(team => {
-      if (!team) {
-        res.status(404).send('Not found');
-      } else {
+    // TeamSchema.find({ team_id }).then(team => {
+    //   if (!team) {
+    //     res.status(404).send('Not found');
+    //   } else {
         Global_UserSchema.find({}).then(currentUser => {
           if (currentUser.length) {
             webWorkService.getTeamData(user_id).then(data => {
@@ -34,8 +34,8 @@ router.get(`/:team_id/:user_id/:receiver_id`, (req, res) => {
             })
           }
         })
-      }
-    })
+    //   }
+    // })
   })
 })
 

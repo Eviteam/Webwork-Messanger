@@ -37,15 +37,14 @@ function getTeamData(user_id) {
         newTeamData.user_id = user_id;
         const team_id = newTeamData.team_id;
         userService.createUser(newTeamData);
+        const newTeam = { team: newTeamData, user_id }
         // TODO fix after fixing bug chat message
         // channelService.createGeneralChannel(team_id, newTeamData);
-        const teamSchema = TeamSchema.find({ team_id }).then(team => {
-          const newTeam = { team, user_id }
-          // const newTeamSchema = new TeamSchema(newTeam);
-          // console.log(newTeamSchema, 11)
-          return newTeam
-        })
-        resolve(teamSchema.then(data => data))
+        
+        // const teamSchema = TeamSchema.find({ team_id }).then(team => {
+        //   return newTeam
+        // })
+        resolve(newTeam)
       });
     })
   })

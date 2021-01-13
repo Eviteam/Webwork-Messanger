@@ -238,11 +238,12 @@ useEffect(async()=>{
             value = {
                 {
                    team:responseData?
-                   {   createdAt:responseData.team[0].createdAt,
-                       team_id:responseData.team[0].team_id,
-                       team_name:responseData.team[0].team_name,
-                       updatedAt:responseData.team[0].updatedAt,
-                       _id:responseData.team[0]._id,
+                   {
+                      //  createdAt:responseData.team[0].createdAt,
+                       team_id:responseData.team.team.team_id,
+                       team_name:responseData.team.team.team_name,
+                      //  updatedAt:responseData.team[0].updatedAt,
+                      //  _id:responseData.team[0]._id,
                        user_id:responseData.user_id,
                    }:{},
                    users:selectedInfo.users,
