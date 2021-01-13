@@ -29,7 +29,7 @@ useEffect(()=>{
            if(response.data ){
              console.log(response.data);
              setUserId(response.data.user_id);
-             localStorage.setItem('selectedTeamId',response.data.team[0].team_id);
+             localStorage.setItem('selectedTeamId',response.data.team.team_id);
              localStorage.setItem('user_id',response.data.user_id);
             setIsRenderApp(true)
            }

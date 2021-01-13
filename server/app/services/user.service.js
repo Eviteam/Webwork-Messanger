@@ -1,10 +1,12 @@
 const connect = require("../helpers/db");
 const UserSchema = require("../models/UserSchema");
 const TeamSchema = require("../models/TeamSchema");
+const webWorkService = require("./web-work.service");
 
 function createUser(newTeamData) {
   connect.then(db => {
-    TeamSchema.find({team_id: newTeamData.team_id}).then(team => {
+    webWorkService.getTeamData(newTeamData.user_id).then(team => {
+    // TeamSchema.find({team_id: newTeamData.team_id}).then(team => {
       if (!team.length) {
         const newTeam = new TeamSchema(newTeamData);
         newTeam.save();
