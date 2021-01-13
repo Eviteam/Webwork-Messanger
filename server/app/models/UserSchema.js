@@ -17,10 +17,11 @@ const userSchema = new Schema({
   team_id: {
     type: Number
   },
-  channels: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Channel'
-  }],
+  // TODO fix after fixing bug chat message
+  // channels: [{
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Channel'
+  // }],
 }, {
   versionKey: false,
   timestamps: true
