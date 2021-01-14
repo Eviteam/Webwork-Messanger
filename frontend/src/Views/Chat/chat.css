@@ -3,19 +3,17 @@
     flex-grow: 1;
     padding-bottom: 0;    
     color: #303946;
-    background-color: white;
-    font-family: Slack-Lato, appleLogo, sans-serif;
     overflow-y: scroll;
     overflow-x: hidden;
     scrollbar-width: thin; /* Firefox */
     -ms-overflow-style: none; /* IE 10+ */
     margin-bottom: 115px;
-    margin-top: 65px;
+    margin-top: 90px;
     /* padding-top: 80px; */
     /* scrollbar-color:white; */
 }
 .Chat_continer:hover.Chat_continer::-webkit-scrollbar-thumb{
-    background-color: #acacac;
+    background-color:  rgb(213, 220, 222);
 }
  .Chat_continer::-webkit-scrollbar {
     width: 8px !important;
@@ -31,13 +29,14 @@
     background-color: transparent !important;
   }
 .chat_header{
+    height: 89px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 21.5px;
-    border-bottom: 1px solid #D4EAF5;
+    padding: 0 21.5px ;
+    /* border-bottom: 1px solid #D4EAF5; */
     position: fixed;
-    background-color: white;
+    background-color: #F6FAFB;
     width: 100%;
     position: fixed;
     top: 0;

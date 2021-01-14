@@ -1,6 +1,8 @@
 import React,{} from "react";
 import './channel.css';
+import {ReactComponent as ChannelIcon} from '../../Icons/GeneralIcon.svg';
 function Channel({Icon,title,id,selectChannel,selected}) {
+  
   
     return (
       <div className = {id!==selected?"channel":"channel selected"} onClick = {()=>{
@@ -10,7 +12,11 @@ function Channel({Icon,title,id,selectChannel,selected}) {
         {Icon? (
             <p>{title}</p>
         ):
-        <p><span className = 'channels-before'>#</span> {title}</p>
+        <>
+          <ChannelIcon className = "channel-icon"/>
+        <p>{title}</p>
+       </>
+       
         }
       </div>
     );

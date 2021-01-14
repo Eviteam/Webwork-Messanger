@@ -1,10 +1,12 @@
 import React from "react";
 import './users.css';
+import {ReactComponent as UserIcon} from '../../Icons/UserIcon.svg';
 function User({Icon,title,id,selectUser,selected,isNewMassage}) {
+  
     return (
       
-      <div className ={id!==selected?'user':"user selected"} onClick = {()=>selectUser(id,'user')}>
-        {Icon&&<Icon className = "user_icon"/>}
+      <div className ={id!=selected?'user':"user selected"} onClick = {()=>selectUser(id,'user')}>
+        {Icon&&<UserIcon className = "user_icon"/>}
         {Icon? (
             <p>{title}</p>
         ):

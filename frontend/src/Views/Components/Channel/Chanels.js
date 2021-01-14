@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import './channel.css';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+
+
 import GroupIcon from '@material-ui/icons/Group';
 import Channel from './channel'
 import AddIcon from '@material-ui/icons/Add';
 import {Modal,TextField,Button} from '@material-ui/core/';
 import axios from 'axios';
 import {UseTeam} from "../../../userContext";
-import FixedOptions  from "../Selector/selector"
+import FixedOptions  from "../Selector/selector";
+import {ReactComponent as Plus} from '../../Icons/Plus.svg';
+import {ReactComponent as ArrowDropDownIcon} from '../../Icons/chevron_down.svg';
+import {ReactComponent as ArrowRightIcon} from '../../Icons/chevron_rigth.svg';
+
 // import CreatChannelModal from '../Modals/CreatChannelModal'
 function Channels({isOpenChanels,channels,changeChanalsStatus,selectChannel,selected,}) {
   const {fetchChannelsData,users} = UseTeam()
@@ -105,9 +109,9 @@ const createChannel = async ()=>{
            <span>
                <p>Channels</p>
            </span>
-           <span className = 'AddCircleIcon_channel'>
+           {/* <span className = 'AddCircleIcon_channel'>
            <AddCircleIcon/>
-           </span>
+           </span> */}
        </div>
        <div className = 'channels_continer'>
 
@@ -119,7 +123,7 @@ const createChannel = async ()=>{
                 })
                 }
                  {isOpenChanels?<div className = 'add_channel'>
-                     <AddIcon/>
+                     <Plus/>
                      <p onClick = {()=>{setIsOpanCreatChannel(true)}}>Add Channel</p>
                  </div>:null}
                 

@@ -92,10 +92,10 @@ function SideBar() {
             <div className = "sidebar_header">
                 <div className = "sidebar_info">
                 <h2>{team&&team.team_name?team.team_name:''}</h2>
-                  {/* <h3>
-                      <FiberManualRecordIcon/>
+                  <h3>
+                      {/* <FiberManualRecordIcon/> */}
                       {userAcountData&&userAcountData.firstname?`${userAcountData.firstname} ${userAcountData.lastname}`:''}
-                  </h3> */}
+                  </h3>
                 </div>
                   {/* <CreateIcon/> */}
             </div>
