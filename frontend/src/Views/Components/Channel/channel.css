@@ -1,16 +1,17 @@
 .channels{
  
- padding-top: 10px;
- padding-bottom: 12px;
-
+ padding-top: 22px;
+ padding-bottom: 40px;
+ font-family:proxima-nova, sans-serif;;
 }
 .chanels_div{
-    padding: 4px;
+    padding: 4px 25px;
     display: flex;
     align-items: center;
     font-size: 15px;
-    font-family: Slack-Lato, appleLogo, sans-serif;
+    font-family:proxima-nova, sans-serif;;
     font-weight: 500;
+    margin-bottom: 5px;
 }
 .chanels_div:hover{
     /* background-color: #303946;
@@ -26,8 +27,8 @@
     width: 22px;
     height: 22px;
 }
-.chanels_div >span>h3{
-    width:160px;
+.chanels_div >span>p{
+    font-size: 22px;
 }
 /* .AddCircleIcon{
     display: none;
@@ -39,10 +40,10 @@
 .channel{
     display: flex;
     align-items: center;
-    padding: 5.5px 25px;
-    font-size: 15px;
-    font-family: Slack-Lato, appleLogo, sans-serif;
-    
+    padding: 6px 35px;
+    font-size: 20px;
+    /* font-family: ProximaNovaSoftW03-Regular;
+     */
 
 }
 .selected{
@@ -51,9 +52,10 @@
    
 }
 .channel:hover{
-    background-color: #303946;
-    color:#b5c1c4 ;
+    background-color:rgb(219, 236, 241);
     cursor: pointer;
+    color:#313E41
+   
 }
 .channel_icon{
     margin-right: 5px;
@@ -67,17 +69,18 @@
 .add_channel{
     display: flex;
     align-items: center;
-    padding: 4px 25px;
-    font-size: 15px;
-    font-family: Slack-Lato, appleLogo, sans-serif;
+    padding: 4px 35px;
+    font-size: 16px;
+    margin-top: 8px;
+    /* font-family: ProximaNovaSoftW03-Regular; */
 }
 .add_channel:hover{
-    background-color: #303946;
-    color:#b5c1c4 ;
+    background-color:rgb(219, 236, 241);
     cursor: pointer;
+    color:#313E41
 }
 .add_channel>p{
-    margin-left: 5px;
+    margin-left: 23px;
 }
 .add_channel>svg{
     width: 20px;
@@ -102,16 +105,9 @@
     margin-top: 4px;
 }
 .channel >p{
-    margin-left: 6px;
+    margin-left: 23px;
 }
-.channels-before{
-    width: 20px;
-    height: 20px;
-    /* margin-left: 5px; */
-    /* font-family: Slack v2; */
-    /* font-size: 20px; */
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
-    margin-right: 7px;
+.channel-icon{
+    margin-left: 3px;
+    margin-right: 1px;
 }

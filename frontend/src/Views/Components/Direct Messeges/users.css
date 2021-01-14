@@ -1,15 +1,15 @@
 .users_div{
-    padding: 4px;
+    padding: 4px 0 0 25px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     font-size: 15px;
-    font-family: Slack-Lato, appleLogo, sans-serif;
     cursor: pointer;
+    margin-bottom: 24px;
     
 }
 .users_div >span>p{
-    width:160px;
+  font-size: 26px;
 }
 .users_continer{
     padding-bottom: 20px;
@@ -31,21 +31,26 @@
 .user{
     display: flex;
     align-items: center;
-    padding: 2px 25px;
-    font-size: 15px;
-    font-family: Slack-Lato, appleLogo, sans-serif;
+    padding: 7.5px 30px;
+    font-size: 20px;
     position: relative;
+    margin-bottom: 7.5px;
     
 }
-
+.user>p{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
  .user:hover{
-    background-color: #303946    ;
-    color:#b5c1c4 ;
+     
+    background-color:rgb(219, 236, 241);
     cursor: pointer;
+    color:#313E41
 } 
 
 .user_icon{
-    margin-right: 5px;
+    margin-right: 17px;
     color: #E8F2F7;
    
 }
@@ -59,7 +64,7 @@
     padding: 0 10px;
     margin: 5px;
     font-size: 15px;
-    font-family: Slack-Lato, appleLogo, sans-serif;
+    font-family: ProximaNovaSoftW03-Regular;
 
 }
 .add_user:hover{

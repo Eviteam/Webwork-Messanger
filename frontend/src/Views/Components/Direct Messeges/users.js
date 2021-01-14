@@ -1,11 +1,13 @@
 import React from "react";
 import './users.css';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import User from './user'
 import AddIcon from '@material-ui/icons/Add';
+import {ReactComponent as ArrowDropDownIcon} from '../../Icons/chevron_down.svg';
+import {ReactComponent as ArrowRightIcon} from '../../Icons/chevron_rigth.svg';
+
+// import UserIcon from "../../Icons/userIcon.svg"
 function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
    
     return (
@@ -18,9 +20,9 @@ function Users({isOpenUsers,users,changeUsersStatus,selectUser,selected}) {
            <span>
                <p>Direct Messeges</p>
            </span>
-           <span className = 'AddCircleIcon_user'>
+           {/* <span className = 'AddCircleIcon_user'>
            <AddCircleIcon/>
-           </span>
+           </span> */}
        </div>
        <div className = 'users_continer'>
 

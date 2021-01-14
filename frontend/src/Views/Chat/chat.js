@@ -19,11 +19,11 @@ function Chat() {
       <div className = "Chat_continer" id = 'chat'>
         <div className = "chat_header">
         <div className = "chat_headerLeft">
-        {selectedUserInfo||selectedChannelInfo.channelName? <h4 className = "chat_channelName">
+        {/* {selectedUserInfo||selectedChannelInfo.channelName? <h4 className = "chat_channelName">
             {selectedUserInfo&&selectedUserInfo.id?`${selectedUserInfo.firstname} ${selectedUserInfo.lastname}`:selectedChannelInfo.channelName}
-          </h4>:null}
+          </h4>:null} */}
          
-          <StarBorderOutlinedIcon/>
+          {/* <StarBorderOutlinedIcon/> */}
           </div>
           <div className = "chat_headerRight">
             <p><InfoOutlinedIcon/>Detils</p>
