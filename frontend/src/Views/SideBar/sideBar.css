@@ -8,7 +8,7 @@
     scrollbar-width: thin; /* Firefox */
     -ms-overflow-style: none; /* IE 10+ */
     margin-top: 90px;
-    font-family:proxima-nova, sans-serif;;
+    font-family:'MyFont';
      box-shadow:  0 0 30px 0 rgba(176, 218, 229, 0.5);
 }
 .sidebar:hover.sidebar::-webkit-scrollbar-thumb{
@@ -48,7 +48,7 @@
 }
 
 .sidebar_info{  
-    flex:1;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -58,11 +58,12 @@
     text-align: center;
 }
 .sidebar_info > h3{
-    margin-top: 9px;
+    
     align-items: center;
-    font-size: 16px;
+    font-size: 22px;
     font-weight: 400;
     text-align: center;
+    margin-left: 9px;
 }
 .sidebar_info > h3>.MuiSvgIcon-root{
     font-size: 14px;
@@ -77,4 +78,11 @@
     background-color:floralwhite;
     color: black;
     border-radius: 30px;
+}
+.is-online-big{
+   
+    width: 12px;
+    height: 12px;
+    background-color: #73CA1A;
+    border-radius: 50%;
 }

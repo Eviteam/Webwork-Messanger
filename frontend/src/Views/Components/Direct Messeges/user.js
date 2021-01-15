@@ -14,7 +14,7 @@ function User({Icon,title,id,selectUser,selected,isNewMassage}) {
         <p>{title}</p>
         }
         {/* {isNewMassage && <span className = 'message_notification'> 1 </span>} */}
-        
+        <span className = 'is-online'></span>
       </div>
     );
   }
