@@ -7,7 +7,7 @@ import {ReactComponent as UserIcon} from '../../Icons/UserIcon.svg';
 function Message({data,icon,isChannal}) {
   const [userId,setUserId]= useState('');
   useEffect(()=>{
-    let id = localStorage.getItem('user_long_id');
+    let id = localStorage.getItem('user_id');
     setUserId(id)
   },[])
   console.log(data)
@@ -20,7 +20,7 @@ function Message({data,icon,isChannal}) {
          
          {
            console.log(sender[0]._id,userId)
-           if(sender[0]._id !=userId)
+           if(sender[0].id !=userId)
            {
              return (
               <div className ='messege_continer' key={idx}>
