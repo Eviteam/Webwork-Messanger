@@ -52,7 +52,7 @@ border-radius: 13px;
     position: fixed;
     /* width:calc(100vw - 245px); */
     bottom: 0;
-    width: calc(100% - 300px);
+    width: calc(100% - 320px);
     bottom: 0;
     padding: 0px 20px 20px 20px;
     display: flex;
