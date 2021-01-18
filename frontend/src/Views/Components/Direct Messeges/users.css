@@ -9,7 +9,7 @@
     
 }
 .users_div >span>p{
-  font-size: 26px;
+  font-size: 22px;
 }
 .users_continer{
     padding-bottom: 20px;
@@ -41,6 +41,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    height:23px
 }
  .user:hover{
      
@@ -92,3 +93,14 @@
     margin-right: 8px;
     margin-top: 2px;
 } */
+.is-online{
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    background: #73CA1A;
+    border: 1px solid #FFFFFF;
+    box-sizing: border-box;
+    border-radius: 50%;
+    left: 46.5px;
+    top: 24.5px;
+}

@@ -3,7 +3,7 @@
    flex-direction: column;
     padding: 0 15px;
     margin: 15px 25px;
-    font-family: proxima-nova, sans-serif;
+    font-family: 'MyFont';
     font-weight: 400;
     
 }
@@ -20,7 +20,7 @@
     color: #313E41;
     width: 100%;
     margin-left: 12px;
-    font-size: 23px;
+    font-size: 22px;
     padding: 15px 0;
 }
  /* p p:last-of-type .massage_text{
@@ -39,7 +39,7 @@ color: #474F5C;
 margin-top: 10px;
 align-items: flex-start;
 padding:5px 15px;
-background-color: rgb(231, 244, 247); 
+background-color: #D1F2FB; 
 border-radius: 13px;
 }
 .massage_text>p{
@@ -74,7 +74,7 @@ border-radius: 13px;
     color: #313E41;
 }
 .sender-name{
-    font-size: 23px;
+    font-size: 20px;
     margin-left: 10px;
     font-weight: bold;
 }
@@ -92,7 +92,7 @@ border-radius: 13px;
     flex-direction: column;
      padding: 0 15px;
      margin: 10px 25px;
-     font-family: proxima-nova, sans-serif;;
+     font-family:  MyFont;
      font-weight: 400;
 }
 .sender-info-2{
@@ -106,9 +106,10 @@ color: #474F5C;
 margin-top: 10px;
 align-items: flex-start;
 padding: 20px 15px;
-background-color:#F6FAFB;
+background-color:#EDF5F7;
 border-radius: 13px;
 justify-content: flex-end;
+font-family: 'MyFont';
 }
 .massage_text-2 >p:last-child{
     display: none;  
@@ -120,10 +121,35 @@ justify-content: flex-end;
 }
 .massage_text-2 >p{
     text-align: right;
-    font-size: 23px;
+    font-size: 22px;
 }
 .sender-name-2{
-    font-size: 23px;
+    font-size: 20px;
     margin-right: 23px;
     font-weight: bold;
+}
+.time-continer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 40px;
+    height: 35px;
+    color:#313E41;
+    background-color: rgba(235,247,251,0.4);
+    /* padding: 9px 0; */
+    border-radius: 10.5px;
+    box-shadow: 0 4px 4px 0 rgba(186, 202, 206, 0.4);
+}
+.data-block{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+     width: 36%;
+     height:35px;
+     background-color: #FFFFFF;
+     border: 1px solid #EDF5F7;
+     box-sizing: border-box;
+      border-radius: 6px;
+      text-align: center;
+      align-items: center;
 }

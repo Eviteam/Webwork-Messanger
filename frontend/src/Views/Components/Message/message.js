@@ -10,23 +10,50 @@ function Message({data,icon,isChannal}) {
     let id = localStorage.getItem('user_id');
     setUserId(id)
   },[])
-  console.log(data)
+ 
+  // let matrix = []; 
+  // let i = 0;
+  // let  k = -1;
+  // let createdAt = '';
+  // let arr = []
+  //   for (i , k ; i < data.length; i++) {
+  //     createdAt = moment(data[i].createdAt).format('YYYY');
+      
+  //       if (i ===0) {
+            
+  //           arr.push(data[0]); continue
+  //       }
+      
+  //         if(moment(data[i].createdAt).format('YYYY') ==createdAt){
+  //           console.log(arr)
+  //           arr.push(data[i])
+  //         }
+  //         // else {
+  //         //   matrix.push(arr)
+  //         // }
+        
+
+     
+  //   }
+  // console.log(matrix)
     return (
       <>
-      
+       <div className = 'time-continer'>
+        <div className = 'data-block'>Todey</div>
+      </div>
       {
         
         data.map(({ sender, msg,message,createdAt}, idx) =>
          
          {
-           console.log(sender[0]._id,userId)
+          console.log(moment(createdAt).format('MMMM Do YYYY'))
            if(sender[0].id !=userId)
            {
              return (
               <div className ='messege_continer' key={idx}>
               <div className ='sender-info'>
               <p className= 'sender-name'>{`${sender[0].firstname} ${sender[0].lastname}`}</p> 
-              <span className = 'time'>{`${moment(createdAt).format('MM-DD')} at ${moment(createdAt).format('h mm')}`}</span>
+              <span className = 'time'>{`${moment(createdAt).format('h:mm')}`}</span>
               </div>
               
             
@@ -54,7 +81,7 @@ function Message({data,icon,isChannal}) {
             <div className ='sender-info-2'>
            
             <p className= 'sender-name-2'>{`${sender[0].firstname} ${sender[0].lastname}`}</p>
-            <span className = 'time-2'>{`${moment(createdAt).format('MM-DD')} at ${moment(createdAt).format('h mm')}`}</span>
+            <span className = 'time-2'>{`${moment(createdAt).format('h:mm')}`}</span>
             </div>
             
           
