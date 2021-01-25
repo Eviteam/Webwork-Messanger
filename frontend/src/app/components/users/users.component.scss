@@ -1,0 +1,67 @@
+@import "../../../assets/variables.scss";
+
+.title_part {
+  margin-top: 45px;
+  cursor: pointer;
+
+  .title{
+    font-size: 25px;
+    line-height: 30px;
+  }
+
+  .msg_arrow{
+    width: 16px;
+    height: 10px;
+    margin-right: 10px;
+    margin-left: 30px;
+  }
+
+}
+
+.user_part {
+  cursor: pointer;
+
+  .single_user {
+    padding: 7px 30px;
+    height: 40px;
+
+    .user_image_block{
+      position: relative;
+
+      .user_icon {
+        width: 25px;
+        height: 25px;
+        margin-right: 17px;
+      }
+
+      .active_status {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background-color: $color-active-status;
+        margin-right: 9px;
+        position: absolute;
+        right: 9px;
+        bottom: -1px;
+      }
+    }
+
+
+    .user_name {
+      font-family: 'Proxima';
+      font-size: 20px;
+      line-height: 23px;
+      margin-top: 15px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .single_user:hover {
+    background-color: $hover-background-color;
+  }
+
+  .selectedUser {
+    background-color: $selected-user-background;
+  }
+}

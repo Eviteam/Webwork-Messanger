@@ -1,0 +1,26 @@
+@import "../../../assets/variables.scss";
+
+.header {
+  width: 100%;
+  height: 90px;
+  background-color: $header-background-color;
+  padding: 0 50px;
+
+  .current_user {
+    font-family: 'Proxima';
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 27px;
+  }
+  .search{
+    width: 420px;
+    height: 34px;
+    box-shadow: inset 4px 4px 4px 4px rgba(217, 233, 238, 0.2);
+    border-radius: 7px;
+    background-color: $header-input-background;
+    border: unset;
+    background-image: url('../../../assets/icons/search_icon.svg');
+    background-repeat: no-repeat;
+    background-position: 97% 50%;
+  }
+}
