@@ -1,0 +1,27 @@
+<div class="channels_part-block">
+  <div class="channels_part">
+  <div class="d-flex align-items-center" (click)="hideOrShowContent()">
+    <img src="../../../assets/icons/chevron_down.svg" class="channel_arrow" [ngClass]="hideChannels ? 'msg_arrow_rotate' : ''">
+    <h4 class="title">Channels</h4>
+  </div>
+
+  <div [ngClass]="hideChannels ? 'd-none' : ''">
+    <div class="channels d-flex align-items-center">
+      <!-- TODO if channel is public -->
+      <!-- <img src="../../../assets/icons/public_channel.svg" class="public_channel"> -->
+      <img src="../../../assets/icons/private_channel.svg" class="channels__icon">
+      <p class="channels__name">general</p>
+    </div>
+    <div class="channels d-flex align-items-center">
+      <img src="../../../assets/icons/public_channel.svg" class="channels__icon">
+      <!-- TODO if channel is private -->
+      <!-- <img src="../../../assets/icons/private_channel.svg" class="private_channel"> -->
+      <p class="channels__name">channel 1</p>
+    </div>
+  </div>
+  <div class="channels d-flex align-items-center">
+    <img src="../../../assets/icons/add_icon.svg" class="channels__icon channels__icon_add">
+    <p class="channels__name channels__name_add">Add Channel</p>
+  </div>
+</div>
+</div>
