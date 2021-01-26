@@ -26,18 +26,18 @@ const PORT = process.env.PORT || 3000 ;
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../frontend/build')));
+app.use(express.static(path.join(__dirname, '../frontend/dist/frontend')));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get(`/`, (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build/index.html'))
+  res.sendFile(path.join(__dirname, '../frontend/dist/frontend/index.html'))
 });
 
-const server = http.createServer(
-  // {
-  //   key: fs.readFileSync(process.env.KEY, 'utf8'),
-  //   cert: fs.readFileSync(process.env.CERT, 'utf8')
-  // },
+const server = https.createServer(
+  {
+    key: fs.readFileSync(process.env.KEY, 'utf8'),
+    cert: fs.readFileSync(process.env.CERT, 'utf8')
+  },
   app
 );
 
