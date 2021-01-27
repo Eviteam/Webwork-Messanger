@@ -1,14 +1,17 @@
 <div>
-    <div class="sender_message" *ngFor="let message of messageService.allMessages"
-        [ngClass]="currentUser == message?.sender[0].id ? 'sender' : ''">
-        <div class="d-flex align-items-center msg_info">
-            <p class="sender_name">{{message?.sender[0].firstname}} {{message?.sender[0].lastname}}</p>
-            <span class="time">{{message?.createdAt | date:'shortTime'}}</span>
-            <!-- <div class="popover"></div> -->
-        </div>
-        <div class="d-flex align-items-center message_content">
-            <img src="../../../assets/icons/user_icon.svg" class="sender_image">
-            <div class="message d-flex" [innerHtml]="message?.message"></div>
-        </div>
+  <div class="sender_message" *ngFor="let message of messageService.allMessages"
+    [ngClass]="currentUser == message?.sender[0].id ? 'sender' : ''">
+    <div class="d-flex align-items-center msg_info">
+      <p class="sender_name">{{message?.sender[0].firstname}} {{message?.sender[0].lastname}}</p>
+      <span class="time">{{message?.createdAt | date:'shortTime'}}
+        <span class="time__popover">
+          {{message.isToday ? today_date : (message?.createdAt | date: 'medium')}}
+        </span>
+      </span>
     </div>
+    <div class="d-flex align-items-center message_content">
+      <img src="../../../assets/icons/user_icon.svg" class="sender_image">
+      <div class="message d-flex" [innerHtml]="message?.message"></div>
+    </div>
+  </div>
 </div>

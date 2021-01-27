@@ -20,3 +20,7 @@ body {
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
+
+.message > p {
+  margin: 0 !important;
+}

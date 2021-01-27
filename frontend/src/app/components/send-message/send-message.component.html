@@ -1,4 +1,8 @@
 <div class="editor">
-  <ckeditor [editor]="editor" [config]="ckEditorConfigs" (keydown)="sendMessage($event)" [(ngModel)]="message">
+  <ckeditor [editor]="editor" class="ckEditor" [config]="ckEditorConfigs" (keydown)="sendMessage($event)"
+    [(ngModel)]="message">
   </ckeditor>
+  <div class="send_button" (click)="sendMessage()">
+    <img src="../../../assets/icons/send_button.svg" class="send_button_img">
+  </div>
 </div>

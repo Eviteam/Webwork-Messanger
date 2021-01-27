@@ -28,23 +28,31 @@ export class UsersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams
-      .subscribe(param => {
-        if (param.user_id) {
-          this.userService.getAllUsers(param.user_id)
+    if (!this.storageService.getItem('selectedUser')) {
+      this.activatedRoute.queryParams
+        .subscribe(param => {
+          if (param.user_id) {
+            this.userService.getAllUsers(param.user_id)
+              .subscribe((data: Team) => {
+                this.users = data.team.users;
+                this.selectUser(param.user_id)
+              })
+          } else {
+            const user_id = this.storageService.getItem('selectedUser');
+            this.userService.getAllUsers(user_id)
             .subscribe((data: Team) => {
               this.users = data.team.users;
-              this.selectUser(param.user_id)
+              this.selectUser(user_id)
             })
-        } else {
-          const user_id = this.storageService.getItem('selectedUser');
-          this.userService.getAllUsers(user_id)
-          .subscribe((data: Team) => {
-            this.users = data.team.users;
-            this.selectUser(user_id)
-          })
-        }
-      })
+          }
+        })      
+    } else {
+      this.userService.getAllUsers(this.selectedUser)
+        .subscribe((data: Team) => {
+          this.users = data.team.users; 
+        })
+      this.router.navigateByUrl(`/main/${this.selectedUser}`)
+    }
   }
 
   public hideOrShowContent() {

@@ -1,8 +1,7 @@
 @import "../../../assets/variables.scss";
 
 .sender_message {
-  width: 1086px;
-  height: 104px;
+  min-height: 104px;
   margin: 30px 16px 30px 30px;
   .msg_info {
     height: 26px;
@@ -20,13 +19,39 @@
       font-weight: normal;
       line-height: 17px;
       cursor: pointer;
+      position: relative;
+
+      &__popover {
+        display: none;
+      }
     }
 
-    .popover {
-      width: 175px;
-      height: 46px;
-      background-color: $selected-user-background;
-      position: absolute;
+    .time:hover {
+      .time__popover {
+        display: block;
+        color: $color-white;
+        min-width: 175px;
+        border-radius: 14px;
+        background-color: $selected-user-background;
+        position: absolute;
+        padding: 8px 14px;
+        right: 20px;
+        top: -40px;
+        white-space: nowrap;
+
+        &::after {
+          content: '';
+          position: absolute;
+          right: 0;
+          bottom: -8px;
+          display: inline-block;
+          width: 0;
+          height: 0;
+          border-style: solid;
+          border-width: 12px 20px 8px 0;
+          border-color: transparent $selected-user-background transparent transparent;
+        }
+      }
     }
   }
 
@@ -34,17 +59,12 @@
     margin-top: 11px;
     background-color: $sender-message-container;
     border-radius: 10px;
-    height: 66px;
+    padding: 20px 10px;
 
     .sender_image {
       width: 56px;
       height: 56px;
-      margin: 5px 0 5px 15px;
-    }
-
-    .message {
-      margin-left: 12px;
-      margin-top: 15px;
+      margin: 5px 12px 5px 15px;
     }
   }
 }
