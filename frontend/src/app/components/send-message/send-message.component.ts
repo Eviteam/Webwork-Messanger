@@ -13,7 +13,7 @@ export class SendMessageComponent implements OnInit {
   /*CKEditor properties */
   public editor = ClassicEditorBuild;
   public ckEditorConfigs: Object = {
-    toolbar: [ 'bold', 'italic', 'link', 'bulletedList', 'numberedList' ]
+    toolbar: [ 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'imageUpload' ]
   };
 
   public message: string = '';
@@ -27,21 +27,28 @@ export class SendMessageComponent implements OnInit {
     this.messageService.setMessageProps().then(data => this.messageBody = data);
   }
 
-  public sendMessage(event: any): void {
-    if (event.keyCode == 13 && this.message.length > 0) {
-      if (!event.shiftKey && !event.altKey && !event.ctrlKey) {
+  public sendMessage(event?: any): void {
+    // if (!this.message.length) {
+      if (event) {
+        if (event.keyCode == 13 && this.message.length > 0) {
+          if (!event.shiftKey && !event.altKey && !event.ctrlKey) {
+            this.messageBody.message = this.message;
+            this.messageService.saveMessage(this.messageBody)
+              .subscribe((message: Message) => {
+                this.message = '';
+                this.messageService.sendMessage(message['data']);
+              })
+          }
+        }
+      } else {
         this.messageBody.message = this.message;
-        console.log(this.messageBody, 'messageBody')
         this.messageService.saveMessage(this.messageBody)
           .subscribe((message: Message) => {
             this.message = '';
             this.messageService.sendMessage(message['data']);
-            this.messageService.getMessage()
-              .subscribe(msg => console.log(this.messageService.allMessages, "1"))
-            console.log(message, "121121")
           })
-      }
-    }
+      }       
+    // }
   }
 
 }

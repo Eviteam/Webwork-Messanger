@@ -15,7 +15,7 @@ export class MessageService {
   public user_id: string = this.storageService.getItem('user_id');
   public team_id: string = this.storageService.getItem('team_id');
   public selectedUser: string;
-  public allMessages: Message;
+  public allMessages: Message[];
 
   constructor(
     private apiService: ApiService,
