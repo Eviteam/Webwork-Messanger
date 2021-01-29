@@ -1,5 +1,21 @@
 @import "../../../assets/variables.scss";
 
+// .sender_block {
+//   overflow-y: scroll;
+//   overflow-x: unset;
+//   height: calc(100vh - 210px);
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-end;
+// }
+
+// .sender_block-inner {
+//   display: flex;
+//     flex-direction: column;
+//     justify-content: flex-end;
+//     min-height: 100%;
+// }
+
 .sender_message {
   min-height: 104px;
   margin: 30px 16px 30px 30px;

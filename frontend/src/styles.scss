@@ -23,4 +23,9 @@ body {
 
 .message > p {
   margin: 0 !important;
+  word-break: break-word;
+}
+
+p, h4 {
+  color: $ck-button-color;
 }
