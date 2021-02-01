@@ -1,19 +1,16 @@
 @import "../../../assets/variables.scss";
 
 .editor {
-  padding: 0 12px 12px;
+  padding: 0 12px 12px 19px;
   display: flex;
   
   .ckEditor {
     flex-grow: 1;
   }
-  // width: calc(100% - 282px);
-  // position: fixed;
-  // bottom: 0;
 }
 
 .send_button {
-  width: 104px;
+  width: 61px;
   background-color: $header-background-color;
   border: 2px solid $hover-background-color;
   border-left-style: none;
@@ -22,11 +19,11 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  flex: 0 0 104px;
+  flex: 0 0 61px;
 
   &_img {
-    width: 32px;
-    height: 32px;
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -75,5 +72,13 @@
     background-color: rgba($color: #000000, $alpha: 0.1);
     border-radius: 4px;
   }
+
+  ::ng-deep .ck-toolbar__items {
+    margin-left: 3px;
+  }
+
+  // ::ng-deep .ck.ck-editor__editable_inlin {
+  //   word-break: break-word;
+  // }
 
 }

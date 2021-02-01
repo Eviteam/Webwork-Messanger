@@ -1,14 +1,31 @@
 @import "../../../assets/variables.scss";
 
+// .sender_block {
+//   overflow-y: scroll;
+//   overflow-x: unset;
+//   height: calc(100vh - 210px);
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-end;
+// }
+
+// .sender_block-inner {
+//   display: flex;
+//     flex-direction: column;
+//     justify-content: flex-end;
+//     min-height: 100%;
+// }
+
 .sender_message {
   min-height: 104px;
-  margin: 30px 16px 30px 30px;
+  margin: 30px 26px 30px 38px;
   .msg_info {
     height: 26px;
+    margin-right: 8px;
 
     .sender_name {
       font-family: 'Proxima';
-      font-size: 22px;
+      font-size: 18px;
       font-weight: bold;
       line-height: 27px;
       margin: 0 13px 0 10px;
@@ -59,12 +76,12 @@
     margin-top: 11px;
     background-color: $sender-message-container;
     border-radius: 10px;
-    padding: 20px 10px;
+    padding: 0px 10px;
 
     .sender_image {
-      width: 56px;
-      height: 56px;
-      margin: 5px 12px 5px 15px;
+      width: 40px;
+      height: 40px;
+      margin: 5px 12px 5px 8px;
     }
   }
 }
@@ -79,7 +96,8 @@
 
   .message_content {
     background-color: $sender-background-color;
-    padding: 20px 9px 20px;
+    padding: 13px 9px;
+    min-height: 50px;
 
     .sender_image {
       display: none;

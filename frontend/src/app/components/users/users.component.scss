@@ -5,8 +5,9 @@
   cursor: pointer;
 
   .title{
-    font-size: 25px;
+    font-size: 24px;
     line-height: 30px;
+    font-weight: 360;
   }
 
   .msg_arrow{
@@ -24,13 +25,14 @@
   .single_user {
     padding: 7px 30px;
     height: 40px;
+    margin-top: 9px;
 
     .user_image_block{
       position: relative;
 
       .user_icon {
-        width: 25px;
-        height: 25px;
+        width: 24px;
+        height: 24px;
         margin-right: 17px;
       }
 
