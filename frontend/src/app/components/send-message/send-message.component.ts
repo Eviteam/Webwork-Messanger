@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
 import * as ClassicEditorBuild from '@ckeditor/ckeditor5-build-classic';
 import { Message } from 'src/app/models/message';
 import { MessageService } from 'src/app/services/message/message.service';
@@ -8,14 +9,16 @@ import { MessageService } from 'src/app/services/message/message.service';
   templateUrl: './send-message.component.html',
   styleUrls: ['./send-message.component.scss']
 })
-export class SendMessageComponent implements OnInit, AfterViewInit {
+export class SendMessageComponent implements OnInit {
 
   @ViewChild("ckEditorToolbar", {static: false}) public ckEditorToolbar: any
 
   /*CKEditor properties */
   public editor = ClassicEditorBuild;
-  public ckEditorConfigs: Object = {
-    toolbar: [ 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'imageUpload' ]
+  public ckEditorConfigs: CKEditor5.Config = {
+    toolbar: [ 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'imageUpload' ],
+    ignoreEmptyParagraph: true,
+    fillEmptyBlocks : false
   };
 
   public message: string = '';
@@ -29,17 +32,17 @@ export class SendMessageComponent implements OnInit, AfterViewInit {
     this.messageService.setMessageProps().then(data => this.messageBody = data);
   }
 
-  ngAfterViewInit() {
-    console.log(this.ckEditorToolbar.getCommand);
-    this.ckEditorToolbar.ready.subscribe((event) => {
-      console.log(event)
-    })
-  }
+  // TODO
+  // ngAfterViewInit() {
+  //   this.ckEditorToolbar.ready.subscribe((event) => {
+  //     console.log(event.data.name)
+  //   })
+  // }
 
-  public sendMessage(event?: any): void {
+  public sendMessage(event?: any) {
     if (this.message.length) {
       if (event) {
-        if (event.keyCode == 13 && this.message.length > 0) {
+        if (event.keyCode === 13) {
           if (!event.shiftKey && !event.altKey && !event.ctrlKey) {
             this.messageBody.message = this.message;
             this.messageService.saveMessage(this.messageBody)
@@ -60,9 +63,9 @@ export class SendMessageComponent implements OnInit, AfterViewInit {
     }
   }
 
-  public onEditorChange(event: any): void {
-    console.log(this.editor)
-    console.log(event.event.source, "event")
-  }
+  // TODO
+  // public onEditorChange(event: any): void {
+
+  // }
 
 }

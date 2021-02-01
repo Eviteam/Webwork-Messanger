@@ -73,6 +73,10 @@
     border-radius: 4px;
   }
 
+  ::ng-deep .ck-toolbar__items {
+    margin-left: 3px;
+  }
+
   // ::ng-deep .ck.ck-editor__editable_inlin {
   //   word-break: break-word;
   // }

@@ -1,5 +1,5 @@
 <div class="editor">
-  <ckeditor [editor]="editor" (change)="onEditorChange($event)" #ckEditorToolbar class="ckEditor"
+  <ckeditor [editor]="editor" #ckEditorToolbar class="ckEditor"
     [config]="ckEditorConfigs" (keydown)="sendMessage($event)" [(ngModel)]="message">
   </ckeditor>
   <div class="send_button" (click)="sendMessage()">
