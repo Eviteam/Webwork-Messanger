@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
 import * as ClassicEditorBuild from '@ckeditor/ckeditor5-build-classic';
+import { debounceTime } from 'rxjs/operators';
 import { Message } from 'src/app/models/message';
 import { MessageService } from 'src/app/services/message/message.service';
 
@@ -9,16 +10,17 @@ import { MessageService } from 'src/app/services/message/message.service';
   templateUrl: './send-message.component.html',
   styleUrls: ['./send-message.component.scss']
 })
-export class SendMessageComponent implements OnInit {
+export class SendMessageComponent implements OnInit, AfterViewInit {
 
-  @ViewChild("ckEditorToolbar", {static: false}) public ckEditorToolbar: any
+  @ViewChild("ckEditorToolbar", { static: false }) public ckEditorToolbar: any
 
   /*CKEditor properties */
   public editor = ClassicEditorBuild;
   public ckEditorConfigs: CKEditor5.Config = {
-    toolbar: [ 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'imageUpload' ],
-    ignoreEmptyParagraph: true,
-    fillEmptyBlocks : false
+    toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'imageUpload'],
+    ignoreEmptyParagraph: false,
+    fillEmptyBlocks: false,
+    autoParagraph: true
   };
 
   public message: string = '';
@@ -33,13 +35,23 @@ export class SendMessageComponent implements OnInit {
   }
 
   // TODO
-  // ngAfterViewInit() {
-  //   this.ckEditorToolbar.ready.subscribe((event) => {
-  //     console.log(event.data.name)
-  //   })
-  // }
+  ngAfterViewInit() {
+    this.ckEditorToolbar.change
+      .pipe(debounceTime(5000))
+      .subscribe((event) => {
+        console.log(event)
+      })
+  }
 
   public sendMessage(event?: any) {
+    // this.ckEditorToolbar.change
+    //   .pipe(debounceTime(5000))
+    //   .subscribe((e) => {
+        // if (event.code === "Enter") {
+        //   console.log(event);
+        //   return false
+        // }
+      // })
     if (this.message.length) {
       if (event) {
         if (event.keyCode === 13) {
@@ -59,13 +71,8 @@ export class SendMessageComponent implements OnInit {
             this.message = '';
             this.messageService.sendMessage(message['data']);
           })
-      }       
+      }
     }
   }
-
-  // TODO
-  // public onEditorChange(event: any): void {
-
-  // }
 
 }

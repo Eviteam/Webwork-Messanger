@@ -77,8 +77,24 @@
     margin-left: 3px;
   }
 
-  // ::ng-deep .ck.ck-editor__editable_inlin {
-  //   word-break: break-word;
-  // }
+  ::ng-deep .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-blurred > ul {
+    margin-bottom: 1rem !important;
+  }
+
+  ::ng-deep .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-blurred > ol {
+    margin-bottom: 1rem !important;
+  }
+
+  ::ng-deep .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-focused > ul {
+    margin-bottom: 1rem !important;
+  }
+
+  ::ng-deep .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-focused > ol {
+    margin-bottom: 1rem !important;
+  }
+
+  ::ng-deep .ck.ck-editor__editable_inline {
+    word-break: break-word;
+  }
 
 }
