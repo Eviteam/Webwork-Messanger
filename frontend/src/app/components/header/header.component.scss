@@ -6,6 +6,14 @@
   background-color: $header-background-color;
   padding: 0 45px;
 
+  .active_status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: $color-active-status;
+    margin-right: 15px;
+  }
+
   .current_user {
     font-family: 'Proxima';
     font-size: 22px;

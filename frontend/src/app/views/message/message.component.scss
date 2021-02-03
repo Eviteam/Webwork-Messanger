@@ -1,6 +1,7 @@
 .message_block {
   flex-direction: column;
-  overflow-y: scroll;
+  // TODO
+  overflow-y: hidden;
   overflow-x: unset;
   height: calc(100vh - 90px);
   padding-top: 8px;
