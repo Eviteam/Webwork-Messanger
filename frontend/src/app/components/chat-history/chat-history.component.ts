@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Message } from 'src/app/models/message';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
@@ -10,13 +10,13 @@ import * as moment from 'moment';
   templateUrl: './chat-history.component.html',
   styleUrls: ['./chat-history.component.scss']
 })
-export class ChatHistoryComponent implements OnInit {
+export class ChatHistoryComponent implements OnInit, AfterViewChecked {
+  @ViewChild('chatContent') private chatContent: ElementRef;
 
   public currentUser: string = this.storageService.getItem('user_id');
   public current_time: string;
   public newMessage: Message;
-  public today_date: string = moment().calendar();
-  public current_date: string = moment().format('MM/DD/YYYY');
+  public newMessageAdded: boolean = false;
 
   constructor(
     public messageService: MessageService,
@@ -32,15 +32,23 @@ export class ChatHistoryComponent implements OnInit {
         this.current_time = moment().format();
         this.newMessage.createdAt = this.current_time;
         this.messageService.allMessages.push(this.newMessage);
-        this.checkMessageDate(this.messageService.allMessages)
+        this.newMessageAdded = true;
+        this.scrollToBottom()
       })
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.newMessageAdded) {
+      this.scrollToBottom();
+      this.newMessageAdded = false;
+    }
   }
 
   public getAllMessage(messageBody: Message): void {
     this.messageService.getMessageHistory(messageBody)
       .subscribe((data: any) => {
         this.messageService.allMessages = data;
-        this.checkMessageDate(this.messageService.allMessages)
+        this.newMessageAdded = true;
       })
   }
 
@@ -55,12 +63,10 @@ export class ChatHistoryComponent implements OnInit {
     })
   }
 
-  public checkMessageDate(allMessages: Message[]) {
-    allMessages.map(message => {
-      if (moment(message.createdAt).format('MM/DD/YYYY') === this.current_date) {
-        message.isToday = true
-      }
-    })
+  public scrollToBottom(): void {
+    try {
+      this.chatContent.nativeElement.scrollTop = this.chatContent.nativeElement.scrollHeight;
+    } catch(err) { }                 
   }
 
 }

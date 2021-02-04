@@ -1,10 +1,11 @@
 @import "../../../assets/variables.scss";
 
 .editor {
-  padding: 0 12px 12px 19px;
+  // padding: 0 12px 12px 19px;
+  margin: 0 32px 16px 38px;
   display: flex;
   
-  .ckEditor {
+  .quillEditor {
     flex-grow: 1;
   }
 }
@@ -28,7 +29,7 @@
 }
 
 :host {
-  ::ng-deep .ck.ck-toolbar.ck-toolbar_grouping {
+  ::ng-deep .ql-toolbar {
     background-color: $sender-message-container-RGBA;
     box-shadow: inset 4px 4px 4px 4px rgba(217, 233, 238, 0.2);
     border-radius: 13px 0 0px 0px !important;
@@ -37,12 +38,13 @@
     border-right-style: none
   }
 
-  ::ng-deep .ck-editor__main {
+  ::ng-deep .ql-container {
     border: 2px solid $hover-background-color;
     border-right-style: none;
     border-top-style: none;
     border-radius: 0 0 0 13px;
     overflow: auto;
+    height: initial;
     max-height: 240px;
   }
 
@@ -55,26 +57,26 @@
     box-shadow: none !important;
   }
   
-  ::ng-deep .ck-button {
+  ::ng-deep .ql-formats>button {
     color: $ck-button-color;
   }
 
-  ::ng-deep .ck-editor__main::-webkit-scrollbar {
+  ::ng-deep .ql-editor::-webkit-scrollbar {
     width: 8px;
     border-radius: 4px;
   }
    
-  ::ng-deep .ck-editor__main::-webkit-scrollbar-track {
+  ::ng-deep .ql-editor::-webkit-scrollbar-track {
     display: none;
   }
    
-  ::ng-deep .ck-editor__main::-webkit-scrollbar-thumb {
+  ::ng-deep .ql-editor::-webkit-scrollbar-thumb {
     background-color: rgba($color: #000000, $alpha: 0.1);
     border-radius: 4px;
   }
 
-  ::ng-deep .ck-toolbar__items {
-    margin-left: 3px;
+  ::ng-deep .ql-toolbar {
+    padding-left: 12px;
   }
 
   ::ng-deep .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-blurred > ul {
@@ -93,7 +95,7 @@
     margin-bottom: 1rem !important;
   }
 
-  ::ng-deep .ck.ck-editor__editable_inline {
+  ::ng-deep .ql-editor {
     word-break: break-word;
   }
 

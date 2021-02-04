@@ -1,7 +1,8 @@
 <div class="editor">
-  <ckeditor [editor]="editor" #ckEditorToolbar class="ckEditor"
+  <!-- <ckeditor [editor]="editor" #ckEditorToolbar class="ckEditor"
     [config]="ckEditorConfigs" (keydown)="sendMessage($event)" [(ngModel)]="message">
-  </ckeditor>
+  </ckeditor> -->
+  <quill-editor class="quillEditor" (keydown)="sendMessage($event)" [(ngModel)]="message"></quill-editor>
   <div class="send_button" (click)="sendMessage()">
     <img src="../../../assets/icons/send_button.svg" class="send_button_img">
   </div>

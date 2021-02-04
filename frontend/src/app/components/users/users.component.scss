@@ -5,9 +5,9 @@
   cursor: pointer;
 
   .title{
-    font-size: 24px;
+    font-size: 22px;
     line-height: 30px;
-    font-weight: 360;
+    font-weight: bold;
   }
 
   .msg_arrow{
@@ -15,6 +15,7 @@
     height: 10px;
     margin-right: 10px;
     margin-left: 30px;
+    margin-bottom: 7px;
   }
 
 }
