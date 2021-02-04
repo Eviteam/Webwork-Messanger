@@ -12,16 +12,16 @@ import { MessageService } from 'src/app/services/message/message.service';
 })
 export class SendMessageComponent implements OnInit, AfterViewInit {
 
-  @ViewChild("ckEditorToolbar", { static: false }) public ckEditorToolbar: any
+  // @ViewChild("ckEditorToolbar", { static: false }) public ckEditorToolbar: any
 
   /*CKEditor properties */
-  public editor = ClassicEditorBuild;
-  public ckEditorConfigs: CKEditor5.Config = {
-    toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'imageUpload'],
-    ignoreEmptyParagraph: false,
-    fillEmptyBlocks: false,
-    autoParagraph: true
-  };
+  // public editor = ClassicEditorBuild;
+  // public ckEditorConfigs: CKEditor5.Config = {
+  //   toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'imageUpload'],
+  //   ignoreEmptyParagraph: false,
+  //   fillEmptyBlocks: false,
+  //   autoParagraph: true
+  // };
 
   public message: string = '';
   public messageBody: Message = new Message();
@@ -36,11 +36,11 @@ export class SendMessageComponent implements OnInit, AfterViewInit {
 
   // TODO
   ngAfterViewInit() {
-    this.ckEditorToolbar.change
-      .pipe(debounceTime(5000))
-      .subscribe((event) => {
-        console.log(event)
-      })
+    // this.ckEditorToolbar.change
+    //   .pipe(debounceTime(5000))
+    //   .subscribe((event) => {
+    //     console.log(event)
+    //   })
   }
 
   public sendMessage(event?: any) {
@@ -52,7 +52,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit {
         //   return false
         // }
       // })
-    if (this.message.length) {
+    if (this.message && this.message.length) {
       if (event) {
         if (event.keyCode === 13) {
           if (!event.shiftKey && !event.altKey && !event.ctrlKey) {

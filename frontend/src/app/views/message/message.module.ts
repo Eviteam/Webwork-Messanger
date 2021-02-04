@@ -10,6 +10,43 @@ import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { FormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 
+import { QuillModule } from 'ngx-quill'
+
+const modules = {
+  keyboard: {
+    bindings: {
+        tab: false,
+        handleEnter: {
+            key: 13,
+            handler: function() {
+                // Do nothing
+            }
+        }
+    }
+  },
+  toolbar: [
+    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+    ['blockquote', 'code-block'],
+
+    // [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    // [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+    // [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+    // [{ 'direction': 'rtl' }],                         // text direction
+
+    // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+    // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+    // [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+    // [{ 'font': [] }],
+    // [{ 'align': [] }],
+
+    // ['clean'],                                         // remove formatting button
+
+    ['link', 'image', 'video']                         // link and image, video
+  ]
+};
+
 const routes: Routes = [
   {
     path: '',
@@ -33,7 +70,11 @@ const config: SocketIoConfig = { url: BASE_URL, options: {} };
     RouterModule.forChild(routes),
     CKEditorModule,
     SocketIoModule.forRoot(config),
-    FormsModule
+    FormsModule,
+    QuillModule.forRoot({
+      modules,
+      placeholder: 'Type your message',
+    })
   ],
   exports: [RouterModule]
 })
