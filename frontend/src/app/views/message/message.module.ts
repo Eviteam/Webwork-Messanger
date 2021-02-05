@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 
 import { QuillModule } from 'ngx-quill'
+import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-initialize.service';
 
 const modules = {
   keyboard: {
@@ -24,6 +25,7 @@ const modules = {
         }
     }
   },
+  autoLink: true,
   toolbar: [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
     ['blockquote', 'code-block'],
@@ -76,6 +78,7 @@ const config: SocketIoConfig = { url: BASE_URL, options: {} };
       placeholder: 'Type your message',
     })
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [QuillInitializeService]
 })
 export class MessageModule { }

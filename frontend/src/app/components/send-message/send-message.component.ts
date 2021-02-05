@@ -1,57 +1,28 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
-import * as ClassicEditorBuild from '@ckeditor/ckeditor5-build-classic';
-import { debounceTime } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
 import { Message } from 'src/app/models/message';
 import { MessageService } from 'src/app/services/message/message.service';
+import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-initialize.service';
 
 @Component({
   selector: 'app-send-message',
   templateUrl: './send-message.component.html',
   styleUrls: ['./send-message.component.scss']
 })
-export class SendMessageComponent implements OnInit, AfterViewInit {
-
-  // @ViewChild("ckEditorToolbar", { static: false }) public ckEditorToolbar: any
-
-  /*CKEditor properties */
-  // public editor = ClassicEditorBuild;
-  // public ckEditorConfigs: CKEditor5.Config = {
-  //   toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'imageUpload'],
-  //   ignoreEmptyParagraph: false,
-  //   fillEmptyBlocks: false,
-  //   autoParagraph: true
-  // };
+export class SendMessageComponent implements OnInit {
 
   public message: string = '';
   public messageBody: Message = new Message();
 
   constructor(
-    private messageService: MessageService
+    private messageService: MessageService,
+    private quillInitializeService: QuillInitializeService
   ) { }
 
   ngOnInit(): void {
     this.messageService.setMessageProps().then(data => this.messageBody = data);
   }
 
-  // TODO
-  ngAfterViewInit() {
-    // this.ckEditorToolbar.change
-    //   .pipe(debounceTime(5000))
-    //   .subscribe((event) => {
-    //     console.log(event)
-    //   })
-  }
-
   public sendMessage(event?: any) {
-    // this.ckEditorToolbar.change
-    //   .pipe(debounceTime(5000))
-    //   .subscribe((e) => {
-        // if (event.code === "Enter") {
-        //   console.log(event);
-        //   return false
-        // }
-      // })
     if (this.message && this.message.length) {
       if (event) {
         if (event.keyCode === 13) {

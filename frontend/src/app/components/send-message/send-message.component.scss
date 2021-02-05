@@ -47,15 +47,6 @@
     height: initial;
     max-height: 240px;
   }
-
-  ::ng-deep .ck-editor__editable {
-    border: none;
-  }
-
-  ::ng-deep .ck-focused{
-    border: none !important;
-    box-shadow: none !important;
-  }
   
   ::ng-deep .ql-formats>button {
     color: $ck-button-color;
@@ -79,24 +70,20 @@
     padding-left: 12px;
   }
 
-  ::ng-deep .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-blurred > ul {
-    margin-bottom: 1rem !important;
-  }
-
-  ::ng-deep .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-blurred > ol {
-    margin-bottom: 1rem !important;
-  }
-
-  ::ng-deep .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-focused > ul {
-    margin-bottom: 1rem !important;
-  }
-
-  ::ng-deep .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-focused > ol {
-    margin-bottom: 1rem !important;
-  }
-
   ::ng-deep .ql-editor {
     word-break: break-word;
+  }
+
+  ::ng-deep .ql-link {
+    margin-right: 5px;
+  }
+
+  ::ng-deep .ql-image {
+    margin-right: 5px;
+  }
+
+  ::ng-deep .ql-container{
+    overflow: visible;
   }
 
 }

@@ -33,7 +33,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
         this.newMessage.createdAt = this.current_time;
         this.messageService.allMessages.push(this.newMessage);
         this.newMessageAdded = true;
-        this.scrollToBottom()
+        this.scrollToBottom();
       })
   }
 

@@ -12,7 +12,7 @@
       </div>
       <div class="d-flex align-items-center message_content">
         <img src="../../../assets/icons/user_icon.svg" class="sender_image">
-        <div class="message d-flex" [ngClass]="currentUser == message?.sender[0].id ? 'text-right' : ''"
+        <div class="message d-flex flex-column" [ngClass]="currentUser == message?.sender[0].id ? 'text-right' : ''"
           [innerHtml]="message?.message"></div>
       </div>
     </div>
