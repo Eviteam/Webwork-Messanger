@@ -7,7 +7,6 @@
   display: flex;
   flex-direction: column;
   padding-top: 8px;
-  // justify-content: flex-end;
 }
 
 ::ng-deep .sender_block::-webkit-scrollbar {
@@ -36,14 +35,35 @@
   margin: 16px 26px 16px 38px;
   .msg_info {
     height: 26px;
-    margin-right: 8px;
+    position: relative;
+
+    &_send .time__popover {
+      border-radius: 14px 14px 0 14px;
+      right: calc(100% + 16px);
+      &:after {
+        border-width: 21px 0 0 6px;
+        border-color: transparent transparent transparent $selected-user-background;
+        left: 100%;
+        
+      }
+    }
+
+    &_res .time__popover {
+      border-radius: 14px 14px 14px 0;
+      left: calc(100% + 16px);
+      &:after {
+        border-width: 0 0 21px 6px;
+        border-color: transparent transparent $selected-user-background transparent;
+        right: 100%;
+      }
+    }
 
     .sender_name {
       font-family: 'Proxima';
       font-size: 18px;
       font-weight: bold;
       line-height: 27px;
-      margin: 0 13px 0 10px;
+      margin: 0 10px;
     }
   
     .time {
@@ -51,33 +71,31 @@
       font-weight: normal;
       line-height: 17px;
       cursor: pointer;
-      position: relative;
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%);
+      top: 0;
 
       &__popover {
         opacity: 0;
         color: $color-white;
         min-width: 175px;
-        border-radius: 14px;
         background-color: $selected-user-background;
         position: absolute;
         padding: 8px 14px;
-        right: 20px;
-        top: -40px;
+        bottom: 6px;
         white-space: nowrap;
         transition: opacity .4s ease;
         user-select: none;
         
-        &::after {
+        &:after {
           content: '';
           position: absolute;
-          right: 0;
-          bottom: -8px;
+          bottom: 0;
           display: inline-block;
           width: 0;
           height: 0;
           border-style: solid;
-          border-width: 12px 20px 8px 0;
-          border-color: transparent $selected-user-background transparent transparent;
         }
       }
     }
