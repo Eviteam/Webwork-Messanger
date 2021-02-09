@@ -13,16 +13,6 @@
           </span>
         </span>
       </div>
-      <!-- <div class="d-flex align-items-center msg_info msg_info_res" *ngIf="currentUser == message?.sender[0].id">
-        <p class="sender_name"
-          *ngIf="i == 0 || (messageService?.allMessages[i - 1] && (messageService?.allMessages[i].sender[0].id != messageService?.allMessages[i - 1].sender[0].id))">
-          {{message?.sender[0].firstname}} {{message?.sender[0].lastname}}</p>
-        <span class="time">{{message?.createdAt | date:'shortTime'}}
-          <span class="time__popover">
-            {{message?.createdAt | date: 'medium'}}
-          </span>
-        </span>
-      </div> -->
       <div class="d-flex align-items-center message_content">
         <img src="../../../assets/icons/user_icon.svg" class="sender_image">
         <div class="message d-flex flex-column" [ngClass]="currentUser == message?.sender[0].id ? 'text-right' : ''"
