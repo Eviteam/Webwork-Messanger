@@ -5,6 +5,7 @@ import { LocalStorageService } from 'src/app/services/localStorage/local-storage
 import { MessageService } from 'src/app/services/message/message.service';
 import moment from 'moment';
 
+// ChatHistoryComponent is the message history component
 @Component({
   selector: 'app-chat-history',
   templateUrl: './chat-history.component.html',
@@ -19,7 +20,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public newMessageAdded: boolean = false;
 
   constructor(
-    public messageService: MessageService,
+    public messageService: MessageService, // property messageService is public because it is using in chat-history.component.html
     private activatedRoute: ActivatedRoute,
     private storageService: LocalStorageService
   ) { }
@@ -44,6 +45,11 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  /** 
+   * Listen to socket for get all messages
+   * @param messageBody 
+   * @returns void
+   */
   public getAllMessage(messageBody: Message): void {
     this.messageService.getMessageHistory(messageBody)
       .subscribe((data: any): void => {
@@ -52,6 +58,10 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
       })
   }
 
+  /**
+   * Gets parameter from URL for get selected user's all message data
+   * @returns user_id
+   */
   public getUrlParameter(): Promise<number> {
     return new Promise((res, rej) => {
       this.activatedRoute.params
@@ -59,10 +69,15 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
           this.storageService.setItem('selectedUser', param.id);
           this.messageService.setMessageProps().then(data => this.getAllMessage(data))
           res(param.id)
-        })
+        },
+        err => rej(err))
     })
   }
 
+  /**
+   * Scrolls to bottom in message content
+   * @returns void
+   */
   public scrollToBottom(): void {
     try {
       this.chatContent.nativeElement.scrollTop = this.chatContent.nativeElement.scrollHeight;
