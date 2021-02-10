@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Message } from 'src/app/models/message';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
 import { MessageService } from 'src/app/services/message/message.service';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'app-chat-history',
@@ -27,7 +27,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     this.getUrlParameter();
     this.messageService.getMessage()
-      .subscribe(data => {
+      .subscribe((data: Message): void => {
         this.newMessage = data;
         this.current_time = moment().format();
         this.newMessage.createdAt = this.current_time;
@@ -46,7 +46,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
 
   public getAllMessage(messageBody: Message): void {
     this.messageService.getMessageHistory(messageBody)
-      .subscribe((data: any) => {
+      .subscribe((data: any): void => {
         this.messageService.allMessages = data;
         this.newMessageAdded = true;
       })

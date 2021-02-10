@@ -2,9 +2,6 @@ import { Injectable } from '@angular/core';
 import Quill from 'quill';
 import QuillAutoLink from '../../helpers/quillAutolink';
 
-
-
-
 @Injectable()
 export class QuillInitializeService {
 

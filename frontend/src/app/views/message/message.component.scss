@@ -1,6 +1,5 @@
 .message_block {
   flex-direction: column;
-  // TODO
   overflow-y: hidden;
   overflow-x: unset;
   height: calc(100vh - 90px);
@@ -22,9 +21,7 @@
 }
 
 .chat_content {
-  overflow-y: scroll;
-  overflow-x: unset;
-  flex: 1;
+  height: 100%;
 }
 
 
