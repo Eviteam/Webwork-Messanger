@@ -33,23 +33,21 @@ app.get(`/`, (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/frontend/index.html'))
 });
 
-const server = http.createServer(
-  // {
-  //   key: fs.readFileSync(process.env.KEY, 'utf8'),
-  //   cert: fs.readFileSync(process.env.CERT, 'utf8')
-  // },
+const server = https.createServer(
+  {
+    key: fs.readFileSync(process.env.KEY, 'utf8'),
+    cert: fs.readFileSync(process.env.CERT, 'utf8')
+  },
   app
 );
 
 server.listen(PORT, () => {
-  // webWorkService.getTeamData().then(() => {
-    app.use('/api/current_user', globalUserController);
-    app.use('/api/team', teamController);
-    app.use('/api/users', userController);
-    app.use('/api/channel', channelController);
-    app.use('/api/chat', chatController);
-    console.log(`Server runing on port ${PORT}`);
-  // });
+  app.use('/api/current_user', globalUserController);
+  app.use('/api/team', teamController);
+  app.use('/api/users', userController);
+  app.use('/api/channel', channelController);
+  app.use('/api/chat', chatController);
+  console.log(`Server runing on port ${PORT}`);
 });
 
 // Connect to socket
