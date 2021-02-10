@@ -49,8 +49,9 @@ export class UsersComponent implements OnInit {
     } else {
       this.userService.getAllUsers(this.selectedUser)
         .subscribe((data: Team) => {
-          this.users = data.team.users; 
+          this.users = data.team.users
         })
+      this.selectUser(this.selectedUser);
       this.router.navigateByUrl(`/main/${this.selectedUser}`)
     }
   }

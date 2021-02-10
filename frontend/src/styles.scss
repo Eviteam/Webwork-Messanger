@@ -36,7 +36,18 @@ p, h4 {
 
 ul, ol {
   margin-bottom: 0 !important;
+
   li {
     text-align: left;
   }
+}
+
+pre {
+  padding: 2px 3px 1px !important;
+  border: 1px solid var(--saf-0) !important;
+  border-radius: 3px !important;
+  background-color: rgba(var(--sk_foreground_min,29,28,29),.04) !important;
+  color: #e01e5a !important;
+  display: inline-block !important;
+  margin-bottom: 0 !important;
 }
