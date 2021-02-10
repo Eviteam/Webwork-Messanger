@@ -142,6 +142,7 @@
     background-color: $sender-background-color;
     padding: 13px 9px;
     min-height: 50px;
+    word-break: break-word;
 
     .sender_image {
       display: none;

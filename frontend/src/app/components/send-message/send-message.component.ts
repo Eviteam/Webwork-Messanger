@@ -22,6 +22,11 @@ export class SendMessageComponent implements OnInit {
     this.messageService.setMessageProps().then(data => this.messageBody = data);
   }
 
+  /**
+   * Message sending function
+   * @param event 
+   * @returns void
+   */
   public sendMessage(event?: any) {
     if (this.message && this.message.length) {
       if (event) {
