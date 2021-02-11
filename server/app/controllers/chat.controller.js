@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const connect = require("../helpers/db");
+const multer = require('multer');
 const Channel_ChatSchema = require("../models/Channel_ChatSchema");
 const ChatSchema = require("../models/ChatSchema");
 const Global_UserSchema = require("../models/Global_UserSchema");
 const TeamSchema = require("../models/TeamSchema");
 const webWorkService = require("../services/web-work.service");
+const uploadedFile = require("../services/chat.service");
+const UploadedFileSchema = require("../models/UploadedFileSchema");
 
 // GET CHAT MESSAGES
 router.get(`/:team_id/:user_id/:receiver_id`, (req, res) => {
@@ -70,6 +73,20 @@ router.post(`/send-message/channel`, (req, res) => {
     channelMessages.save();
     res.json({ data });
   })
-})
+});
+
+
+// UPLOAD IMAGE
+router.post(`/uploadFile`, uploadedFile.array('file'), uploadFile);
+
+function uploadFile(req, res) {
+  const fileData = req.files;
+    if(!fileData) {
+      res.status(400).json({ message: 'No file is available!' })
+    }
+    else {
+      res.status(200).json({ message: 'File is uploaded', uploaded: req.files.length });
+    }
+};
 
 module.exports = router

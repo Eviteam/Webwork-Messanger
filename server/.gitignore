@@ -47,3 +47,6 @@ certs
 
 #env
 .env
+
+#uploaded files
+uploads

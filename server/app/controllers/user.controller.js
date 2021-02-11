@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 const webWorkService = require("../services/web-work.service")
 
-// GET ALL USERS
+/**
+ * GET ALL USERS
+ * @returns void
+ */
 router.get(`/:user_id`, (req, res) => {
   const user_id = req.params.user_id;
   webWorkService.getTeamData(user_id).then(data => {
@@ -10,7 +13,10 @@ router.get(`/:user_id`, (req, res) => {
   })
 })
 
-// GET SINGLE USER
+/**
+ * GET SINGLE USER
+ * @returns void
+ */
 router.get(`/single_user/:user_id`, (req, res) => {
   const user_id = req.params.user_id;
   webWorkService.getTeamData(user_id).then(data => {
