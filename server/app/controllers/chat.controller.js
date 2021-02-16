@@ -72,4 +72,27 @@ router.post(`/send-message/channel`, (req, res) => {
   })
 })
 
+// MESSAGE IS SEEN
+router.post(`/isSeen/:team_id/:user_id/:receiver_id`, (req, res) => {
+  const team_id = req.params.team_id;
+  const user_id = req.params.user_id;
+  const receiver_id = req.params.receiver_id;
+  connect.then(db => {
+    webWorkService.getTeamData(user_id).then(data => {
+      const singleUser = data.team.users.find(user => user.id == user_id);
+      ChatSchema.find({ team_id }).then(messages => {
+        messages.map(message => {
+          if ((singleUser.id.toString() == message.sender[0].id.toString() && receiver_id.toString() == message.receiver_id.toString())
+            || (singleUser.id.toString() == message.receiver_id.toString() && receiver_id.toString() == message.sender[0].id.toString())) {
+              message.isSeen = true;
+              const chatSchema = new ChatSchema(message);
+              chatSchema.save();
+            }
+          })
+        res.json(messages)
+      })
+    })
+  })
+})
+
 module.exports = router

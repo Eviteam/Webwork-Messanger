@@ -1,9 +1,3 @@
-const connect = require("../helpers/db");
-const ChatSchema = require("../models/ChatSchema");
-
-// TODO change hardcoded data
-const rooms = ["global", "javascript"];
-
 function connectToSocket(io) {
   io.on('connection', socket => {
 
@@ -18,23 +12,15 @@ function connectToSocket(io) {
     });
 
     socket.on('chatMessage', message => {
-      io.emit('message', message);
-      if (!message.isSeen) {
-        io.emit(`${message.receiver}`, message)
-      }
-      io.sockets.emit('chatMessage', message);
-
-      //save chat to the database
-      // connect.then(db => {
-      //   const chatMessage = new ChatSchema({ message });
-      //   chatMessage.save();
-      // });
+      console.log(message);
+      // io.emit('message', message);
+      // if (!message.isSeen) {
+      //   io.emit(`${message.receiver}`, message)
+      // }
+      io.sockets.emit(`${message.receiver_id}`, message);
     });
-    io.emit('rooms', rooms);
   });
 }
-
 module.exports = {
-  connectToSocket,
-  rooms
+  connectToSocket
 }

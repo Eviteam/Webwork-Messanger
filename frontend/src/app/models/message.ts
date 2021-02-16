@@ -9,6 +9,5 @@ export class Message {
   team_id?: string | number;
   isSeen?: boolean;
   createdAt?: string;
-  updatedAt?: string;
-  isToday?: boolean = false
+  updatedAt?: string
 }

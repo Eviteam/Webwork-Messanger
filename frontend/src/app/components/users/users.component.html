@@ -9,6 +9,11 @@
       <img src="../../../assets/icons/user_icon.svg" class="user_icon">
       <div class="active_status" *ngIf="user?.is_online"></div>
     </div>
-    <p class="user_name">{{user.firstname}} {{user.lastname}}</p>
+    <p class="user_name">
+      {{user.firstname}} {{user.lastname}}
+    </p>
+    <span *ngIf="(user_id == newMsg?.receiver_id) && (!newMsg?.isSeen && user.id == newMsg?.sender[0].id)">
+        {{newMessagesCount}}
+    </span>
   </div>
 </div>

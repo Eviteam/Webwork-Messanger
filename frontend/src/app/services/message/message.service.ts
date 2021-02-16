@@ -3,7 +3,7 @@ import { LocalStorageService } from '../localStorage/local-storage.service';
 import { Socket } from 'ngx-socket-io';
 import { map } from 'rxjs/operators';
 import { Message } from 'src/app/models/message';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ApiService } from '../api.service';
 
 @Injectable({
@@ -17,20 +17,23 @@ export class MessageService {
   public selectedUser: string;
   public allMessages: Message[];
 
+  private newMessage = new BehaviorSubject<Message>(null);
+  public hasNewMessage = this.newMessage.asObservable();
+
   constructor(
     private apiService: ApiService,
     private storageService: LocalStorageService,
     private socket: Socket
   ) { }
 
-  public getMessage(): any {
+  public getMessage(user_id: number | string): any {
     return this.socket
-        .fromEvent("chatMessage")
+        .fromEvent(`${user_id}`)
         .pipe(map((data) => data));
   }
 
-  public sendMessage(message: Message) {
-    this.socket.emit("chatMessage", message);
+  public sendMessage(message: Message): void {
+    this.socket.emit(`chatMessage`, message);
   }
 
   public saveMessage(message: Message): Observable<Message> {
@@ -49,6 +52,14 @@ export class MessageService {
       this.messageBody.team_id = this.team_id;
       resolve(this.messageBody)
     })
+  }
+
+  public getNewMessage(newMessage: Message): void {
+    this.newMessage.next(newMessage); 
+  }
+
+  public setMessageSeen(msgBody: Message): Observable<string> {
+    return this.apiService.post(`/api/chat/isSeen/${msgBody.team_id}/${msgBody.sender[0].id}/${msgBody.receiver_id}`)
   }
 
 }

@@ -27,8 +27,13 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.getUrlParameter();
-    this.messageService.getMessage()
+    this.messageService.getMessage(this.currentUser)
       .subscribe((data: Message): void => {
+        console.log(data, "12");
+        console.log(data.sender[0].id)
+        if (!data.isSeen) {
+          this.messageService.getNewMessage(data)
+        }
         this.newMessage = data;
         this.current_time = moment().format();
         this.newMessage.createdAt = this.current_time;
@@ -54,6 +59,11 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     this.messageService.getMessageHistory(messageBody)
       .subscribe((data: any): void => {
         this.messageService.allMessages = data;
+        data.map(msg => {
+          if (!msg.isSeen) {
+            this.messageService.getNewMessage(msg)
+          }
+        })
         this.newMessageAdded = true;
       })
   }
@@ -70,7 +80,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
           this.messageService.setMessageProps().then(data => this.getAllMessage(data))
           res(param.id)
         },
-        err => rej(err))
+          err => rej(err))
     })
   }
 
@@ -81,7 +91,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public scrollToBottom(): void {
     try {
       this.chatContent.nativeElement.scrollTop = this.chatContent.nativeElement.scrollHeight;
-    } catch(err) { }                 
+    } catch (err) { }
   }
 
 }

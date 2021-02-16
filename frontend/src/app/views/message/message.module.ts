@@ -12,6 +12,10 @@ import { environment } from 'src/environments/environment';
 
 import { QuillModule } from 'ngx-quill'
 import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-initialize.service';
+import Quill from 'quill';
+import { ImageDrop } from 'quill-image-drop-module';
+
+Quill.register('modules/imageDrop', ImageDrop);
 
 const modules = {
   keyboard: {
@@ -25,6 +29,7 @@ const modules = {
         }
     }
   },
+  imageDrop: true,
   autoLink: true,
   toolbar: [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
