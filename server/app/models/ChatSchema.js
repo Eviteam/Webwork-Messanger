@@ -19,6 +19,9 @@ const chatSchema = new Schema({
   },
   isSeen: {
     type: Boolean
+  },
+  filePath: {
+    type: Array
   }
 }, {
   versionKey: false,

@@ -51,4 +51,12 @@ export class MessageService {
     })
   }
 
+  public uploadFile(file: any): Observable<any> {
+    return this.apiService.postFile(`/api/chat/uploadFile`, file)
+  }
+
+  public deleteUploadedFile(fileName: string): Observable<any> {
+    return this.apiService.delete(`/api/chat/uploadedFile/${fileName}`)
+  }
+
 }

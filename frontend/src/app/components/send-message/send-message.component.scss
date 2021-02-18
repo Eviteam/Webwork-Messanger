@@ -3,10 +3,15 @@
 .editor {
   margin: 0 32px 16px 38px;
   display: flex;
+  position: relative;
   
-  .quillEditor {
+  .quillEditor-wrapper {
+    border: 2px solid #B0DAE6;
+    border-right-style: none;
+    border-radius: 13px 0 0 13px;
     flex-grow: 1;
   }
+  
 }
 
 .send_button {
@@ -71,6 +76,10 @@
 
   ::ng-deep .ql-editor {
     word-break: break-word;
+
+    p>img {
+      display: none;
+    }
   }
 
   ::ng-deep .ql-link {
@@ -84,6 +93,14 @@
   ::ng-deep .ql-container{
     // TODO fix
     overflow: visible;
+  }
+
+  ::ng-deep .ql-container.ql-snow {
+    border: none;
+  }
+
+  ::ng-deep .ql-toolbar {
+    border: none;
   }
 
   ::ng-deep .ql-tooltip.ql-flip {
@@ -175,18 +192,64 @@
   }
 
   
-::ng-deep .ql-container.ql-snow::-webkit-scrollbar {
-  width: 8px;
-  border-radius: 4px;
-}
- 
-::ng-deep .ql-container.ql-snow::-webkit-scrollbar-track {
-  display: none;
-}
- 
-::ng-deep .ql-container.ql-snow::-webkit-scrollbar-thumb {
-  background-color: rgba($color: #000000, $alpha: 0.1);
-  border-radius: 4px;
+  ::ng-deep .ql-container.ql-snow::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 4px;
+  }
+  
+  ::ng-deep .ql-container.ql-snow::-webkit-scrollbar-track {
+    display: none;
+  }
+  
+  ::ng-deep .ql-container.ql-snow::-webkit-scrollbar-thumb {
+    background-color: rgba($color: #000000, $alpha: 0.1);
+    border-radius: 4px;
+  }
+
 }
 
+.file_upload_icon {
+  background: transparent;
+  position: absolute;
+  top: 9px;
+  right: 70px;
+  cursor: pointer;
+  
+  &:hover svg {
+    fill: #06c;
+  }
+}
+
+.uploadedFile {
+  width: 62px;
+  height: 62px;
+  border-radius: 6px;
+  position: relative;
+  padding: 12px 14px;
+  box-sizing: content-box;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  &:hover .deleteFile {
+    opacity: 1;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .deleteFile {
+    width: 14px;
+    height: 14px;
+    opacity: 0;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: pointer;
+    transition: opacity 0.4s ease;
+  }
 }

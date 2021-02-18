@@ -14,12 +14,19 @@ const BASE_URL = environment.BASE_URL;
 export class ApiService {
 
   public errorMessage: any;
-  private options = {
+  private options: object = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': `*`
     })
   };
+
+  private fileUploadOptions: object = {
+    headers: new HttpHeaders({
+      // 'Content-Type': 'multipart/form-data',
+      'Access-Control-Allow-Origin': `*`
+    })
+  }
 
   constructor(private httpClient: HttpClient) { }
 
@@ -27,7 +34,7 @@ export class ApiService {
    * Getting some data
    * @param path 
    * @param params 
-   * @returns GET request
+   * @returns GET request body
    */
   public get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
     return this.httpClient.get(`${BASE_URL}${path}`, { params });
@@ -37,7 +44,7 @@ export class ApiService {
    * Creating or posting some data
    * @param path 
    * @param body 
-   * @returns POST request
+   * @returns POST request body
    */
   public post(path: string, body: object = {}): Observable<any> {
     return this.httpClient
@@ -48,10 +55,27 @@ export class ApiService {
   }
 
   /**
+   * Post files
+   * @param path 
+   * @param body 
+   * @returns POST request body
+   */
+
+  public postFile (path: string, body: any): Observable<any> {
+    const payload: FormData = new FormData();
+    payload.append('file', body);
+    return this.httpClient
+      .post(`${BASE_URL}${path}`, payload, this.fileUploadOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  /**
    * Updating data
    * @param path 
    * @param body 
-   * @returns PUT request
+   * @returns PUT request body
    */
   public put(path: string, body: object = {}): Observable<any> {
     return this.httpClient
@@ -61,7 +85,7 @@ export class ApiService {
   /**
    * Deleting data
    * @param path 
-   * @returns DELETE request
+   * @returns DELETE request body
    */
   public delete(path: string): Observable<any> {
     return this.httpClient.delete(`${BASE_URL}${path}`);
