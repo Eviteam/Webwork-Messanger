@@ -7,7 +7,7 @@ import { ChatHistoryComponent } from '../../components/chat-history/chat-history
 import { SendMessageComponent } from '../../components/send-message/send-message.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 
 import { QuillModule } from 'ngx-quill'
@@ -45,7 +45,7 @@ const modules = {
 
     // ['clean'],                                         // remove formatting button
 
-    ['link', 'image', 'video']                         // link and image, video
+    ['link']                         // link and image, video
   ]
 };
 
@@ -65,7 +65,7 @@ const config: SocketIoConfig = { url: BASE_URL, options: {} };
     MessageComponent,
     HeaderComponent,
     ChatHistoryComponent,
-    SendMessageComponent,
+    SendMessageComponent
   ],
   imports: [
     CommonModule,
@@ -76,7 +76,8 @@ const config: SocketIoConfig = { url: BASE_URL, options: {} };
     QuillModule.forRoot({
       modules,
       placeholder: 'Type your message',
-    })
+    }),
+    ReactiveFormsModule
   ],
   exports: [RouterModule],
   providers: [QuillInitializeService]

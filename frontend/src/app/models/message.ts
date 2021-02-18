@@ -8,7 +8,7 @@ export class Message {
   sender_id?: number;
   team_id?: string | number;
   isSeen?: boolean;
+  filePath?: Array<string | ArrayBuffer>;
   createdAt?: string;
-  updatedAt?: string;
-  isToday?: boolean = false
+  updatedAt?: string
 }

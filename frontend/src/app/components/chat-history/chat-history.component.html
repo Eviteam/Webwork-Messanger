@@ -16,8 +16,16 @@
         </div>
         <div class="d-flex align-items-center message_content">
           <img src="../../../assets/icons/user_icon.svg" class="sender_image">
-          <div class="message d-flex flex-column" [ngClass]="currentUser == message?.sender[0].id ? 'text-right' : ''"
-            [innerHtml]="message?.message"></div>
+          <div class="">
+            <div class="message d-flex flex-column" [ngClass]="currentUser == message?.sender[0].id ? 'text-right' : ''"
+              [innerHtml]="message?.message">
+            </div>
+            <div class="uploadedFiles mt-2 d-flex justify-content-end flex-wrap">
+              <div class="image_part" *ngFor="let src of message.filePath">
+                <img [src]="src" alt="">
+              </div>
+            </div>
+          </div>
             <!-- TODO fix -->
             <!-- [innerHtml]="message?.message.replaceAll('<p><br></p>', ' ').trim().replaceAll(' ', '<p><br></p>')"></div> -->
         </div>

@@ -9,6 +9,9 @@ const TeamSchema = require("../models/TeamSchema");
 const webWorkService = require("../services/web-work.service");
 const uploadedFile = require("../services/chat.service");
 const UploadedFileSchema = require("../models/UploadedFileSchema");
+const fs = require('fs');
+const path = require('path')
+const directoryPath = path.join(__dirname, '../../uploads')
 
 // GET CHAT MESSAGES
 router.get(`/:team_id/:user_id/:receiver_id`, (req, res) => {
@@ -76,17 +79,21 @@ router.post(`/send-message/channel`, (req, res) => {
 });
 
 
-// UPLOAD IMAGE
-router.post(`/uploadFile`, uploadedFile.array('file'), uploadFile);
-
+// UPLOAD FILE
+router.post(`/uploadFile`, uploadedFile.single('file'), uploadFile);
 function uploadFile(req, res) {
-  const fileData = req.files;
-    if(!fileData) {
-      res.status(400).json({ message: 'No file is available!' })
-    }
-    else {
-      res.status(200).json({ message: 'File is uploaded', uploaded: req.files.length });
-    }
+  const fileData = req.file;
+  !fileData
+    ? res.status(400).json({ message: 'No file is available!' }) 
+    : res.status(200).json({ message: 'File is uploaded', uploaded: req.file.length, fileData });
 };
+
+// DELETE UPLOADED FILE
+router.delete(`/uploadedFile/:fileName`, (req, res) => {
+  const fileName = req.params.fileName;
+  fs.unlink(`${directoryPath}/${fileName}`, function(err) {
+    err ? res.status(404).send(err) : res.status(200).send({message: 'Success'})
+  });
+})
 
 module.exports = router

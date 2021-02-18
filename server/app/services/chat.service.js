@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
     cb(null, 'uploads')
   }, 
   filename: function (req, file, cb) {
-    const filePath = `images/${Date.now()}-${file.originalname}`
+    const filePath = `${Date.now()}-${file.originalname}`
     const uploadedFileSchema = new UploadedFileSchema({filePath});
     uploadedFileSchema.save().then(() => {
       cb(null, filePath)
