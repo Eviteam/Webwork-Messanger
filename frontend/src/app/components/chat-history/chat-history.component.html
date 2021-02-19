@@ -22,7 +22,7 @@
             </div>
             <div class="uploadedFiles mt-2 d-flex justify-content-end flex-wrap">
               <div class="image_part" *ngFor="let src of message.filePath">
-                <img [src]="src" alt="">
+                <img [src]="sanitizer.bypassSecurityTrustUrl(src)" alt="">
               </div>
             </div>
           </div>

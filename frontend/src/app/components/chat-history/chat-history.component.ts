@@ -4,6 +4,7 @@ import { Message } from 'src/app/models/message';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
 import { MessageService } from 'src/app/services/message/message.service';
 import moment from 'moment';
+import { DomSanitizer } from '@angular/platform-browser';
 
 // ChatHistoryComponent is the message history component
 @Component({
@@ -22,7 +23,8 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   constructor(
     public messageService: MessageService, // property messageService is public because it is using in chat-history.component.html
     private activatedRoute: ActivatedRoute,
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
+    public sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
