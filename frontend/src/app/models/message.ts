@@ -9,6 +9,7 @@ export class Message {
   team_id?: string | number;
   isSeen?: boolean;
   filePath?: Array<string | ArrayBuffer>;
+  room?: string | number;
   createdAt?: string;
   updatedAt?: string
 }

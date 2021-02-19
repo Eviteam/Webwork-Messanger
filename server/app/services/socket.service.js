@@ -1,9 +1,3 @@
-const connect = require("../helpers/db");
-const ChatSchema = require("../models/ChatSchema");
-
-// TODO change hardcoded data
-const rooms = ["global", "javascript"];
-
 function connectToSocket(io) {
   io.on('connection', socket => {
 
@@ -17,24 +11,27 @@ function connectToSocket(io) {
       io.emit('message', 'A user has left the chat');
     });
 
-    socket.on('chatMessage', message => {
-      io.emit('message', message);
-      if (!message.isSeen) {
-        io.emit(`${message.receiver}`, message)
-      }
-      io.sockets.emit('chatMessage', message);
-
-      //save chat to the database
-      // connect.then(db => {
-      //   const chatMessage = new ChatSchema({ message });
-      //   chatMessage.save();
-      // });
-    });
-    io.emit('rooms', rooms);
+    // socket.on('join', function (room) {
+    //   console.log(room, "room")
+    //   socket.join(room);
+    //   socket.room = room;
+      socket.on('chatMessage', message => {
+        console.log(message, "44")
+        if ((message.sender[0].id == message.room && message.receiver_id == message.sender_id)
+             || (message.sender[0].id == message.sender_id && message.receiver_id == message.room)) {
+          // io.sockets.in(message.room).emit('chatMessage', message);
+          io.sockets.emit('chatMessage', message);
+        }
+        // io.emit('message', message);
+        // if (!message.isSeen) {
+        //   io.emit(`${message.receiver}`, message)
+        // }
+        // io.sockets.emit('chatMessage', message);
+      });
+    // })
   });
 }
 
 module.exports = {
-  connectToSocket,
-  rooms
+  connectToSocket
 }

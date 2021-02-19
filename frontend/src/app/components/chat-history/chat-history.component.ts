@@ -16,6 +16,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   @ViewChild('chatContent') private chatContent: ElementRef;
 
   public currentUser: string = this.storageService.getItem('user_id');
+  public selectedUser: string = this.storageService.getItem('selectedUser');
   public current_time: string;
   public newMessage: Message;
   public newMessageAdded: boolean = false;
@@ -29,8 +30,9 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.getUrlParameter();
-    this.messageService.getMessage()
+    this.messageService.getMessage(this.selectedUser)
       .subscribe((data: Message): void => {
+        console.log(data, '96')
         this.newMessage = data;
         this.current_time = moment().format();
         this.newMessage.createdAt = this.current_time;

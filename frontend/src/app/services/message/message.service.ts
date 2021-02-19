@@ -23,13 +23,15 @@ export class MessageService {
     private socket: Socket
   ) { }
 
-  public getMessage(): any {
+  public getMessage(user_id: string | number): any {
+    // this.socket.emit('join', user_id)
     return this.socket
         .fromEvent("chatMessage")
         .pipe(map((data) => data));
   }
 
   public sendMessage(message: Message) {
+    console.log(message, "message")
     this.socket.emit("chatMessage", message);
   }
 
