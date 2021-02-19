@@ -17,13 +17,14 @@ export class SendMessageComponent implements OnInit {
   public messageBody: Message = new Message();
   public filePaths: Array<string | ArrayBuffer> = [];
   public uploadedFilePaths: Array<string | ArrayBuffer> = [];
-  public formData: FormGroup
+  public formData: FormGroup;
+  public uploadedFileType: SafeResourceUrl;
 
   constructor(
     private messageService: MessageService,
     private quillInitializeService: QuillInitializeService,
     private fb: FormBuilder,
-    private sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -100,9 +101,9 @@ export class SendMessageComponent implements OnInit {
           const reader = new FileReader();
           reader.readAsDataURL(item);
           reader.onload = () => {
+            this.uploadedFileType = item.type;
             this.formData.get('files').value.push(item);
-            const safeSrc: SafeResourceUrl = this.sanitizer.bypassSecurityTrustHtml(reader.result.toString())
-            this.filePaths.push(safeSrc['changingThisBreaksApplicationSecurity']);
+            this.setSafeSvgFormat(reader.result)
           };
         }
       })
@@ -118,6 +119,16 @@ export class SendMessageComponent implements OnInit {
     this.filePaths.splice(index, 1);
     this.messageService.deleteUploadedFile(this.uploadedFilePaths[index]['fileData'].filename)
       .subscribe(data => this.uploadedFilePaths.splice(index, 1))
+  }
+
+  /**
+   * Setting svg format file to safely
+   * @param file
+   * @returns void
+   */
+  public setSafeSvgFormat(file: string | ArrayBuffer): void {
+    this.uploadedFileType = this.sanitizer.bypassSecurityTrustUrl(file.toString());
+    this.filePaths.push(this.uploadedFileType['changingThisBreaksApplicationSecurity']);
   }
 
   // convenience getter for easy access to form fields
