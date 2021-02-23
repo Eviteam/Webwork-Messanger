@@ -79,6 +79,7 @@ export class SendMessageComponent implements OnInit {
    * @returns void
    */
   public sendMessage(messageBody: Message): void {
+    this.currentUser = this.storageService.getItem('selectedUser');
     messageBody.message = this.message;
     this.messageService.saveMessage(messageBody)
       .pipe(finalize(() => {
@@ -87,8 +88,6 @@ export class SendMessageComponent implements OnInit {
         messageBody.filePath = []
       }))
       .subscribe((message: Message) => {
-        console.log(message,'45')
-        console.log(this.selectedUser, 'user');    
         message['data'].room = this.storageService.getItem('selectedUser');
         message['data'].sender_id = this.storageService.getItem('user_id');
         this.messageService.sendMessage(message['data']);

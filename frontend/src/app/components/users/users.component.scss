@@ -60,6 +60,23 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    &_message_count {
+      width: 27px;
+      height: 20px;
+      border-radius: 50%;
+      margin-left: 2px;
+      background-color: $new-message-count-color;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: rotate(-51.5deg);
+
+      & p {
+        color: $white;
+        transform: rotate(51deg);
+      }
+    }
   }
 
   .single_user:hover {

@@ -3,7 +3,7 @@ import { LocalStorageService } from '../localStorage/local-storage.service';
 import { Socket } from 'ngx-socket-io';
 import { map } from 'rxjs/operators';
 import { Message } from 'src/app/models/message';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ApiService } from '../api.service';
 
 @Injectable({
@@ -16,6 +16,8 @@ export class MessageService {
   public team_id: string = this.storageService.getItem('team_id');
   public selectedUser: string;
   public allMessages: Message[];
+  private message = new BehaviorSubject<any>(null);
+  public newMessage = this.message.asObservable();
 
   constructor(
     private apiService: ApiService,
@@ -31,7 +33,6 @@ export class MessageService {
   }
 
   public sendMessage(message: Message) {
-    console.log(message, "message")
     this.socket.emit("chatMessage", message);
   }
 
@@ -46,9 +47,9 @@ export class MessageService {
   public setMessageProps(): Promise<Message> {
     return new Promise((resolve, reject) => {
       this.selectedUser = this.storageService.getItem('selectedUser');
-      this.messageBody.sender = Number(this.user_id);
+      this.messageBody.sender = +this.storageService.getItem('user_id');
       this.messageBody.receiver_id = this.selectedUser;
-      this.messageBody.team_id = this.team_id;
+      this.messageBody.team_id = this.storageService.getItem('team_id');
       resolve(this.messageBody)
     })
   }
@@ -59,6 +60,18 @@ export class MessageService {
 
   public deleteUploadedFile(fileName: string): Observable<any> {
     return this.apiService.delete(`/api/chat/uploadedFile/${fileName}`)
+  }
+
+  public getUnseenMessages(team_id: string, user_id: string): Observable<any> {
+    return this.apiService.get(`/api/chat/unseen/messages/${team_id}/${user_id}`)
+  }
+
+  public setMessageIsRead(team_id: string, user_id: string, sender_id: string): Observable<any> {
+    return this.apiService.post(`/api/chat/messages/seen/${team_id}/${user_id}/${sender_id}`)
+  }
+
+  public getNewMessage(newMessage: any): void {
+    this.message.next(newMessage); 
   }
 
 }

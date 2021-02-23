@@ -23,23 +23,23 @@ router.get(`/:team_id/:user_id/:receiver_id`, (req, res) => {
     //   if (!team) {
     //     res.status(404).send('Not found');
     //   } else {
-        Global_UserSchema.find({}).then(currentUser => {
-          if (currentUser.length) {
-            webWorkService.getTeamData(user_id).then(data => {
-              const singleUser = data.team.users.find(user => user.id == user_id);
-              ChatSchema.find({ team_id }).then(messages => {
-                const allMessages = [];
-                messages.map(message => {
-                  if ((singleUser.id.toString() == message.sender[0].id.toString() && receiver_id.toString() == message.receiver_id.toString())
-                    || (singleUser.id.toString() == message.receiver_id.toString() && receiver_id.toString() == message.sender[0].id.toString())) {
-                    allMessages.push(message);
-                  }
-                })
-                res.send(allMessages)
-              })
+    Global_UserSchema.find({}).then(currentUser => {
+      if (currentUser.length) {
+        webWorkService.getTeamData(user_id).then(data => {
+          const singleUser = data.team.users.find(user => user.id == user_id);
+          ChatSchema.find({ team_id }).then(messages => {
+            const allMessages = [];
+            messages.map(message => {
+              if ((singleUser.id.toString() == message.sender[0].id.toString() && receiver_id.toString() == message.receiver_id.toString())
+                || (singleUser.id.toString() == message.receiver_id.toString() && receiver_id.toString() == message.sender[0].id.toString())) {
+                allMessages.push(message);
+              }
             })
-          }
+            res.send(allMessages)
+          })
         })
+      }
+    })
     //   }
     // })
   })
@@ -55,6 +55,7 @@ router.post(`/send-message`, (req, res) => {
       if (team_id == val.team.team_id) {
         const singleUser = val.team.users.find(user => user.id == user_id);
         data.sender = [singleUser];
+        data.sender_id = singleUser.id
         if (!data.isSeen) {
           data.isSeen = false;
         }
@@ -84,16 +85,68 @@ router.post(`/uploadFile`, uploadedFile.single('file'), uploadFile);
 function uploadFile(req, res) {
   const fileData = req.file;
   !fileData
-    ? res.status(400).json({ message: 'No file is available!' }) 
+    ? res.status(400).json({ message: 'No file is available!' })
     : res.status(200).json({ message: 'File is uploaded', uploaded: req.file.length, fileData });
 };
 
 // DELETE UPLOADED FILE
 router.delete(`/uploadedFile/:fileName`, (req, res) => {
   const fileName = req.params.fileName;
-  fs.unlink(`${directoryPath}/${fileName}`, function(err) {
-    err ? res.status(404).send(err) : res.status(200).send({message: 'Success'})
+  fs.unlink(`${directoryPath}/${fileName}`, function (err) {
+    err ? res.status(404).send(err) : res.status(200).send({ message: 'Success' })
   });
+})
+
+// GET UNSEEN MESSAGES
+router.get(`/unseen/messages/:team_id/:user_id`, (req, res) => {
+  const team_id = req.params.team_id;
+  const user_id = req.params.user_id;
+  const unseenMsgs = {}
+  connect.then(db => {
+    ChatSchema.find({ team_id, receiver_id: user_id, isSeen: false })
+      .then(data => {
+        data.map(item => {
+          if (unseenMsgs && !unseenMsgs[item.sender[0].id]) {
+            unseenMsgs[item.sender[0].id] = 1
+          } else {
+            unseenMsgs[item.sender[0].id]++
+          }
+        })
+        res.json(unseenMsgs)
+      })
+  })
+})
+
+// SET MESSAGES SEEN
+router.post(`/messages/seen/:team_id/:user_id/:sender_id`, (req, res) => {
+  const team_id = req.params.team_id;
+  const user_id = req.params.user_id;
+  const sender_id = req.params.sender_id
+  connect.then(db => {
+    ChatSchema.find({ team_id, isSeen: false })
+      .then(data => {
+        data.map(async (message) => {
+          if ((message.sender_id == user_id && sender_id == message.receiver_id) 
+                || (message.receiver_id == user_id && sender_id == message.sender_id)) {
+            const result = await ChatSchema.updateMany(
+              {
+                _id: message._id
+              },
+              {
+                $set: {
+                  isSeen: true
+                }
+              },
+              {
+                upsert: true
+              }
+            ).then(() => res.json({message: 'success'}))            
+          } else {
+            // res.json({message: 'You have no unread messages'})
+          }
+        })
+      })
+  })
 })
 
 module.exports = router

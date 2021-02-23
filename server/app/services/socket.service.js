@@ -16,7 +16,6 @@ function connectToSocket(io) {
     //   socket.join(room);
     //   socket.room = room;
       socket.on('chatMessage', message => {
-        console.log(message, "44")
         if ((message.sender[0].id == message.room && message.receiver_id == message.sender_id)
              || (message.sender[0].id == message.sender_id && message.receiver_id == message.room)) {
           // io.sockets.in(message.room).emit('chatMessage', message);

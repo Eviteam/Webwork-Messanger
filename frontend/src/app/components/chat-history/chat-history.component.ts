@@ -20,6 +20,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public current_time: string;
   public newMessage: Message;
   public newMessageAdded: boolean = false;
+  public unSeenMessages: Message[]
 
   constructor(
     public messageService: MessageService, // property messageService is public because it is using in chat-history.component.html
@@ -29,17 +30,24 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
-    this.getUrlParameter();
-    this.messageService.getMessage(this.selectedUser)
-      .subscribe((data: Message): void => {
-        console.log(data, '96')
-        this.newMessage = data;
-        this.current_time = moment().format();
-        this.newMessage.createdAt = this.current_time;
-        this.messageService.allMessages.push(this.newMessage);
-        this.newMessageAdded = true;
-        this.scrollToBottom();
-      })
+    this.getUrlParameter().then(param => {
+      this.messageService.getMessage(param)
+        .subscribe((data: Message): void => {
+          this.selectedUser = this.storageService.getItem('selectedUser');
+          if (data.sender_id.toString() == this.selectedUser && data.room == this.storageService.getItem('user_id')
+            || data.sender_id.toString() == this.storageService.getItem('user_id') && data.room == this.selectedUser) {
+            this.newMessage = data;
+            this.newMessage.isSeen = true;
+            this.current_time = moment().format();
+            this.newMessage.createdAt = this.current_time;
+            this.messageService.allMessages.push(this.newMessage);
+            this.newMessageAdded = true;
+            this.scrollToBottom();
+          } else {
+            this.messageService.getNewMessage(data)
+          }
+        })
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -74,7 +82,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
           this.messageService.setMessageProps().then(data => this.getAllMessage(data))
           res(param.id)
         },
-        err => rej(err))
+          err => rej(err))
     })
   }
 
@@ -85,7 +93,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public scrollToBottom(): void {
     try {
       this.chatContent.nativeElement.scrollTop = this.chatContent.nativeElement.scrollHeight;
-    } catch(err) { }                 
+    } catch (err) { }
   }
 
 }
