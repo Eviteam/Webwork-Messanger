@@ -11,6 +11,9 @@ const chatSchema = new Schema({
   sender: {
     type: Object
   },
+  sender_id: {
+    type: String
+  },
   channel: {
     type: String
   },

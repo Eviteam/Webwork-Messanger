@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { finalize } from 'rxjs/operators';
 import { Message } from 'src/app/models/message';
+import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
 import { MessageService } from 'src/app/services/message/message.service';
 import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-initialize.service';
 
@@ -19,12 +20,15 @@ export class SendMessageComponent implements OnInit {
   public uploadedFilePaths: Array<string | ArrayBuffer> = [];
   public formData: FormGroup;
   public uploadedFileType: SafeResourceUrl;
+  public selectedUser: string;
+  public currentUser: string;
 
   constructor(
     private messageService: MessageService,
     private quillInitializeService: QuillInitializeService,
     private fb: FormBuilder,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer, // property sanitizer is public because it is using in send-message.component.html
+    private storageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {
@@ -75,6 +79,7 @@ export class SendMessageComponent implements OnInit {
    * @returns void
    */
   public sendMessage(messageBody: Message): void {
+    this.currentUser = this.storageService.getItem('selectedUser');
     messageBody.message = this.message;
     this.messageService.saveMessage(messageBody)
       .pipe(finalize(() => {
@@ -83,6 +88,8 @@ export class SendMessageComponent implements OnInit {
         messageBody.filePath = []
       }))
       .subscribe((message: Message) => {
+        message['data'].room = this.storageService.getItem('selectedUser');
+        message['data'].sender_id = this.storageService.getItem('user_id');
         this.messageService.sendMessage(message['data']);
       })
   }

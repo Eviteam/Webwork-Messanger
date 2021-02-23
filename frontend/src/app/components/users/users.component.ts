@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 import { Team } from 'src/app/models/team';
 import { User } from 'src/app/models/user';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
+import { MessageService } from 'src/app/services/message/message.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -14,20 +16,26 @@ export class UsersComponent implements OnInit {
 
   public hideUsers: boolean = false;
   public user_id: string = this.storageService.getItem('user_id');
+  public team_id: string = this.storageService.getItem('team_id');
   public users: User[];
   public userIsSelected: boolean = false;
   public selectedUser: string = this.storageService.getItem('selectedUser')
     ? this.storageService.getItem('selectedUser')
     : null;
+  public userMessages: any;
+  public unreadMessageCount: any;
+  public messageIsRead: boolean = false;
 
   constructor(
     private userService: UserService,
     private storageService: LocalStorageService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
+    this.getUnseenMessages(this.team_id, this.user_id);
     if (!this.storageService.getItem('selectedUser')) {
       this.activatedRoute.queryParams
         .subscribe(param => {
@@ -54,17 +62,38 @@ export class UsersComponent implements OnInit {
       this.selectUser(this.selectedUser);
       this.router.navigateByUrl(`/main/${this.selectedUser}`)
     }
+    this.messageService.newMessage
+      .subscribe(newMessage => {
+        if (newMessage) {
+          this.messageIsRead = false;
+          this.getUnseenMessages(newMessage?.team_id, newMessage?.receiver_id)
+        }
+      })
   }
 
-  public hideOrShowContent() {
+  public hideOrShowContent(): void {
     this.hideUsers = !this.hideUsers
   }
 
-  public selectUser(user_id: string) {
+  public selectUser(user_id: string): void {
     this.userIsSelected = true;
     this.selectedUser = user_id;
     this.storageService.setItem('selectedUser', this.selectedUser);
+    this.messageService.setMessageIsRead(this.team_id, this.user_id, this.selectedUser)
+      .subscribe(data => {
+        if (data.message === 'success') {
+          this.messageIsRead = true
+        }
+      })
     this.router.navigateByUrl(`/main/${this.selectedUser}`)
+  }
+
+  public getUnseenMessages(team_id: string, user_id: string): void {
+    this.messageService.getUnseenMessages(team_id, user_id)
+      .subscribe(data => {
+        this.userMessages = Object.keys(data);
+        this.unreadMessageCount = data;
+      })
   }
 
 }

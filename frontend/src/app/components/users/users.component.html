@@ -10,5 +10,11 @@
       <div class="active_status" *ngIf="user?.is_online"></div>
     </div>
     <p class="user_name">{{user.firstname}} {{user.lastname}}</p>
+    <div class="single_user_message_count" [ngClass]="messageIsRead ? 'd-none' : ''"
+      *ngIf="userMessages?.includes(user.id.toString()) 
+        && user.id.toString() !== user_id 
+        && user.id.toString() !== selectedUser">
+      <p class="mb-0">{{unreadMessageCount[user.id]}}</p>
+    </div>
   </div>
 </div>
