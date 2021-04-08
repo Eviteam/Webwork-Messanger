@@ -108,8 +108,10 @@ router.get(`/unseen/messages/:team_id/:user_id`, (req, res) => {
         data.map(item => {
           if (unseenMsgs && !unseenMsgs[item.sender[0].id]) {
             unseenMsgs[item.sender[0].id] = 1
+            unseenMsgs['team_id'] = team_id
           } else {
             unseenMsgs[item.sender[0].id]++
+            unseenMsgs['team_id'] = team_id
           }
         })
         res.json(unseenMsgs)
@@ -140,7 +142,9 @@ router.post(`/messages/seen/:team_id/:user_id/:sender_id`, (req, res) => {
               {
                 upsert: true
               }
-            ).then(() => res.json({message: 'success'}))            
+            )
+            res.json({message: 'success'})
+            // .then(() => res.json({message: 'success'})).catch(err => console.log(err, 'error'))
           } else {
             // res.json({message: 'You have no unread messages'})
           }
