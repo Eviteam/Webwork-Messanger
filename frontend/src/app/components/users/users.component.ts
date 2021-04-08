@@ -35,6 +35,8 @@ export class UsersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.team_id = this.storageService.getItem('team_id');
+    this.user_id = this.storageService.getItem('user_id');
     this.getUnseenMessages(this.team_id, this.user_id);
     if (!this.storageService.getItem('selectedUser')) {
       this.activatedRoute.queryParams
@@ -46,7 +48,7 @@ export class UsersComponent implements OnInit {
                 this.selectUser(param.user_id)
               })
           } else {
-            const user_id = this.storageService.getItem('selectedUser');
+            const user_id = this.storageService.getItem('user_id');
             this.userService.getAllUsers(user_id)
             .subscribe((data: Team) => {
               this.users = data.team.users;
@@ -55,7 +57,8 @@ export class UsersComponent implements OnInit {
           }
         })      
     } else {
-      this.userService.getAllUsers(this.selectedUser)
+      const user_id = this.storageService.getItem('user_id');
+      this.userService.getAllUsers(user_id)
         .subscribe((data: Team) => {
           this.users = data.team.users
         })
@@ -79,6 +82,7 @@ export class UsersComponent implements OnInit {
     this.userIsSelected = true;
     this.selectedUser = user_id;
     this.storageService.setItem('selectedUser', this.selectedUser);
+    this.team_id = this.storageService.getItem('team_id');
     this.messageService.setMessageIsRead(this.team_id, this.user_id, this.selectedUser)
       .subscribe(data => {
         if (data.message === 'success') {
@@ -89,10 +93,13 @@ export class UsersComponent implements OnInit {
   }
 
   public getUnseenMessages(team_id: string, user_id: string): void {
+    const current_team = this.storageService.getItem('team_id')
     this.messageService.getUnseenMessages(team_id, user_id)
       .subscribe(data => {
-        this.userMessages = Object.keys(data);
-        this.unreadMessageCount = data;
+        if (team_id == current_team) {
+          this.userMessages = Object.keys(data);
+          this.unreadMessageCount = data;
+        }
       })
   }
 
