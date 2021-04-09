@@ -9,6 +9,6 @@ import { AppService } from './services/app/app.service';
 export class AppComponent {
 
   constructor(private appService: AppService) {
-    this.appService.setCurrenUser()
+    // this.appService.setCurrenUser()
   }
 }

@@ -1,8 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MainComponent } from './components/main.component';
+import { LoaderComponent } from './views/loader/loader.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    component: LoaderComponent
+  },
   {
     path: 'main',
     component: MainComponent,

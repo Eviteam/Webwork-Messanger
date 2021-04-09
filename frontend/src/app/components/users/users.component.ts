@@ -37,33 +37,34 @@ export class UsersComponent implements OnInit {
   ngOnInit(): void {
     this.team_id = this.storageService.getItem('team_id');
     this.user_id = this.storageService.getItem('user_id');
+    const selectedUser = this.storageService.getItem('selectedUser');
     this.getUnseenMessages(this.team_id, this.user_id);
-    if (!this.storageService.getItem('selectedUser')) {
+    if (!selectedUser) {
       this.activatedRoute.queryParams
         .subscribe(param => {
           if (param.user_id) {
             this.userService.getAllUsers(param.user_id)
               .subscribe((data: Team) => {
                 this.users = data.team.users;
+                this.storageService.setItem('team_id', data.team.team_id)
                 this.selectUser(param.user_id)
               })
           } else {
-            const user_id = this.storageService.getItem('user_id');
-            this.userService.getAllUsers(user_id)
-            .subscribe((data: Team) => {
-              this.users = data.team.users;
-              this.selectUser(user_id)
-            })
+            this.userService.getAllUsers(this.user_id)
+              .subscribe((data: Team) => {
+                this.users = data.team.users;
+                this.storageService.setItem('team_id', data.team.team_id)
+                this.selectUser(this.user_id)
+              })
           }
         })      
     } else {
-      const user_id = this.storageService.getItem('user_id');
-      this.userService.getAllUsers(user_id)
+      this.userService.getAllUsers(this.user_id)
         .subscribe((data: Team) => {
-          this.users = data.team.users
+          this.users = data.team.users;
+          this.storageService.setItem('team_id', data.team.team_id)
         })
-      this.selectUser(this.selectedUser);
-      this.router.navigateByUrl(`/main/${this.selectedUser}`)
+      this.selectUser(selectedUser);
     }
     this.messageService.newMessage
       .subscribe(newMessage => {
