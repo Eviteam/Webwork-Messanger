@@ -23,8 +23,10 @@ export class AppService {
             .subscribe(
               data => {
                 this.storageService.setItem('team_id', param.team_id);
-                this.storageService.setItem('user_id', param.user_id)
-                this.storageService.setItem('selectedUser', param.user_id)
+                this.storageService.setItem('user_id', param.user_id);
+                if (!this.storageService.getItem('selectedUser')) {
+                  this.storageService.setItem('selectedUser', param.user_id);
+                }
                 const team_id = this.storageService.getItem('team_id')
                 const user_id = this.storageService.getItem('user_id')
                 const selectedUser = this.storageService.getItem('selectedUser')

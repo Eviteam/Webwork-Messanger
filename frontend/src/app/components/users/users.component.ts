@@ -62,7 +62,13 @@ export class UsersComponent implements OnInit {
       this.userService.getAllUsers(this.user_id)
         .subscribe((data: Team) => {
           this.users = data.team.users;
-          this.storageService.setItem('team_id', data.team.team_id)
+          this.storageService.setItem('team_id', data.team.team_id);
+          console.log(data.team.users, 'users', selectedUser);
+          const userIds = data.team.users.map(user => user.id);
+          console.log(this.user_id, "1212")
+          if (!userIds.includes(+selectedUser)) {
+            this.selectUser(this.user_id)
+          }
         })
       this.selectUser(selectedUser);
     }
