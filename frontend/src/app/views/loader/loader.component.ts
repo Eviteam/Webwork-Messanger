@@ -17,7 +17,6 @@ export class LoaderComponent implements OnInit {
   ngOnInit(): void {
     this.appService.setCurrenUser()
       .then((data: any) =>  {
-        console.log(data, "data")
         this.router.navigateByUrl(`/main/${data.selectedUser}`)
       })
       .catch(err => console.log(err, "err"))
