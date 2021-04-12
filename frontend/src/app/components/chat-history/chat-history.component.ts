@@ -34,10 +34,14 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
       this.messageService.getMessage(param)
         .subscribe((data: Message): void => {
           this.selectedUser = this.storageService.getItem('selectedUser');
-          if (data.sender_id.toString() == this.selectedUser && data.room == this.storageService.getItem('user_id')
-            || data.sender_id.toString() == this.storageService.getItem('user_id') && data.room == this.selectedUser) {
+          const team_id = this.storageService.getItem('team_id')
+          if ((data.sender_id.toString() == this.selectedUser && data.room == this.storageService.getItem('user_id')
+              || data.sender_id.toString() == this.storageService.getItem('user_id') && data.room == this.selectedUser)
+              && data.team_id == team_id) {
             this.newMessage = data;
-            this.newMessage.isSeen = true;
+            if (this.newMessage.sender_id == +this.selectedUser) {
+              this.newMessage.isSeen = true;
+            }
             this.current_time = moment().format();
             this.newMessage.createdAt = this.current_time;
             this.messageService.allMessages.push(this.newMessage);
