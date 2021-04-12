@@ -15,8 +15,8 @@ import { UserService } from 'src/app/services/user/user.service';
 export class UsersComponent implements OnInit {
 
   public hideUsers: boolean = false;
-  public user_id: string = this.storageService.getItem('user_id');
-  public team_id: string = this.storageService.getItem('team_id');
+  public user_id: string;
+  public team_id: string;
   public users: User[];
   public userIsSelected: boolean = false;
   public selectedUser: string = this.storageService.getItem('selectedUser')
@@ -63,9 +63,7 @@ export class UsersComponent implements OnInit {
         .subscribe((data: Team) => {
           this.users = data.team.users;
           this.storageService.setItem('team_id', data.team.team_id);
-          console.log(data.team.users, 'users', selectedUser);
           const userIds = data.team.users.map(user => user.id);
-          console.log(this.user_id, "1212")
           if (!userIds.includes(+selectedUser)) {
             this.selectUser(this.user_id)
           }
