@@ -120,36 +120,30 @@ router.get(`/unseen/messages/:team_id/:user_id`, (req, res) => {
 })
 
 // SET MESSAGES SEEN
-router.post(`/messages/seen/:team_id/:user_id/:sender_id`, (req, res) => {
+router.put(`/messages/seen/:team_id/:user_id/:sender_id`, (req, res) => {
   const team_id = req.params.team_id;
   const user_id = req.params.user_id;
-  const sender_id = req.params.sender_id
+  const sender_id = req.params.sender_id;
   connect.then(db => {
-    ChatSchema.find({ team_id, isSeen: false })
-      .then(data => {
-        data.map(async (message) => {
-          if ((message.sender_id == user_id && sender_id == message.receiver_id) 
-                || (message.receiver_id == user_id && sender_id == message.sender_id)) {
-            const result = await ChatSchema.updateMany(
-              {
-                _id: message._id
-              },
-              {
-                $set: {
-                  isSeen: true
-                }
-              },
-              {
-                upsert: true
-              }
-            )
-            res.json({message: 'success'})
-            // .then(() => res.json({message: 'success'})).catch(err => console.log(err, 'error'))
-          } else {
-            // res.json({message: 'You have no unread messages'})
-          }
-        })
-      })
+  ChatSchema.updateMany(
+    { 
+      team_id,
+      isSeen: false,
+      receiver_id: user_id,
+      sender_id
+    },
+    {
+      $set: {
+        isSeen: true
+      }
+    },
+    {
+      upsert: false
+    }
+  ).then(data => {
+      res.json(data).status(200)
+    }
+  ).catch(err => res.status(400).json({message: err}))
   })
 })
 
