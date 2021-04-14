@@ -67,7 +67,7 @@ export class MessageService {
   }
 
   public setMessageIsRead(team_id: string, user_id: string, sender_id: string): Observable<any> {
-    return this.apiService.post(`/api/chat/messages/seen/${team_id}/${user_id}/${sender_id}`)
+    return this.apiService.put(`/api/chat/messages/seen/${team_id}/${user_id}/${sender_id}`)
   }
 
   public getNewMessage(newMessage: any): void {

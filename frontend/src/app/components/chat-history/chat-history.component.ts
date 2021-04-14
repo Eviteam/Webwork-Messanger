@@ -41,6 +41,9 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
             this.newMessage = data;
             if (this.newMessage.sender_id == +this.selectedUser) {
               this.newMessage.isSeen = true;
+              console.log(this.selectedUser, data.sender_id, 3333333333333333333333)
+              this.messageService.setMessageIsRead(team_id, this.storageService.getItem('user_id'), data.sender_id.toString())
+                .subscribe(data => console.log(data, "111111"))
             }
             this.current_time = moment().format();
             this.newMessage.createdAt = this.current_time;

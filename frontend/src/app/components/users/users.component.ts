@@ -90,7 +90,7 @@ export class UsersComponent implements OnInit {
     this.team_id = this.storageService.getItem('team_id');
     this.messageService.setMessageIsRead(this.team_id, this.user_id, this.selectedUser)
       .subscribe(data => {
-        if (data.message === 'success') {
+        if (data.n > 0) {
           this.messageIsRead = true
         }
       })
@@ -104,6 +104,9 @@ export class UsersComponent implements OnInit {
         if (team_id == current_team) {
           this.userMessages = Object.keys(data);
           this.unreadMessageCount = data;
+          if (this.unreadMessageCount) {
+            this.messageIsRead = false;
+          }
         }
       })
   }
