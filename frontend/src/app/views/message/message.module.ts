@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 
 import { QuillModule } from 'ngx-quill'
 import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-initialize.service';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 const modules = {
   keyboard: {
@@ -77,7 +78,8 @@ const config: SocketIoConfig = { url: BASE_URL, options: {} };
       modules,
       placeholder: 'Type your message',
     }),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    InfiniteScrollModule
   ],
   exports: [RouterModule],
   providers: [QuillInitializeService]

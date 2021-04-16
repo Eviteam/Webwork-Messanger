@@ -94,6 +94,8 @@ export class UsersComponent implements OnInit {
           this.messageIsRead = true
         }
       })
+      this.messageService.allMessages = [];
+      this.messageService.params.page = 1;
     this.router.navigateByUrl(`/main/${this.selectedUser}`)
   }
 

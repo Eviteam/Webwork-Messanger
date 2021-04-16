@@ -18,30 +18,30 @@ router.get(`/:team_id/:user_id/:receiver_id`, (req, res) => {
   const team_id = req.params.team_id;
   const user_id = req.params.user_id;
   const receiver_id = req.params.receiver_id;
+  const page = req.query.page;
+  const limit = req.query.limit;
+  const startIndex = (page - 1 ) * limit;
+  const endIndex = page * limit;
   connect.then(db => {
-    // TeamSchema.find({ team_id }).then(team => {
-    //   if (!team) {
-    //     res.status(404).send('Not found');
-    //   } else {
     Global_UserSchema.find({}).then(currentUser => {
       if (currentUser.length) {
         webWorkService.getTeamData(user_id).then(data => {
           const singleUser = data.team.users.find(user => user.id == user_id);
           ChatSchema.find({ team_id }).then(messages => {
             const allMessages = [];
+            let result = [];
             messages.map(message => {
               if ((singleUser.id.toString() == message.sender[0].id.toString() && receiver_id.toString() == message.receiver_id.toString())
                 || (singleUser.id.toString() == message.receiver_id.toString() && receiver_id.toString() == message.sender[0].id.toString())) {
-                allMessages.push(message);
+                allMessages.unshift(message);
+                result = allMessages.slice(startIndex, endIndex)
               }
             })
-            res.send(allMessages)
+            res.send(result.reverse())
           })
         })
       }
     })
-    //   }
-    // })
   })
 })
 
