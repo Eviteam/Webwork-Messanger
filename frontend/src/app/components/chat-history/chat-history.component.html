@@ -1,5 +1,6 @@
 <div class="sender_block-out">
-  <div class="sender_block" #chatContent>
+  <div class="sender_block" #chatContent infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="2"
+    (scrolledUp)="onScroll()" [infiniteScrollUpDistance]="2">
     <div class="sender_block-inner">
       <div class="sender_message" *ngFor="let message of messageService.allMessages; let i = index"
         [ngClass]="currentUser == message?.sender[0].id ? 'sender' : ''">
@@ -26,8 +27,8 @@
               </div>
             </div>
           </div>
-            <!-- TODO fix -->
-            <!-- [innerHtml]="message?.message.replaceAll('<p><br></p>', ' ').trim().replaceAll(' ', '<p><br></p>')"></div> -->
+          <!-- TODO fix -->
+          <!-- [innerHtml]="message?.message.replaceAll('<p><br></p>', ' ').trim().replaceAll(' ', '<p><br></p>')"></div> -->
         </div>
       </div>
     </div>

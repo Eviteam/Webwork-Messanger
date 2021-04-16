@@ -5,6 +5,7 @@ import { LocalStorageService } from 'src/app/services/localStorage/local-storage
 import { MessageService } from 'src/app/services/message/message.service';
 import moment from 'moment';
 import { DomSanitizer } from '@angular/platform-browser';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
 // ChatHistoryComponent is the message history component
 @Component({
@@ -14,13 +15,15 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   @ViewChild('chatContent') private chatContent: ElementRef;
+  @ViewChild(InfiniteScrollDirective) infiniteScroll: InfiniteScrollDirective;
 
   public currentUser: string = this.storageService.getItem('user_id');
   public selectedUser: string = this.storageService.getItem('selectedUser');
   public current_time: string;
   public newMessage: Message;
   public newMessageAdded: boolean = false;
-  public unSeenMessages: Message[]
+  public unSeenMessages: Message[];
+  public loader: boolean = false;
 
   constructor(
     public messageService: MessageService, // property messageService is public because it is using in chat-history.component.html
@@ -41,9 +44,8 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
             this.newMessage = data;
             if (this.newMessage.sender_id == +this.selectedUser) {
               this.newMessage.isSeen = true;
-              console.log(this.selectedUser, data.sender_id, 3333333333333333333333)
               this.messageService.setMessageIsRead(team_id, this.storageService.getItem('user_id'), data.sender_id.toString())
-                .subscribe(data => console.log(data, "111111"))
+                .subscribe(data => data)
             }
             this.current_time = moment().format();
             this.newMessage.createdAt = this.current_time;
@@ -69,11 +71,13 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
    * @param messageBody 
    * @returns void
    */
-  public getAllMessage(messageBody: Message): void {
-    this.messageService.getMessageHistory(messageBody)
+  public getAllMessage(messageBody: Message, params: any): void {
+    this.messageService.getMessageHistory(messageBody, params)
       .subscribe((data: any): void => {
-        this.messageService.allMessages = data;
-        this.newMessageAdded = true;
+        if (!this.messageService.allMessages.length) {
+          this.newMessageAdded = true
+        }
+        this.messageService.allMessages = data.concat(this.messageService.allMessages);
       })
   }
 
@@ -86,7 +90,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
       this.activatedRoute.params
         .subscribe(param => {
           this.storageService.setItem('selectedUser', param.id);
-          this.messageService.setMessageProps().then(data => this.getAllMessage(data))
+          this.messageService.setMessageProps().then(data => this.getAllMessage(data, this.messageService.params))
           res(param.id)
         },
           err => rej(err))
@@ -101,6 +105,18 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     try {
       this.chatContent.nativeElement.scrollTop = this.chatContent.nativeElement.scrollHeight;
     } catch (err) { }
+  }
+
+  public onScroll() {
+    this.messageService.setMessageProps()
+      .then(props => {
+        this.loader = true;
+        this.messageService.params.page = this.messageService.params.page + 1;
+        this.getAllMessage(props, this.messageService.params)
+      })
+      .finally(() => this.loader = false)
+    this.infiniteScroll.ngOnDestroy();
+    this.infiniteScroll.setup();
   }
 
 }

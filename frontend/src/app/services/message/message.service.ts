@@ -15,9 +15,13 @@ export class MessageService {
   public user_id: string = this.storageService.getItem('user_id');
   public team_id: string = this.storageService.getItem('team_id');
   public selectedUser: string;
-  public allMessages: Message[];
+  public allMessages: Message[] = [];
   private message = new BehaviorSubject<any>(null);
   public newMessage = this.message.asObservable();
+  public params = {
+    page: 1,
+    limit: 5
+  }
 
   constructor(
     private apiService: ApiService,
@@ -40,8 +44,8 @@ export class MessageService {
     return this.apiService.post(`/api/chat/send-message`, message)
   }
 
-  public getMessageHistory(msgBody: Message): Observable<Message> {
-    return this.apiService.get(`/api/chat/${msgBody.team_id}/${msgBody.sender}/${msgBody.receiver_id}`)
+  public getMessageHistory(msgBody: Message, params: any): Observable<Message> {
+    return this.apiService.get(`/api/chat/${msgBody.team_id}/${msgBody.sender}/${msgBody.receiver_id}?page=${params.page}&limit=${params.limit}`)
   }
 
   public setMessageProps(): Promise<Message> {
