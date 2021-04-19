@@ -20,7 +20,7 @@ export class MessageService {
   public newMessage = this.message.asObservable();
   public params = {
     page: 1,
-    limit: 5
+    limit: 10
   }
 
   constructor(
