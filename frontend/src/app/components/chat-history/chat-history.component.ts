@@ -24,6 +24,11 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public newMessageAdded: boolean = false;
   public unSeenMessages: Message[];
   public loader: boolean = false;
+  public groupArrays: { 
+    date: string; 
+    messages: any; 
+  }[];
+  public todayDate: string = moment().format("DD/MM/YY")
 
   constructor(
     public messageService: MessageService, // property messageService is public because it is using in chat-history.component.html
@@ -50,6 +55,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
             this.current_time = moment().format();
             this.newMessage.createdAt = this.current_time;
             this.messageService.allMessages.push(this.newMessage);
+            this.seperateMessagesByDate(this.messageService.allMessages)
             this.newMessageAdded = true;
             this.scrollToBottom();
           } else {
@@ -74,10 +80,11 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public getAllMessage(messageBody: Message, params: any): void {
     this.messageService.getMessageHistory(messageBody, params)
       .subscribe((data: any): void => {
-        if (!this.messageService.allMessages.length) {
+        if (this.messageService.allMessages && !this.messageService.allMessages.length) {
           this.newMessageAdded = true
         }
         this.messageService.allMessages = data.concat(this.messageService.allMessages);
+        this.seperateMessagesByDate(this.messageService.allMessages)
       })
   }
 
@@ -107,7 +114,11 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     } catch (err) { }
   }
 
-  public onScroll() {
+  /**
+   * Gets scroll event
+   * @returns void
+   */
+  public onScroll(): void {
     this.messageService.setMessageProps()
       .then(props => {
         this.loader = true;
@@ -117,6 +128,30 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
       .finally(() => this.loader = false)
     this.infiniteScroll.ngOnDestroy();
     this.infiniteScroll.setup();
+  }
+
+  /**
+   * Seperates messages by date
+   * @param allMessages 
+   * @returns messages body by seperated date
+   */
+  public seperateMessagesByDate(allMessages: Message[]): any {
+    const groups = allMessages.reduce((groups: any, message: Message) => {
+      const date = moment(message.createdAt).format("DD/MM/YY");
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(message);
+      return groups;
+    }, {});
+    
+    // Edit: to add it in the array format instead
+    this.groupArrays = Object.keys(groups).map((date) => {
+      return {
+        date,
+        messages: groups[date]
+      };
+    });
   }
 
 }
