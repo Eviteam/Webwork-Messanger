@@ -28,7 +28,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     date: string; 
     messages: any; 
   }[];
-  public todayDate: string = moment().format("DD/MM/YY")
+  public todayDate: string = moment().format("dddd, MMMM Do")
 
   constructor(
     public messageService: MessageService, // property messageService is public because it is using in chat-history.component.html
@@ -137,7 +137,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
    */
   public seperateMessagesByDate(allMessages: Message[]): any {
     const groups = allMessages.reduce((groups: any, message: Message) => {
-      const date = moment(message.createdAt).format("DD/MM/YY");
+      const date = moment(message.createdAt).format("dddd, MMMM Do");
       if (!groups[date]) {
         groups[date] = [];
       }

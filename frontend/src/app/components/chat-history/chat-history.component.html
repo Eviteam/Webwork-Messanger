@@ -8,7 +8,7 @@
     (scrolledUp)="onScroll()" [infiniteScrollUpDistance]="2">
     <div class="sender_block-inner">
       <ng-container *ngFor="let group of groupArrays">
-        <div class="sender_date"><span>{{group?.date == todayDate ? 'Today' : group?.date}}</span></div>
+        <div class="sender_date"><div class="sender_date_center">{{group?.date == todayDate ? 'Today' : group?.date}}</div></div>
         <div class="sender_message" *ngFor="let message of group?.messages; let i = index"
           [ngClass]="currentUser == message?.sender[0].id ? 'sender' : ''">
           <div class="d-flex align-items-center msg_info"

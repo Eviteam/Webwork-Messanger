@@ -145,13 +145,16 @@
     background-color: $date-background-color;
     box-shadow: 0px 4px 4px $date-box-shadow;
     border-radius: 11px;
-    padding: 9px 0 6px 0;
     margin-bottom: 40px;
     margin: 16px 26px 16px 38px;
-
-    span{
+    
+    &_center {
+      padding: 2px 140px 2px 140px;
+      border-radius: 6px;
       color: $ck-button-color;
       font-size: 18px;
+      background: $white;
+      border: 1px solid $sender-background-color;
     }
   }
 
