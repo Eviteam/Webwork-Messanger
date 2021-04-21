@@ -1,36 +1,44 @@
 <div class="sender_block-out">
+  <div *ngIf="loader" class="d-flex justify-content-center">
+    <div class="spinner-border text-info" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
   <div class="sender_block" #chatContent infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="2"
     (scrolledUp)="onScroll()" [infiniteScrollUpDistance]="2">
     <div class="sender_block-inner">
-      <div class="sender_message" *ngFor="let message of messageService.allMessages; let i = index"
-        [ngClass]="currentUser == message?.sender[0].id ? 'sender' : ''">
-        <div class="d-flex align-items-center msg_info"
-          [ngClass]="currentUser != message?.sender[0].id ? 'msg_info_send' :  'msg_info_res'">
-          <p class="sender_name"
-            *ngIf="i == 0 || (messageService?.allMessages[i - 1] && (messageService?.allMessages[i].sender[0].id != messageService?.allMessages[i - 1].sender[0].id))">
-            {{message?.sender[0].firstname}} {{message?.sender[0].lastname}}</p>
-          <span class="time">{{message?.createdAt | date:'shortTime'}}
-            <span class="time__popover">
-              {{message?.createdAt | date: 'medium'}}
+      <ng-container *ngFor="let group of groupArrays">
+        <div class="sender_date"><span>{{group?.date == todayDate ? 'Today' : group?.date}}</span></div>
+        <div class="sender_message" *ngFor="let message of group?.messages; let i = index"
+          [ngClass]="currentUser == message?.sender[0].id ? 'sender' : ''">
+          <div class="d-flex align-items-center msg_info"
+            [ngClass]="currentUser != message?.sender[0].id ? 'msg_info_send' : 'msg_info_res'">
+            <p class="sender_name"
+              *ngIf="i == 0 || (group?.messages[i - 1] && (group?.messages[i].sender[0].id != group?.messages[i - 1].sender[0].id))">
+              {{message?.sender[0].firstname}} {{message?.sender[0].lastname}}</p>
+            <span class="time">{{message?.createdAt | date:'shortTime'}}
+              <span class="time__popover">
+                {{message?.createdAt | date: 'medium'}}
+              </span>
             </span>
-          </span>
-        </div>
-        <div class="d-flex align-items-center message_content">
-          <img src="../../../assets/icons/user_icon.svg" class="sender_image">
-          <div class="">
-            <div class="message d-flex flex-column" [ngClass]="currentUser == message?.sender[0].id ? 'text-right' : ''"
-              [innerHtml]="message?.message">
-            </div>
-            <div class="uploadedFiles mt-2 d-flex justify-content-end flex-wrap">
-              <div class="image_part" *ngFor="let src of message.filePath">
-                <img [src]="sanitizer.bypassSecurityTrustUrl(src)" alt="">
+          </div>
+          <div class="d-flex align-items-center message_content">
+            <img src="../../../assets/icons/user_icon.svg" class="sender_image">
+            <div class="">
+              <div class="message d-flex flex-column"
+                [ngClass]="currentUser == message?.sender[0].id ? 'text-right' : ''" [innerHtml]="message?.message">
+              </div>
+              <div class="uploadedFiles mt-2 d-flex justify-content-end flex-wrap">
+                <div class="image_part" *ngFor="let src of message.filePath">
+                  <img [src]="sanitizer.bypassSecurityTrustUrl(src)" alt="">
+                </div>
               </div>
             </div>
+            <!-- TODO fix -->
+            <!-- [innerHtml]="message?.message.replaceAll('<p><br></p>', ' ').trim().replaceAll(' ', '<p><br></p>')"></div> -->
           </div>
-          <!-- TODO fix -->
-          <!-- [innerHtml]="message?.message.replaceAll('<p><br></p>', ' ').trim().replaceAll(' ', '<p><br></p>')"></div> -->
         </div>
-      </div>
+      </ng-container>
     </div>
   </div>
   <app-send-message></app-send-message>
