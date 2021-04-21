@@ -38,7 +38,6 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.todayDate)
     this.getUrlParameter().then(param => {
       this.messageService.getMessage(param)
         .subscribe((data: Message): void => {
@@ -139,7 +138,6 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public seperateMessagesByDate(allMessages: Message[]): any {
     const groups = allMessages.reduce((groups: any, message: Message) => {
       const date = moment(message.createdAt).format("DD/MM/YY");
-      console.log(date == this.todayDate)
       if (!groups[date]) {
         groups[date] = [];
       }
@@ -154,7 +152,6 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
         messages: groups[date]
       };
     });
-    console.log(this.groupArrays, "1212121212211212");
   }
 
 }
