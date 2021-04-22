@@ -29,7 +29,7 @@ const modules = {
   autoLink: true,
   toolbar: [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-    ['blockquote', 'code-block'],
+    ['code-block'],
 
     // [{ 'header': 1 }, { 'header': 2 }],               // custom button values
     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
@@ -46,7 +46,7 @@ const modules = {
 
     // ['clean'],                                         // remove formatting button
 
-    ['link']                         // link and image, video
+    // ['link']                         // link and image, video
   ]
 };
 
