@@ -76,6 +76,7 @@
 
   ::ng-deep .ql-editor {
     word-break: break-word;
+    font-size: 16px;
 
     p>img {
       display: none;
@@ -97,6 +98,7 @@
 
   ::ng-deep .ql-container.ql-snow {
     border: none;
+    overflow: visible !important
   }
 
   ::ng-deep .ql-toolbar {
@@ -105,9 +107,7 @@
 
   ::ng-deep .ql-tooltip.ql-flip {
     left: 169px !important;
-    // TODO fix
-    display: none !important;
-    // top: -69px !important;
+    top: -69px !important;
     border-radius: 14px;
     background-color: $tooltip-link-background-color;
     border: unset;
@@ -119,7 +119,7 @@
       content: "";
       position: absolute;
       left: -10px;
-      top: -6px;
+      top: 10px;
     }
 
     &::before {
