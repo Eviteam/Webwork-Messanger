@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment';
 import { QuillModule } from 'ngx-quill'
 import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-initialize.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import 'quill-emoji';
 
 const modules = {
   keyboard: {
@@ -46,8 +47,12 @@ const modules = {
 
     // ['clean'],                                         // remove formatting button
 
-    // ['link']                         // link and image, video
-  ]
+    ['link'],
+    ['emoji']
+  ],
+  "emoji-toolbar": true,
+  "emoji-textarea": false,
+  "emoji-shortname": true,
 };
 
 const routes: Routes = [

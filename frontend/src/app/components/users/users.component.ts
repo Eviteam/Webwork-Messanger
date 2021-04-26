@@ -6,6 +6,7 @@ import { User } from 'src/app/models/user';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
 import { MessageService } from 'src/app/services/message/message.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-users',
@@ -25,6 +26,7 @@ export class UsersComponent implements OnInit {
   public userMessages: any;
   public unreadMessageCount: any;
   public messageIsRead: boolean = false;
+  public WEBWORK_BASE_URL = environment.WEBWORK_BASE_URL;
 
   constructor(
     private userService: UserService,

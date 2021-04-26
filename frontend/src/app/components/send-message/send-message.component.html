@@ -1,7 +1,7 @@
 <div class="editor">
 
   <div class="quillEditor-wrapper">
-    <quill-editor class="quillEditor" (keydown)="onKeyDown($event)" [(ngModel)]="message">
+    <quill-editor class="quillEditor" (keydown)="onKeyDown($event)" [(ngModel)]="message" #editor>
     </quill-editor>
 
     <div class="d-flex">
