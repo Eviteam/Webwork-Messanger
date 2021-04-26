@@ -105,28 +105,29 @@
     border: none;
   }
 
-  ::ng-deep .ql-tooltip.ql-flip {
-    left: 169px !important;
-    top: -69px !important;
-    border-radius: 14px;
-    background-color: $tooltip-link-background-color;
-    border: unset;
+  // TODO
+  // ::ng-deep .ql-tooltip.ql-flip {
+  //   left: 169px !important;
+  //   top: -69px !important;
+  //   border-radius: 14px;
+  //   background-color: $tooltip-link-background-color;
+  //   border: unset;
 
-    &:after {
-      border-style: solid;
-      border-color: transparent transparent $tooltip-link-background-color transparent;
-      border-width: 0px 0 73px 21px;
-      content: "";
-      position: absolute;
-      left: -10px;
-      top: 10px;
-    }
+  //   &:after {
+  //     border-style: solid;
+  //     border-color: transparent transparent $tooltip-link-background-color transparent;
+  //     border-width: 0px 0 73px 21px;
+  //     content: "";
+  //     position: absolute;
+  //     left: -10px;
+  //     top: 10px;
+  //   }
 
-    &::before {
-      content: none;
-    }
+  //   &::before {
+  //     content: none;
+  //   }
 
-  }
+  // }
 
   ::ng-deep .ql-preview {
     font-style: normal;
@@ -252,4 +253,15 @@
     cursor: pointer;
     transition: opacity 0.4s ease;
   }
+}
+
+::ng-deep #emoji-palette {
+  right: 90px;
+  bottom: 90px;
+  top: inherit !important;
+  left: inherit !important;
+}
+
+::ng-deep .ql-tooltip input[type=text]{
+  margin: 8px 70px 8px 0 !important;
 }

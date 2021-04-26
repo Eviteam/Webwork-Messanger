@@ -6,7 +6,7 @@
   <div class="single_user d-flex align-items-center" *ngFor="let user of users" (click)="selectUser(user.id)"
     [ngClass]="userIsSelected && user.id == selectedUser ? 'selectedUser' : ''">
     <div class="user_image_block">
-      <img src="../../../assets/icons/user_icon.svg" class="user_icon">
+      <img [src]="user?.avatar?.encoded ? user?.avatar?.encoded : WEBWORK_BASE_URL + user?.avatar" class="user_icon">
       <div class="active_status" *ngIf="user?.is_online"></div>
     </div>
     <p class="user_name">{{user.firstname}} {{user.lastname}}</p>

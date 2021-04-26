@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  BASE_URL: 'http://localhost:3001'
+  BASE_URL: 'http://localhost:3001',
+  WEBWORK_BASE_URL: 'https://www.webwork-tracker.com'
 };
 
 /*
