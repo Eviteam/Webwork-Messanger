@@ -256,12 +256,28 @@
 }
 
 ::ng-deep #emoji-palette {
-  right: 90px;
   bottom: 90px;
   top: inherit !important;
-  left: inherit !important;
+  left: 20vh !important;
 }
 
 ::ng-deep .ql-tooltip input[type=text]{
   margin: 8px 70px 8px 0 !important;
+}
+
+::ng-deep .emoji_completions {
+  top: -130px !important;
+}
+
+// ::ng-deep .ql-flip {
+//   left: 0 !important;
+//   right: 0 !important;
+//   margin: auto;
+//   width: 330px;
+// }
+
+.tooltipPostion {
+  ::ng-deep .ql-flip {
+    left: 0 !important;
+  }
 }

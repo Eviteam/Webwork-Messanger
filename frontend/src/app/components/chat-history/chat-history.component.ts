@@ -6,6 +6,7 @@ import { MessageService } from 'src/app/services/message/message.service';
 import moment from 'moment';
 import { DomSanitizer } from '@angular/platform-browser';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { environment } from 'src/environments/environment';
 
 // ChatHistoryComponent is the message history component
 @Component({
@@ -28,7 +29,8 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     date: string; 
     messages: any; 
   }[];
-  public todayDate: string = moment().format("dddd, MMMM Do")
+  public todayDate: string = moment().format("dddd, MMMM Do");
+  public WEBWORK_BASE_URL = environment.WEBWORK_BASE_URL
 
   constructor(
     public messageService: MessageService, // property messageService is public because it is using in chat-history.component.html
