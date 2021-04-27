@@ -8,7 +8,9 @@
     (scrolledUp)="onScroll()" [infiniteScrollUpDistance]="2">
     <div class="sender_block-inner">
       <ng-container *ngFor="let group of groupArrays">
-        <div class="sender_date"><div class="sender_date_center">{{group?.date == todayDate ? 'Today' : group?.date}}</div></div>
+        <div class="sender_date">
+          <div class="sender_date_center">{{group?.date == todayDate ? 'Today' : group?.date}}</div>
+        </div>
         <div class="sender_message" *ngFor="let message of group?.messages; let i = index"
           [ngClass]="currentUser == message?.sender[0].id ? 'sender' : ''">
           <div class="d-flex align-items-center msg_info"
@@ -23,7 +25,9 @@
             </span>
           </div>
           <div class="d-flex align-items-center message_content">
-            <img src="../../../assets/icons/user_icon.svg" class="sender_image">
+            <img
+              [src]="message?.sender[0]?.avatar?.encoded ? message?.sender[0]?.avatar?.encoded : WEBWORK_BASE_URL + message?.sender[0]?.avatar"
+              class="sender_image">
             <div class="">
               <div class="message d-flex flex-column"
                 [ngClass]="currentUser == message?.sender[0].id ? 'text-right' : ''" [innerHtml]="message?.message">

@@ -1,7 +1,8 @@
 <div class="editor">
 
   <div class="quillEditor-wrapper">
-    <quill-editor class="quillEditor" (keydown)="onKeyDown($event)" [(ngModel)]="message" #editor>
+    <quill-editor class="quillEditor" (keydown)="onKeyDown($event)" [(ngModel)]="message"
+      [ngClass]="{tooltipPostion: tooltipFromLeft}">
     </quill-editor>
 
     <div class="d-flex">

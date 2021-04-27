@@ -22,6 +22,7 @@ export class SendMessageComponent implements OnInit {
   public uploadedFileType: SafeResourceUrl;
   public selectedUser: string;
   public currentUser: string;
+  public tooltipFromLeft: boolean = false;
 
   constructor(
     private messageService: MessageService,
@@ -44,6 +45,7 @@ export class SendMessageComponent implements OnInit {
    * @returns void
    */
   public onKeyDown(event?: any) {
+    (this.message && this.message.length <= 48) ? this.tooltipFromLeft = true : this.tooltipFromLeft = false
     if (event) {
       if (event.keyCode === 13) {
         if (!event.shiftKey && !event.altKey && !event.ctrlKey) {
