@@ -2,7 +2,7 @@
   <img src="../../../assets/icons/chevron_down.svg" class="msg_arrow" [ngClass]="hideUsers ? 'msg_arrow_rotate' : ''">
   <h4 class="title">Direct Messages</h4>
 </div>
-<div class="user_part" [ngClass]="hideUsers ? 'd-none' : ''">
+<div class="user_part" [ngClass]="hideUsers ? 'd-none' : ''" #userPart>
   <div class="single_user d-flex align-items-center" *ngFor="let user of users" (click)="selectUser(user.id)"
     [ngClass]="userIsSelected && user.id == selectedUser ? 'selectedUser' : ''">
     <div class="user_image_block">
@@ -10,7 +10,7 @@
       <div class="active_status" *ngIf="user?.is_online"></div>
     </div>
     <p class="user_name">{{user.firstname}} {{user.lastname}}</p>
-    <div class="single_user_message_count" [ngClass]="messageIsRead ? 'd-none' : ''"
+    <div class="single_user_message_count" #newMessageEvent [ngClass]="messageIsRead ? 'd-none' : ''"
       *ngIf="userMessages?.includes(user.id.toString()) 
         && user.id.toString() !== user_id 
         && user.id.toString() !== selectedUser">

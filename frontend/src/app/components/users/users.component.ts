@@ -1,10 +1,11 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { Team } from 'src/app/models/team';
 import { User } from 'src/app/models/user';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
 import { MessageService } from 'src/app/services/message/message.service';
+import { SidebarService } from 'src/app/services/sidebar/sidebar.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { environment } from 'src/environments/environment';
 
@@ -13,7 +14,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, AfterViewInit {
 
   public hideUsers: boolean = false;
   public user_id: string;
@@ -28,12 +29,19 @@ export class UsersComponent implements OnInit {
   public messageIsRead: boolean = false;
   public WEBWORK_BASE_URL = environment.WEBWORK_BASE_URL;
 
+  @ViewChild('userPart', {static: true}) public userPart: ElementRef;
+  @ViewChild('newMessageEvent', {static: false}) public newMessageEvent: ElementRef;
+  @Output() public newMessageInfo = new EventEmitter<any>();
+  @Output() public newEventInfo = new EventEmitter<any>();
+  @Output() public eventPosition = new EventEmitter<number>();
+
   constructor(
     private userService: UserService,
     private storageService: LocalStorageService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private sideBarService: SidebarService
   ) { }
 
   ngOnInit(): void {
@@ -79,6 +87,45 @@ export class UsersComponent implements OnInit {
           this.getUnseenMessages(newMessage?.team_id, newMessage?.receiver_id)
         }
       })
+    this.sideBarService.getEvent
+      .subscribe(data => {
+        if (data) {
+          const msgInfo = {
+            topHeight: null,
+            bottomHeight: null,
+            windowHeight: null,
+            eventHeight: null
+          };
+          msgInfo.topHeight = this.userPart.nativeElement.getBoundingClientRect().top;
+          msgInfo.bottomHeight = this.userPart.nativeElement.getBoundingClientRect().bottom;
+          msgInfo.windowHeight = window.innerHeight;
+          msgInfo.eventHeight = this.newMessageEvent.nativeElement.getBoundingClientRect().top;
+          this.newMessageInfo.emit(msgInfo);
+        }
+      })
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      if (this.userPart && this.newMessageEvent) {
+        const msgInfo = {
+          topHeight: null,
+          bottomHeight: null,
+          windowHeight: null,
+          eventHeight: null
+        };
+        console.log(this.userPart.nativeElement.getBoundingClientRect().top, "top")
+        console.log(this.userPart.nativeElement.getBoundingClientRect().bottom, "bottom")
+        console.log(this.newMessageEvent.nativeElement.getBoundingClientRect().top, "event from top")
+        console.log(window.innerHeight, "height");
+        msgInfo.topHeight = this.userPart.nativeElement.getBoundingClientRect().top;
+        msgInfo.bottomHeight = this.userPart.nativeElement.getBoundingClientRect().bottom;
+        msgInfo.windowHeight = window.innerHeight;
+        msgInfo.eventHeight = this.newMessageEvent.nativeElement.getBoundingClientRect().top;
+        this.newEventInfo.emit(this.newMessageEvent)
+        this.newMessageInfo.emit(msgInfo)
+      }
+    }, 2500);
   }
 
   public hideOrShowContent(): void {
