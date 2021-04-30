@@ -13,3 +13,11 @@ export class Message {
   createdAt?: string;
   updatedAt?: string
 }
+
+export class WebWorkMessage {
+  team_id?: number | string;
+  sender_id?: number | string;
+  receiver_id?: number | string;
+  message?: string;
+  fullName?: string
+}

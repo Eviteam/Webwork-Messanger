@@ -6,7 +6,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 const BASE_URL = environment.BASE_URL;
-
+const WEB_WORK_URL = environment.WEBWORK_BASE_URL
 // ApiService is the base service for api requests
 @Injectable({
   providedIn: 'root'
@@ -89,6 +89,20 @@ export class ApiService {
    */
   public delete(path: string): Observable<any> {
     return this.httpClient.delete(`${BASE_URL}${path}`);
+  }
+
+  /**
+   * Creating or posting some data to Web work
+   * @param path 
+   * @param body 
+   * @returns POST request body
+   */
+  public postToWebWork(path: string, body: object = {}): Observable<any> {
+    return this.httpClient
+      .post(`${WEB_WORK_URL}${path}`, JSON.stringify(body), this.options)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   /**
