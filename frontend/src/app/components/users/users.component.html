@@ -10,7 +10,7 @@
       <div class="status" [ngClass]="user?.is_online ? 'status_active' : 'status_inactive'"></div>
     </div>
     <p class="user_name">{{user.firstname}} {{user.lastname}}</p>
-    <div class="single_user_message_count" [ngClass]="messageIsRead ? 'd-none' : ''"
+    <div class="single_user_message_count" #newMessageEvent [ngClass]="messageIsRead ? 'd-none' : ''"
       *ngIf="userMessages?.includes(user.id.toString()) 
         && user.id.toString() !== user_id 
         && user.id.toString() !== selectedUser">

@@ -1,7 +1,9 @@
 <div class="sidebar">
   <app-sidebar-header></app-sidebar-header>
-  <div class="sidebar_content">
+  <div class="sidebar_content" (scroll)="onScroll($event)">
     <!-- <app-channels></app-channels> -->
-    <app-users></app-users>
+    <div *ngIf="topMsg" class="messageEvent_top">top</div>
+    <app-users (newMessageInfo)="newMessageInfo($event)" (newEventInfo)="newEventInfo($event)"></app-users>
+    <button *ngIf="bottomMsg" class="messageEvent" (click)="scrollTo()">Unread message</button>
   </div>
 </div>
