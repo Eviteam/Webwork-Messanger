@@ -156,4 +156,12 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  public compareDates(firstDate: any, secondDate: any): Boolean {
+    if (moment(firstDate).format('MMM d, y, h:mm a') === moment(secondDate).format('MMM d, y, h:mm a')) {
+      return true
+    } else {
+      return false
+    }    
+  }
+
 }
