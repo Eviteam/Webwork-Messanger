@@ -269,12 +269,9 @@
   top: -130px !important;
 }
 
-// ::ng-deep .ql-flip {
-//   left: 0 !important;
-//   right: 0 !important;
-//   margin: auto;
-//   width: 330px;
-// }
+::ng-deep .ql-flip {
+  z-index: 1; 
+}
 
 .tooltipPostion {
   ::ng-deep .ql-flip {
