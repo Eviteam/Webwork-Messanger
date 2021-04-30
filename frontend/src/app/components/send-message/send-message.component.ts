@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { finalize } from 'rxjs/operators';
-import { Message } from 'src/app/models/message';
+import { Message, WebWorkMessage } from 'src/app/models/message';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
 import { MessageService } from 'src/app/services/message/message.service';
 import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-initialize.service';
@@ -93,6 +93,7 @@ export class SendMessageComponent implements OnInit {
         message['data'].room = this.storageService.getItem('selectedUser');
         message['data'].sender_id = this.storageService.getItem('user_id');
         this.messageService.sendMessage(message['data']);
+        this.sendMessageNotification(message['data'])
       })
   }
 
@@ -138,6 +139,22 @@ export class SendMessageComponent implements OnInit {
   public setSafeSvgFormat(file: string | ArrayBuffer): void {
     this.uploadedFileType = this.sanitizer.bypassSecurityTrustUrl(file.toString());
     this.filePaths.push(this.uploadedFileType['changingThisBreaksApplicationSecurity']);
+  }
+
+  /**
+   * Sends notification to webwork
+   * @param message 
+   * @returns void
+   */
+  public sendMessageNotification(message: Message): void {
+    const messageForWebwork: WebWorkMessage = new WebWorkMessage;
+    messageForWebwork.sender_id = message.sender_id;
+    messageForWebwork.receiver_id = message.receiver_id;
+    messageForWebwork.team_id = message.team_id;
+    messageForWebwork.message = message.message;
+    messageForWebwork.fullName = `${message.sender[0].firstname} ${message.sender[0].lastname}`
+    this.messageService.sendNotification(messageForWebwork)
+      .subscribe(data => console.log(data, "45445"))
   }
 
   // convenience getter for easy access to form fields

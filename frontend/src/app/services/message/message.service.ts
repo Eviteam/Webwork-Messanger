@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LocalStorageService } from '../localStorage/local-storage.service';
 import { Socket } from 'ngx-socket-io';
 import { map } from 'rxjs/operators';
-import { Message } from 'src/app/models/message';
+import { Message, WebWorkMessage } from 'src/app/models/message';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ApiService } from '../api.service';
 
@@ -76,6 +76,10 @@ export class MessageService {
 
   public getNewMessage(newMessage: any): void {
     this.message.next(newMessage); 
+  }
+
+  public sendNotification(message: WebWorkMessage): Observable<any> {
+    return this.apiService.postToWebWork('/chat-api/new-message', message)
   }
 
 }
