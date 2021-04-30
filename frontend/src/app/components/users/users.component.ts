@@ -87,22 +87,22 @@ export class UsersComponent implements OnInit, AfterViewInit {
           this.getUnseenMessages(newMessage?.team_id, newMessage?.receiver_id)
         }
       })
-    this.sideBarService.getEvent
-      .subscribe(data => {
-        if (data) {
-          const msgInfo = {
-            topHeight: null,
-            bottomHeight: null,
-            windowHeight: null,
-            eventHeight: null
-          };
-          msgInfo.topHeight = this.userPart.nativeElement.getBoundingClientRect().top;
-          msgInfo.bottomHeight = this.userPart.nativeElement.getBoundingClientRect().bottom;
-          msgInfo.windowHeight = window.innerHeight;
-          msgInfo.eventHeight = this.newMessageEvent.nativeElement.getBoundingClientRect().top;
-          this.newMessageInfo.emit(msgInfo);
-        }
-      })
+    // this.sideBarService.getEvent
+    //   .subscribe(data => {
+    //     if (data) {
+    //       const msgInfo = {
+    //         topHeight: null,
+    //         bottomHeight: null,
+    //         windowHeight: null,
+    //         eventHeight: null
+    //       };
+    //       msgInfo.topHeight = this.userPart.nativeElement.getBoundingClientRect().top;
+    //       msgInfo.bottomHeight = this.userPart.nativeElement.getBoundingClientRect().bottom;
+    //       msgInfo.windowHeight = window.innerHeight;
+    //       msgInfo.eventHeight = this.newMessageEvent.nativeElement.getBoundingClientRect().top;
+    //       this.newMessageInfo.emit(msgInfo);
+    //     }
+    //   })
   }
 
   ngAfterViewInit(): void {

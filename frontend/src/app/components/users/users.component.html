@@ -1,13 +1,13 @@
-<div class="title_part d-flex align-items-center" (click)="hideOrShowContent()">
+<!-- <div class="title_part d-flex align-items-center" (click)="hideOrShowContent()">
   <img src="../../../assets/icons/chevron_down.svg" class="msg_arrow" [ngClass]="hideUsers ? 'msg_arrow_rotate' : ''">
   <h4 class="title">Direct Messages</h4>
-</div>
-<div class="user_part" [ngClass]="hideUsers ? 'd-none' : ''" #userPart>
+</div> -->
+<div class="user_part" [ngClass]="hideUsers ? 'd-none' : ''">
   <div class="single_user d-flex align-items-center" *ngFor="let user of users" (click)="selectUser(user.id)"
     [ngClass]="userIsSelected && user.id == selectedUser ? 'selectedUser' : ''">
     <div class="user_image_block">
       <img [src]="user?.avatar?.encoded ? user?.avatar?.encoded : WEBWORK_BASE_URL + user?.avatar" class="user_icon">
-      <div class="active_status" *ngIf="user?.is_online"></div>
+      <div class="status" [ngClass]="user?.is_online ? 'status_active' : 'status_inactive'"></div>
     </div>
     <p class="user_name">{{user.firstname}} {{user.lastname}}</p>
     <div class="single_user_message_count" #newMessageEvent [ngClass]="messageIsRead ? 'd-none' : ''"
