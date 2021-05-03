@@ -97,25 +97,32 @@ router.delete(`/uploadedFile/:fileName`, (req, res) => {
   });
 })
 
-// GET UNSEEN MESSAGES
+// GET TEAM'S UNSEEN MESSAGES
 router.get(`/unseen/messages/:team_id/:user_id`, (req, res) => {
   const team_id = req.params.team_id;
   const user_id = req.params.user_id;
   const unseenMsgs = {}
   connect.then(db => {
-    ChatSchema.find({ team_id, receiver_id: user_id, isSeen: false })
-      .then(data => {
-        data.map(item => {
-          if (unseenMsgs && !unseenMsgs[item.sender[0].id]) {
-            unseenMsgs[item.sender[0].id] = 1
-            unseenMsgs['team_id'] = team_id
-          } else {
-            unseenMsgs[item.sender[0].id]++
-            unseenMsgs['team_id'] = team_id
-          }
+    if (team_id == 0) {
+      ChatSchema.find({receiver_id: user_id, isSeen: false})
+        .then(data => {
+          res.json({messageCount: data.length})
         })
-        res.json(unseenMsgs)
-      })
+    } else {
+      ChatSchema.find({ team_id, receiver_id: user_id, isSeen: false })
+        .then(data => {
+          data.map(item => {
+            if (unseenMsgs && !unseenMsgs[item.sender[0].id]) {
+              unseenMsgs[item.sender[0].id] = 1
+              unseenMsgs['team_id'] = team_id
+            } else {
+              unseenMsgs[item.sender[0].id]++
+              unseenMsgs['team_id'] = team_id
+            }
+          })
+          res.json(unseenMsgs)
+        })
+    }
   })
 })
 

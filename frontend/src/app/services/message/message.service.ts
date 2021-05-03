@@ -66,7 +66,7 @@ export class MessageService {
     return this.apiService.delete(`/api/chat/uploadedFile/${fileName}`)
   }
 
-  public getUnseenMessages(team_id: string, user_id: string): Observable<any> {
+  public getUnseenMessages(team_id: string | number, user_id: string): Observable<any> {
     return this.apiService.get(`/api/chat/unseen/messages/${team_id}/${user_id}`)
   }
 

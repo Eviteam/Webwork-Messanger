@@ -153,7 +153,7 @@ export class SendMessageComponent implements OnInit {
     messageForWebwork.team_id = message.team_id;
     messageForWebwork.message = message.message.replace(/(<([^>]+)>)/g,'');
     messageForWebwork.fullName = `${message.sender[0].firstname} ${message.sender[0].lastname}`;
-    this.messageService.getUnseenMessages(message.team_id.toString(), message.receiver_id)
+    this.messageService.getUnseenMessages(0, message.receiver_id)
       .toPromise()
       .then(messageCount => messageForWebwork.messageCount = messageCount)
       .then(() => {
