@@ -151,10 +151,15 @@ export class SendMessageComponent implements OnInit {
     messageForWebwork.sender_id = message.sender_id;
     messageForWebwork.receiver_id = message.receiver_id;
     messageForWebwork.team_id = message.team_id;
-    messageForWebwork.message = message.message;
-    messageForWebwork.fullName = `${message.sender[0].firstname} ${message.sender[0].lastname}`
-    this.messageService.sendNotification(messageForWebwork)
-      .subscribe(data => console.log(data, "45445"))
+    messageForWebwork.message = message.message.replace(/(<([^>]+)>)/g,'');
+    messageForWebwork.fullName = `${message.sender[0].firstname} ${message.sender[0].lastname}`;
+    this.messageService.getUnseenMessages(message.team_id.toString(), message.receiver_id)
+      .toPromise()
+      .then(messageCount => messageForWebwork.messageCount = messageCount)
+      .then(() => {
+        this.messageService.sendNotification(messageForWebwork)
+          .subscribe(data => console.log(data, "45445"))
+      })
   }
 
   // convenience getter for easy access to form fields

@@ -19,5 +19,6 @@ export class WebWorkMessage {
   sender_id?: number | string;
   receiver_id?: number | string;
   message?: string;
-  fullName?: string
+  fullName?: string;
+  messageCount?: number
 }
