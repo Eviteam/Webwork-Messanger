@@ -151,7 +151,13 @@ export class SendMessageComponent implements OnInit {
     messageForWebwork.sender_id = message.sender_id;
     messageForWebwork.receiver_id = message.receiver_id;
     messageForWebwork.team_id = message.team_id;
-    messageForWebwork.message = message.message.replace(/(<([^>]+)>)/g,'');
+    messageForWebwork.message = message.message;
+    if (message.filePath.length) {
+      const base64File = message.filePath.toString()
+      const base64ContentArray = base64File.split(",");
+      const mimeType = base64ContentArray[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0];
+      mimeType.includes('image') ? messageForWebwork.attachment = 'image' : messageForWebwork.attachment = 'file'
+    }
     messageForWebwork.fullName = `${message.sender[0].firstname} ${message.sender[0].lastname}`;
     this.messageService.getUnseenMessages(0, message.receiver_id)
       .toPromise()
@@ -161,6 +167,18 @@ export class SendMessageComponent implements OnInit {
           .subscribe(data => console.log(data, "45445"))
       })
   }
+
+  public stripTags(html: string) {
+    let result = "";
+    let add = true, c: string;
+    for (var i = 0; i < html.length; i++) {
+      c = html[i];
+      if (c == '<') add = false;
+      else if (c == '>') add = true;
+      else if (add) result += c;
+    }
+    return result;
+  };
 
   // convenience getter for easy access to form fields
   public get formValue() { return this.formData.controls; }

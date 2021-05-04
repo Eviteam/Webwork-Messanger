@@ -26,6 +26,10 @@
       margin-top: 7px;
       margin-right: 3px;
       cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 160px;
     }
 
     .arrow{
