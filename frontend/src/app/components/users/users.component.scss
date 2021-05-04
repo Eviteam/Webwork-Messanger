@@ -26,6 +26,7 @@
   .single_user {
     padding: 7px 30px;
     height: 40px;
+    position: relative;
 
     .user_image_block{
       position: relative;
@@ -85,10 +86,38 @@
         transform: rotate(51deg);
       }
     }
+
+    &_fullName {
+      display: none;
+    }
   }
 
   .single_user:hover {
     background-color: $hover-background-color;
+    .single_user_fullName {
+      display: block;
+      transition: 2s;
+      position: absolute;
+      color: $userName-hover-color;
+      font-size: 14px;
+      line-height: 16px;
+      padding: 8px 46px;
+      background-color: $userName-hover-background;
+      border-radius: 6px;
+      bottom: 36px;
+      right: 2px;
+      &::after {
+        content: "";
+        width: 0;
+        height: 0;
+        border-width: 10px 10px 0 10px;
+        border-color: $white transparent transparent transparent;
+        border-style: solid;
+        position: absolute;
+        bottom: -7px;
+        right: 28px;
+      }
+    }
   }
 
   .selectedUser {
