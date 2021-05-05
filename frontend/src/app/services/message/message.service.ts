@@ -18,6 +18,8 @@ export class MessageService {
   public allMessages: Message[] = [];
   private message = new BehaviorSubject<any>(null);
   public newMessage = this.message.asObservable();
+  private setEditor = new BehaviorSubject<any>(null);
+  public editor = this.setEditor.asObservable();
   public params = {
     page: 1,
     limit: 10
@@ -80,6 +82,10 @@ export class MessageService {
 
   public sendNotification(message: WebWorkMessage): Observable<any> {
     return this.apiService.postToWebWork('/chat-api/new-message', message)
+  }
+
+  public setFocus(editor: any) {
+    this.setEditor.next(editor);
   }
 
 }

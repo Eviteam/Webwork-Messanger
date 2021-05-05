@@ -266,8 +266,10 @@
 }
 
 ::ng-deep .emoji_completions {
-  top: -130px !important;
+  top: -168px !important;
   z-index: 1 !important;
+  overflow-y: scroll;
+  max-height: 150px;
 }
 
 ::ng-deep .ql-flip {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { finalize } from 'rxjs/operators';
@@ -37,6 +37,11 @@ export class SendMessageComponent implements OnInit {
       files: this.fb.array([])
     })
     this.messageService.setMessageProps().then(data => this.messageBody = data);
+  }
+
+  public setFocus(editor: any) {
+    this.messageService.setFocus(editor);
+    editor.focus();
   }
 
   /**
@@ -93,7 +98,9 @@ export class SendMessageComponent implements OnInit {
         message['data'].room = this.storageService.getItem('selectedUser');
         message['data'].sender_id = this.storageService.getItem('user_id');
         this.messageService.sendMessage(message['data']);
-        this.sendMessageNotification(message['data'])
+        if (message['data'].sender_id != message['data'].room) {
+          this.sendMessageNotification(message['data'])
+        }
       })
   }
 
