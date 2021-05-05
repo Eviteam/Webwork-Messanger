@@ -28,6 +28,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
   public unreadMessageCount: any;
   public messageIsRead: boolean = false;
   public WEBWORK_BASE_URL = environment.WEBWORK_BASE_URL;
+  public isHovered: boolean = false;
+  public isTopHovered: boolean = false;
 
   @ViewChild('userPart', {static: true}) public userPart: ElementRef;
   @ViewChild('newMessageEvent', {static: false}) public newMessageEvent: ElementRef;
@@ -137,6 +139,11 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.selectedUser = user_id;
     this.storageService.setItem('selectedUser', this.selectedUser);
     this.team_id = this.storageService.getItem('team_id');
+    this.messageService.editor.subscribe(editor => {
+      if (editor) {
+        editor.focus()
+      }
+    })
     this.messageService.setMessageIsRead(this.team_id, this.user_id, this.selectedUser)
       .subscribe(data => {
         if (data.n > 0) {
@@ -160,6 +167,19 @@ export class UsersComponent implements OnInit, AfterViewInit {
           }
         }
       })
+  }
+
+  /**
+   * Hvers first user
+   * @param index 
+   * @param isTopHovered 
+   * @returns void
+   */
+  public hoverUser(index: number, isHovered: boolean): void {
+    const element = document.getElementById(index.toString())
+    if (element.scrollWidth > element.clientWidth) {
+      index === 0 ? this.isTopHovered = isHovered : this.isHovered = isHovered;
+    }
   }
 
 }

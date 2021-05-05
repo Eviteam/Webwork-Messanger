@@ -32,7 +32,7 @@
               <div class="message d-flex flex-column"
                 [ngClass]="currentUser == message?.sender[0].id ? 'text-right' : ''" [innerHtml]="message?.message">
               </div>
-              <div class="uploadedFiles mt-2 d-flex justify-content-end flex-wrap">
+              <div class="uploadedFiles d-flex justify-content-end flex-wrap">
                 <div class="image_part" *ngFor="let src of message.filePath">
                   <img [src]="sanitizer.bypassSecurityTrustUrl(src)" alt="">
                 </div>

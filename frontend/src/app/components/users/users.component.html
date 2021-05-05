@@ -3,19 +3,21 @@
   <h4 class="title">Direct Messages</h4>
 </div> -->
 <div class="user_part" [ngClass]="hideUsers ? 'd-none' : ''">
-  <div class="single_user d-flex align-items-center" *ngFor="let user of users" (click)="selectUser(user.id)"
-    [ngClass]="userIsSelected && user.id == selectedUser ? 'selectedUser' : ''">
+  <div class="single_user d-flex align-items-center" *ngFor="let user of users; let i = index"
+    (click)="selectUser(user.id)" [ngClass]="{'selectedUser': (userIsSelected && user.id == selectedUser)}"
+    (mouseenter)="hoverUser(i, true)" (mouseleave)="hoverUser(i, false)">
+    <div *ngIf="i === 0" [ngClass]="isTopHovered ? 'single_user_fullName_top' : 'd-none'">
+      {{user.firstname}} {{user.lastname}}</div>
     <div class="user_image_block">
       <img [src]="user?.avatar?.encoded ? user?.avatar?.encoded : WEBWORK_BASE_URL + user?.avatar" class="user_icon">
       <div class="status" [ngClass]="user?.is_online ? 'status_active' : 'status_inactive'"></div>
     </div>
-    <p class="user_name">{{user.firstname}} {{user.lastname}}</p>
-    <div class="single_user_message_count" #newMessageEvent [ngClass]="messageIsRead ? 'd-none' : ''"
-      *ngIf="userMessages?.includes(user.id.toString()) 
+    <p class="user_name" [id]="i">{{user.firstname}} {{user.lastname}}</p>
+    <div class="single_user_message_count" #newMessageEvent [ngClass]="messageIsRead ? 'd-none' : ''" *ngIf="userMessages?.includes(user.id.toString()) 
         && user.id.toString() !== user_id 
         && user.id.toString() !== selectedUser">
       <p class="mb-0">{{unreadMessageCount[user.id]}}</p>
     </div>
-    <div class="single_user_fullName">{{user.firstname}} {{user.lastname}}</div>
+    <div *ngIf="i !== 0" [ngClass]="isHovered ? 'single_user_fullName' : 'd-none'">{{user.firstname}} {{user.lastname}}</div>
   </div>
 </div>
