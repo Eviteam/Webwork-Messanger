@@ -171,11 +171,27 @@
 }
 
 ::ng-deep .image_part {
-  width: 360px;
-  margin-right: 13px;
-  margin-bottom: 10px;
+  // width: 360px;
+  // margin-right: 13px;
+  // margin-bottom: 10px;
 
   img {
     max-width: 100%;
+    margin-right: 10px;
+  }
+
+  .sameSizes {
+    width: 300px;
+    height: 300px;
+  }
+
+  .differentSizes {
+    width: 400px;
+    height: 300px;
+  }
+
+  .icons {
+    width: inherit;
+    height: inherit;
   }
 }

@@ -34,7 +34,7 @@
               </div>
               <div class="uploadedFiles d-flex justify-content-end flex-wrap">
                 <div class="image_part" *ngFor="let src of message.filePath">
-                  <img [src]="sanitizer.bypassSecurityTrustUrl(src)" alt="">
+                  <img [src]="sanitizer.bypassSecurityTrustUrl(src)" [ngClass]="{'sameSizes': isSame, 'differentSizes': !isSame, isIcon: 'icons'}">
                 </div>
               </div>
             </div>
