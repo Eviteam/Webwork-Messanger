@@ -163,7 +163,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
 
   public convertImageSize(messages: any) {
     messages.map((item: { filePath: string[] }) => {
-      if (item.filePath.length) {
+      if (item.filePath && item.filePath.length) {
         const reader = new FileReader();
         const blobFile = this.b64toBlob(item.filePath[0])
         const img = new Image;
