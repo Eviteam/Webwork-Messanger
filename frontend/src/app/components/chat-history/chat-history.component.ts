@@ -30,7 +30,9 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     messages: any; 
   }[];
   public todayDate: string = moment().format("dddd, MMMM Do");
-  public WEBWORK_BASE_URL = environment.WEBWORK_BASE_URL
+  public WEBWORK_BASE_URL = environment.WEBWORK_BASE_URL;
+  public isSame: boolean;
+  public isIcon: boolean;
 
   constructor(
     public messageService: MessageService, // property messageService is public because it is using in chat-history.component.html
@@ -154,6 +156,44 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
         messages: groups[date]
       };
     });
+    this.convertImageSize(this.groupArrays[0].messages);
+  }
+
+  public convertImageSize(messages: any) {
+    messages.map((item: { filePath: string[] }) => {
+      const reader = new FileReader();
+      const blobFile = this.b64toBlob(item.filePath[0])
+      const img = new Image;
+      reader.readAsDataURL(blobFile);
+      reader.onload = () => {
+        img.src = reader.result.toString();
+      }
+      img.onload = () => {
+        // if (img.width < 300 && img.height < 300) {
+        //   return this.isIcon = true
+        // }
+        if (img.width > img.height) {
+          this.isSame = false
+        } else {
+          this.isSame = true;
+        }
+      }
+    })
+  }
+
+  /**
+   * Converting base64 to Blob
+   * @param dataURI 
+   * @returns Blob
+   */
+  public b64toBlob(dataURI: string): Blob {
+    const byteString = atob(dataURI.split(',')[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: 'image/jpeg' });
   }
 
   /**

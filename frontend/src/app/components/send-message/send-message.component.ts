@@ -159,7 +159,7 @@ export class SendMessageComponent implements OnInit {
     messageForWebwork.receiver_id = message.receiver_id;
     messageForWebwork.team_id = message.team_id;
     messageForWebwork.message = message.message;
-    if (message.filePath.length) {
+    if (message.filePath && message.filePath.length) {
       const base64File = message.filePath.toString()
       const base64ContentArray = base64File.split(",");
       const mimeType = base64ContentArray[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0];
@@ -174,18 +174,6 @@ export class SendMessageComponent implements OnInit {
           .subscribe(data => console.log(data, "45445"))
       })
   }
-
-  public stripTags(html: string) {
-    let result = "";
-    let add = true, c: string;
-    for (var i = 0; i < html.length; i++) {
-      c = html[i];
-      if (c == '<') add = false;
-      else if (c == '>') add = true;
-      else if (add) result += c;
-    }
-    return result;
-  };
 
   // convenience getter for easy access to form fields
   public get formValue() { return this.formData.controls; }
