@@ -156,27 +156,31 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
         messages: groups[date]
       };
     });
-    this.convertImageSize(this.groupArrays[0].messages);
+    if (this.groupArrays && this.groupArrays[0]) {
+      this.convertImageSize(this.groupArrays[0].messages);
+    }
   }
 
   public convertImageSize(messages: any) {
     messages.map((item: { filePath: string[] }) => {
-      const reader = new FileReader();
-      const blobFile = this.b64toBlob(item.filePath[0])
-      const img = new Image;
-      reader.readAsDataURL(blobFile);
-      reader.onload = () => {
-        img.src = reader.result.toString();
-      }
-      img.onload = () => {
-        // if (img.width < 300 && img.height < 300) {
-        //   return this.isIcon = true
-        // }
-        if (img.width > img.height) {
-          this.isSame = false
-        } else {
-          this.isSame = true;
+      if (item.filePath && item.filePath.length) {
+        const reader = new FileReader();
+        const blobFile = this.b64toBlob(item.filePath[0])
+        const img = new Image;
+        reader.readAsDataURL(blobFile);
+        reader.onload = () => {
+          img.src = reader.result.toString();
         }
+        img.onload = () => {
+          // if (img.width < 300 && img.height < 300) {
+          //   return this.isIcon = true
+          // }
+          if (img.width > img.height) {
+            this.isSame = false
+          } else {
+            this.isSame = true;
+          }
+        } 
       }
     })
   }

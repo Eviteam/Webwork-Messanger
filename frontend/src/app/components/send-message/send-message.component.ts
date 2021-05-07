@@ -168,10 +168,10 @@ export class SendMessageComponent implements OnInit {
     messageForWebwork.fullName = `${message.sender[0].firstname} ${message.sender[0].lastname}`;
     this.messageService.getUnseenMessages(0, message.receiver_id)
       .toPromise()
-      .then(messageCount => messageForWebwork.messageCount = messageCount)
+      .then(messageCount => messageForWebwork.messageCount = messageCount.messageCount)
       .then(() => {
         this.messageService.sendNotification(messageForWebwork)
-          .subscribe(data => console.log(data, "45445"))
+          .subscribe(data => data)
       })
   }
 
