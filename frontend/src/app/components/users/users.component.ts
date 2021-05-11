@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { Team } from 'src/app/models/team';
 import { User } from 'src/app/models/user';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
@@ -30,9 +31,11 @@ export class UsersComponent implements OnInit, AfterViewInit {
   public WEBWORK_BASE_URL = environment.WEBWORK_BASE_URL;
   public isHovered: boolean = false;
   public isTopHovered: boolean = false;
+  public isChanged: boolean = false;
+  private subscription: Subscription;
 
-  @ViewChild('userPart', {static: true}) public userPart: ElementRef;
-  @ViewChild('newMessageEvent', {static: false}) public newMessageEvent: ElementRef;
+  @ViewChild('userPart', { static: false }) public userPart: ElementRef;
+  @ViewChildren('newMessageEvent') public newMessageEvent: QueryList<'newMessageEvent'>;
   @Output() public newMessageInfo = new EventEmitter<any>();
   @Output() public newEventInfo = new EventEmitter<any>();
   @Output() public eventPosition = new EventEmitter<number>();
@@ -69,7 +72,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
                 this.selectUser(this.user_id)
               })
           }
-        })      
+        })
     } else {
       this.userService.getAllUsers(this.user_id)
         .subscribe((data: Team) => {
@@ -89,45 +92,22 @@ export class UsersComponent implements OnInit, AfterViewInit {
           this.getUnseenMessages(newMessage?.team_id, newMessage?.receiver_id)
         }
       })
-    // this.sideBarService.getEvent
-    //   .subscribe(data => {
-    //     if (data) {
-    //       const msgInfo = {
-    //         topHeight: null,
-    //         bottomHeight: null,
-    //         windowHeight: null,
-    //         eventHeight: null
-    //       };
-    //       msgInfo.topHeight = this.userPart.nativeElement.getBoundingClientRect().top;
-    //       msgInfo.bottomHeight = this.userPart.nativeElement.getBoundingClientRect().bottom;
-    //       msgInfo.windowHeight = window.innerHeight;
-    //       msgInfo.eventHeight = this.newMessageEvent.nativeElement.getBoundingClientRect().top;
-    //       this.newMessageInfo.emit(msgInfo);
-    //     }
-    //   })
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      if (this.userPart && this.newMessageEvent) {
-        const msgInfo = {
-          topHeight: null,
-          bottomHeight: null,
-          windowHeight: null,
-          eventHeight: null
-        };
-        console.log(this.userPart.nativeElement.getBoundingClientRect().top, "top")
-        console.log(this.userPart.nativeElement.getBoundingClientRect().bottom, "bottom")
-        console.log(this.newMessageEvent.nativeElement.getBoundingClientRect().top, "event from top")
-        console.log(window.innerHeight, "height");
-        msgInfo.topHeight = this.userPart.nativeElement.getBoundingClientRect().top;
-        msgInfo.bottomHeight = this.userPart.nativeElement.getBoundingClientRect().bottom;
-        msgInfo.windowHeight = window.innerHeight;
-        msgInfo.eventHeight = this.newMessageEvent.nativeElement.getBoundingClientRect().top;
-        this.newEventInfo.emit(this.newMessageEvent)
-        this.newMessageInfo.emit(msgInfo)
-      }
-    }, 2500);
+    this.subscription = this.newMessageEvent.changes
+      .pipe(take(1))
+      .subscribe(change => {
+        this.setToTopUnseenMessages();
+      })
+  }
+
+  public setToTopUnseenMessages(): void {
+      this.newMessageEvent['_results'].map(item => {
+        const new_users = this.users
+        const single_user = this.users.splice(item.nativeElement.id, 1)
+        new_users.unshift(single_user[0]);
+    })
   }
 
   public hideOrShowContent(): void {
@@ -147,11 +127,12 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.messageService.setMessageIsRead(this.team_id, this.user_id, this.selectedUser)
       .subscribe(data => {
         if (data.n > 0) {
+          this.userMessages.splice(this.userMessages.indexOf(this.selectedUser.toString()), 1);
           this.messageIsRead = true
         }
       })
-      this.messageService.allMessages = [];
-      this.messageService.params.page = 1;
+    this.messageService.allMessages = [];
+    this.messageService.params.page = 1;
     this.router.navigateByUrl(`/main/${this.selectedUser}`)
   }
 
@@ -170,7 +151,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Hvers first user
+   * Hovers first user
    * @param index 
    * @param isTopHovered 
    * @returns void
