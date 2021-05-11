@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { finalize } from 'rxjs/operators';
@@ -23,6 +23,8 @@ export class SendMessageComponent implements OnInit {
   public selectedUser: string;
   public currentUser: string;
   public tooltipFromLeft: boolean = false;
+  public loader: boolean = false;
+  @ViewChild('editor', {static: false}) public editor: ElementRef
 
   constructor(
     private messageService: MessageService,
@@ -54,14 +56,19 @@ export class SendMessageComponent implements OnInit {
     if (event) {
       if (event.keyCode === 13) {
         if (!event.shiftKey && !event.altKey && !event.ctrlKey) {
+          this.loader = true
           if (this.filePaths.length) {
             this.messageBody.filePath = this.filePaths
             this.messageBody.message = this.message;
-            this.sendMessage(this.messageBody)
+            if (this.message.replace(/<(.|\n)*?>/g, '').length) {
+              this.sendMessage(this.messageBody)
+            }
           } else {
             if (this.message && this.message.length) {
               this.messageBody.message = this.message;
-              this.sendMessage(this.messageBody)
+              if (this.message.replace(/<(.|\n)*?>/g, '').length) {
+                this.sendMessage(this.messageBody)
+              }
             }
           }
         }
@@ -70,11 +77,15 @@ export class SendMessageComponent implements OnInit {
       if (this.filePaths.length) {
         this.messageBody.filePath = this.filePaths;
         this.messageBody.message = this.message;
-        this.sendMessage(this.messageBody)
+        if (this.message.replace(/<(.|\n)*?>/g, '').length) {
+          this.sendMessage(this.messageBody)
+        }
       } else {
         if (this.message && this.message.length) {
           this.messageBody.message = this.message;
-          this.sendMessage(this.messageBody)
+          if (this.message.replace(/<(.|\n)*?>/g, '').length) {
+            this.sendMessage(this.messageBody)
+          }
         }
       }
     }
@@ -88,12 +99,17 @@ export class SendMessageComponent implements OnInit {
   public sendMessage(messageBody: Message): void {
     this.currentUser = this.storageService.getItem('selectedUser');
     messageBody.message = this.message;
+    this.filePaths = [];
+    this.message = '';
+    messageBody.filePath = [];
     this.messageService.saveMessage(messageBody)
-      .pipe(finalize(() => {
-        this.filePaths = [];
-        this.message = '';
-        messageBody.filePath = []
-      }))
+      .pipe(
+        finalize(() => {
+          this.filePaths = [];
+          this.message = '';
+          messageBody.filePath = [];
+          this.loader = false;
+        }))
       .subscribe((message: Message) => {
         message['data'].room = this.storageService.getItem('selectedUser');
         message['data'].sender_id = this.storageService.getItem('user_id');

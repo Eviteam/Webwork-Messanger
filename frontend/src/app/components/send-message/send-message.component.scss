@@ -276,8 +276,26 @@
   z-index: 1; 
 }
 
+::ng-deep .ql-editor > p > span {
+  background-color: unset !important;
+}
+
 .tooltipPostion {
   ::ng-deep .ql-flip {
     left: 0 !important;
   }
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $tooltip-link-editButton-border;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  opacity: .5;
 }
