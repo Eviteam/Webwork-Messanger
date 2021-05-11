@@ -12,12 +12,13 @@
       <img [src]="user?.avatar?.encoded ? user?.avatar?.encoded : WEBWORK_BASE_URL + user?.avatar" class="user_icon">
       <div class="status" [ngClass]="user?.is_online ? 'status_active' : 'status_inactive'"></div>
     </div>
-    <p class="user_name" [id]="i">{{user.firstname}} {{user.lastname}}</p>
-    <div class="single_user_message_count" #newMessageEvent [ngClass]="messageIsRead ? 'd-none' : ''" *ngIf="userMessages?.includes(user.id.toString()) 
-        && user.id.toString() !== user_id 
-        && user.id.toString() !== selectedUser">
+    <p class="user_name" [id]="i">{{user.firstname}} {{user.lastname}}</p> {{user.id}}
+    <div class="single_user_message_count" [id]="i" #newMessageEvent
+      [ngClass]="{'d-none': (messageIsRead && user.id == selectedUser)}" *ngIf="userMessages?.includes(user.id.toString()) 
+        && user.id.toString() !== user_id">
       <p class="mb-0">{{unreadMessageCount[user.id]}}</p>
     </div>
-    <div *ngIf="i !== 0" [ngClass]="isHovered ? 'single_user_fullName' : 'd-none'">{{user.firstname}} {{user.lastname}}</div>
+    <div *ngIf="i !== 0" [ngClass]="isHovered ? 'single_user_fullName' : 'd-none'">{{user.firstname}} {{user.lastname}}
+    </div>
   </div>
 </div>
