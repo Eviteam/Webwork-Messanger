@@ -44,11 +44,11 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     this.getUrlParameter().then(param => {
       this.messageService.getMessage(param)
-        .subscribe((data: Message): void => {
-          this.selectedUser = param.toString();
+        .subscribe((data: Message) => {
+          this.selectedUser = this.activatedRoute.params['value'].id.toString();
           const team_id = this.storageService.getItem('team_id');
-          if ((data.sender_id.toString() == this.selectedUser && data.receiver_id == this.storageService.getItem('user_id')
-              || data.sender_id.toString() == this.storageService.getItem('user_id') && data.receiver_id == this.selectedUser)
+          if ((data.sender_id.toString() == this.activatedRoute.params['value'].id && data.receiver_id == this.storageService.getItem('user_id')
+              || data.sender_id.toString() == this.storageService.getItem('user_id') && data.receiver_id == this.activatedRoute.params['value'].id)
               && data.team_id == team_id) {
             this.newMessage = data;
             if (this.newMessage.sender_id == +this.selectedUser) {
