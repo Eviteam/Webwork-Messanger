@@ -196,3 +196,13 @@
     height: inherit;
   }
 }
+
+::ng-deep .message {
+  p {
+    img {
+      width: 300px !important;
+      height: 300px !important;
+      object-fit: cover !important;
+    }
+  }
+}

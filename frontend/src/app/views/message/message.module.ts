@@ -50,6 +50,9 @@ const modules = {
     ['link'],
     ['emoji']
   ],
+  clipboard: {
+    matchVisual: false
+  },
   "emoji-toolbar": true,
   "emoji-textarea": false,
   "emoji-shortname": true,
