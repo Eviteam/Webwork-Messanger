@@ -1,6 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { Message, WebWorkMessage } from 'src/app/models/message';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
@@ -12,7 +14,7 @@ import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-
   templateUrl: './send-message.component.html',
   styleUrls: ['./send-message.component.scss']
 })
-export class SendMessageComponent implements OnInit {
+export class SendMessageComponent implements OnInit, OnDestroy {
 
   public message: string = '';
   public messageBody: Message = new Message();
@@ -24,6 +26,7 @@ export class SendMessageComponent implements OnInit {
   public currentUser: string;
   public tooltipFromLeft: boolean = false;
   public loader: boolean = false;
+  private subscription: Subscription;
   @ViewChild('editor', {static: false}) public editor: ElementRef
 
   constructor(
@@ -31,7 +34,8 @@ export class SendMessageComponent implements OnInit {
     private quillInitializeService: QuillInitializeService,
     private fb: FormBuilder,
     public sanitizer: DomSanitizer, // property sanitizer is public because it is using in send-message.component.html
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -111,12 +115,15 @@ export class SendMessageComponent implements OnInit {
           this.loader = false;
         }))
       .subscribe((message: Message) => {
-        message['data'].room = this.storageService.getItem('selectedUser');
-        message['data'].sender_id = this.storageService.getItem('user_id');
-        this.messageService.sendMessage(message['data']);
-        if (message['data'].sender_id != message['data'].room) {
-          this.sendMessageNotification(message['data'])
-        }
+        this.subscription = this.activatedRoute.params
+          .subscribe((param => {
+            message['data'].room = param.id;
+            message['data'].sender_id = this.storageService.getItem('user_id');
+            this.messageService.sendMessage(message['data']);
+            if (message['data'].sender_id != message['data'].room) {
+              this.sendMessageNotification(message['data'])
+            }
+          }))
       })
   }
 
@@ -189,6 +196,10 @@ export class SendMessageComponent implements OnInit {
         this.messageService.sendNotification(messageForWebwork)
           .subscribe(data => data)
       })
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   // convenience getter for easy access to form fields
