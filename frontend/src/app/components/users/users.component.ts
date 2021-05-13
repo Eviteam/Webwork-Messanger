@@ -53,6 +53,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.team_id = this.storageService.getItem('team_id');
     this.user_id = this.storageService.getItem('user_id');
     const selectedUser = this.storageService.getItem('selectedUser');
+    console.log(selectedUser, "selected")
     this.getUnseenMessages(this.team_id, this.user_id);
     if (!selectedUser) {
       this.activatedRoute.queryParams
@@ -89,7 +90,9 @@ export class UsersComponent implements OnInit, AfterViewInit {
       .subscribe(newMessage => {
         if (newMessage) {
           this.messageIsRead = false;
-          this.getUnseenMessages(newMessage?.team_id, newMessage?.receiver_id)
+          if (this.storageService.getItem('user_id') == newMessage.receiver_id) {
+            this.getUnseenMessages(newMessage?.team_id, newMessage?.receiver_id)
+          }
         }
       })
   }

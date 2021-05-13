@@ -193,8 +193,10 @@ export class SendMessageComponent implements OnInit, OnDestroy {
       .toPromise()
       .then(messageCount => messageForWebwork.messageCount = messageCount.messageCount)
       .then(() => {
-        this.messageService.sendNotification(messageForWebwork)
-          .subscribe(data => data)
+        if (messageForWebwork.messageCount) {
+          this.messageService.sendNotification(messageForWebwork)
+            .subscribe(data => data)
+        }
       })
   }
 
