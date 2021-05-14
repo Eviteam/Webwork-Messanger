@@ -6,7 +6,6 @@ import { Team } from 'src/app/models/team';
 import { User } from 'src/app/models/user';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
 import { MessageService } from 'src/app/services/message/message.service';
-import { SidebarService } from 'src/app/services/sidebar/sidebar.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { environment } from 'src/environments/environment';
 
@@ -45,15 +44,15 @@ export class UsersComponent implements OnInit, AfterViewInit {
     private storageService: LocalStorageService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private messageService: MessageService,
-    private sideBarService: SidebarService
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
+    this.userService.isSeen
+      .subscribe(data => this.messageIsRead = data)
     this.team_id = this.storageService.getItem('team_id');
     this.user_id = this.storageService.getItem('user_id');
     const selectedUser = this.storageService.getItem('selectedUser');
-    console.log(selectedUser, "selected")
     this.getUnseenMessages(this.team_id, this.user_id);
     if (!selectedUser) {
       this.activatedRoute.queryParams
@@ -89,7 +88,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.messageService.newMessage
       .subscribe(newMessage => {
         if (newMessage) {
-          this.messageIsRead = false;
+          this.userService.setMessageIsRead(false);
           if (this.storageService.getItem('user_id') == newMessage.receiver_id) {
             this.getUnseenMessages(newMessage?.team_id, newMessage?.receiver_id)
           }
@@ -117,7 +116,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.hideUsers = !this.hideUsers
   }
 
-  public selectUser(user_id: string): void {
+  public selectUser(user_id: string, index?: number): void {
     this.userIsSelected = true;
     this.selectedUser = user_id;
     this.storageService.setItem('selectedUser', this.selectedUser);
@@ -129,13 +128,18 @@ export class UsersComponent implements OnInit, AfterViewInit {
     })
     this.messageService.setMessageIsRead(this.team_id, this.user_id, this.selectedUser)
       .subscribe(data => {
-        if (data.n > 0) {
+        if (this.userMessages.includes(this.selectedUser.toString())) {
           this.userMessages.splice(this.userMessages.indexOf(this.selectedUser.toString()), 1);
-          this.messageIsRead = true
+        }
+        if (data.n > 0) {
+          this.userService.setMessageIsRead(true);
         }
       })
     this.messageService.allMessages = [];
     this.messageService.params.page = 1;
+    if (!index) {
+      this.isTopHovered = false
+    }
     this.router.navigateByUrl(`/main/${this.selectedUser}`)
   }
 
@@ -147,7 +151,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
           this.userMessages = Object.keys(data);
           this.unreadMessageCount = data;
           if (this.unreadMessageCount) {
-            this.messageIsRead = false;
+            this.userService.setMessageIsRead(false);
           }
         }
       })
@@ -162,7 +166,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   public hoverUser(index: number, isHovered: boolean): void {
     const element = document.getElementById(index.toString())
     if (element.scrollWidth > element.clientWidth) {
-      index === 0 ? this.isTopHovered = isHovered : this.isHovered = isHovered;
+      !index ? this.isTopHovered = isHovered : this.isHovered = isHovered;
     }
   }
 

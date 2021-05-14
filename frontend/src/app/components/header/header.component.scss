@@ -6,12 +6,18 @@
   background-color: $header-background-color;
   padding: 0 45px;
 
-  .active_status {
-    width: 10px;
-    height: 10px;
+  .status {
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background-color: $color-active-status;
     margin-right: 15px;
+
+    &_inactive {
+      background-color: $color-inactive-status;
+    }
+     &_active {
+      background-color: $color-active-status;
+     }
   }
 
   .current_user {
