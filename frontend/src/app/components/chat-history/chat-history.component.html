@@ -28,7 +28,7 @@
             <img
               [src]="message?.sender[0]?.avatar?.encoded ? message?.sender[0]?.avatar?.encoded : WEBWORK_BASE_URL + message?.sender[0]?.avatar"
               class="sender_image">
-            <div class="">
+            <div>
               <div class="message d-flex flex-column"
                 [ngClass]="currentUser == message?.sender[0].id ? 'text-right' : ''" [innerHtml]="message?.message">
               </div>

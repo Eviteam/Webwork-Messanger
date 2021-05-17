@@ -64,9 +64,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
           if (this.filePaths.length) {
             this.messageBody.filePath = this.filePaths
             this.messageBody.message = this.message;
-            if (this.message.replace(/<(.|\n)*?>/g, '').length) {
-              this.sendMessage(this.messageBody)
-            }
+            this.sendMessage(this.messageBody)
           } else {
             if (this.message && this.message.length) {
               this.messageBody.message = this.message;
@@ -81,9 +79,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
       if (this.filePaths.length) {
         this.messageBody.filePath = this.filePaths;
         this.messageBody.message = this.message;
-        if (this.message.replace(/<(.|\n)*?>/g, '').length) {
-          this.sendMessage(this.messageBody)
-        }
+        this.sendMessage(this.messageBody)
       } else {
         if (this.message && this.message.length) {
           this.messageBody.message = this.message;
@@ -103,9 +99,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
   public sendMessage(messageBody: Message): void {
     this.currentUser = this.storageService.getItem('selectedUser');
     messageBody.message = this.message;
-    this.filePaths = [];
     this.message = '';
-    messageBody.filePath = [];
     this.messageService.saveMessage(messageBody)
       .pipe(
         finalize(() => {
