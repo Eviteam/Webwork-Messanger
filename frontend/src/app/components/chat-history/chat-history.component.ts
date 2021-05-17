@@ -161,7 +161,12 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  public convertImageSize(messages: any) {
+  /**
+   * Converts image sizes
+   * @param messages 
+   * @returns void
+   */
+  public convertImageSize(messages: any): void {
     messages.map((item: { filePath: string[] }) => {
       if (item.filePath && item.filePath.length) {
         const reader = new FileReader();

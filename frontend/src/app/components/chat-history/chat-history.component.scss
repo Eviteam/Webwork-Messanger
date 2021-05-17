@@ -120,12 +120,12 @@
     margin-top: 11px;
     background-color: $sender-message-container;
     border-radius: 10px;
-    padding: 0px 10px;
+    padding: 9px;
 
     .sender_image {
       width: 40px;
       height: 40px;
-      margin: 5px 12px 5px 8px;
+      margin: 0 12px 0 8px;
       border-radius: 50%;
       object-fit: cover;
     }
