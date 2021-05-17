@@ -106,6 +106,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
           this.filePaths = [];
           this.message = '';
           messageBody.filePath = [];
+          this.formValue.files.setValue([]);
           this.loader = false;
         }))
       .subscribe((message: Message) => {
@@ -152,7 +153,12 @@ export class SendMessageComponent implements OnInit, OnDestroy {
   public deleteMessage(index: number) {
     this.filePaths.splice(index, 1);
     this.messageService.deleteUploadedFile(this.uploadedFilePaths[index]['fileData'].filename)
-      .subscribe(data => this.uploadedFilePaths.splice(index, 1))
+      .subscribe(data => {
+        this.uploadedFilePaths.splice(index, 1);
+        if (!this.uploadedFilePaths.length) {
+          this.formValue.files.setValue([]);
+        }
+      })
   }
 
   /**
