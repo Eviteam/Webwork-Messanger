@@ -22,7 +22,7 @@
       </svg>
     </label>
     <input type="file" class="d-none" name="uploadFile" multiple (change)="uploadFile($event.target.files)"
-      id="uploadFile">
+      id="uploadFile" (click)="$event.target.value = null">
   </form>
   <div class="send_button" (click)="onKeyDown()">
     <img src="../../../assets/icons/send_button.svg" class="send_button_img">
