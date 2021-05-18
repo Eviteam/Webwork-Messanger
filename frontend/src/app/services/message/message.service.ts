@@ -31,11 +31,12 @@ export class MessageService {
     private socket: Socket
   ) { }
 
-  public getMessage(user_id: string | number): any {
-    // this.socket.emit('join', user_id)
+  public getMessage(user_id: string | number, selectedUser: number | string): any {
+    const usersChannel = [user_id, selectedUser];
+    usersChannel.sort();
     return this.socket
-        .fromEvent("chatMessage")
-        .pipe(map((data) => data));
+      .fromEvent(`chatNotifier-${usersChannel[0]}/${usersChannel[1]}`)
+      .pipe(map((data) => data));
   }
 
   public sendMessage(message: Message) {

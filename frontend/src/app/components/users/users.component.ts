@@ -128,7 +128,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     })
     this.messageService.setMessageIsRead(this.team_id, this.user_id, this.selectedUser)
       .subscribe(data => {
-        if (this.userMessages.includes(this.selectedUser.toString())) {
+        if (this.userMessages && this.userMessages.includes(this.selectedUser.toString())) {
           this.userMessages.splice(this.userMessages.indexOf(this.selectedUser.toString()), 1);
         }
         if (data.n > 0) {

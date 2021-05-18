@@ -18,7 +18,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   @ViewChild('chatContent') private chatContent: ElementRef;
   @ViewChild(InfiniteScrollDirective) infiniteScroll: InfiniteScrollDirective;
 
-  public currentUser: string = this.storageService.getItem('user_id');
+  public currentUser: string;
   public selectedUser: string = this.storageService.getItem('selectedUser');
   public current_time: string;
   public newMessage: Message;
@@ -43,13 +43,15 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.getUrlParameter().then(param => {
-      this.messageService.getMessage(param)
+      this.currentUser = this.storageService.getItem('user_id');
+      this.messageService.getMessage(this.currentUser, param)
         .subscribe((data: Message) => {
           this.selectedUser = this.activatedRoute.params['value'].id.toString();
           const team_id = this.storageService.getItem('team_id');
-          if ((data.sender_id.toString() == this.activatedRoute.params['value'].id && data.receiver_id == this.storageService.getItem('user_id')
-              || data.sender_id.toString() == this.storageService.getItem('user_id') && data.receiver_id == this.activatedRoute.params['value'].id)
-              && data.team_id == team_id) {
+          // (data.sender_id.toString() == this.activatedRoute.params['value'].id && data.receiver_id == this.storageService.getItem('user_id')
+          //     || data.sender_id.toString() == this.storageService.getItem('user_id') && data.receiver_id == this.activatedRoute.params['value'].id)
+          //     && 
+          if (data.team_id == team_id) {
             this.newMessage = data;
             if (this.newMessage.sender_id == +this.selectedUser) {
               this.newMessage.isSeen = true;
