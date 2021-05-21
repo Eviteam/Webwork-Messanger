@@ -4,7 +4,7 @@
 </div> -->
 <div class="user_part" [ngClass]="hideUsers ? 'd-none' : ''">
   <div class="single_user d-flex align-items-center" *ngFor="let user of users; let i = index"
-    (click)="selectUser(user.id, i)" [ngClass]="{'selectedUser': (userIsSelected && user.id == selectedUser)}"
+    (click)="selectUser(user.id, i, true)" [ngClass]="{'selectedUser': (userIsSelected && user.id == selectedUser)}"
     (mouseenter)="hoverUser(i, true)" (mouseleave)="hoverUser(i, false)">
     <div *ngIf="i === 0" [ngClass]="isTopHovered ? 'single_user_fullName_top' : 'd-none'">
       {{user.firstname}} {{user.lastname}}</div>
