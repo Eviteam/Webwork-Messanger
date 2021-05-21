@@ -13,7 +13,9 @@ function connectToSocket(io) {
     socket.on('chatMessage', message => {
       const usersChannel = [message.sender_id.toString(), message.receiver_id.toString()];
       usersChannel.sort()
-      io.sockets.emit(`chatNotifier-${usersChannel[0]}/${usersChannel[1]}`, message)
+      socket.join(`chatNotifier-${usersChannel[0]}/${usersChannel[1]}`);
+      io.emit(`chatNotifier-${usersChannel[0]}/${usersChannel[1]}`, message)
+      // socket.join(`chatNotifier-${usersChannel[0]}/${usersChannel[1]}`).emit(message)
     });
   });
 }
