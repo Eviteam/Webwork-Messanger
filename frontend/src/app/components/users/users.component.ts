@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, Que
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { Message } from 'src/app/models/message';
 import { Team } from 'src/app/models/team';
 import { User } from 'src/app/models/user';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
@@ -85,15 +86,44 @@ export class UsersComponent implements OnInit, AfterViewInit {
         })
       this.selectUser(selectedUser);
     }
-    this.messageService.newMessage
-      .subscribe(newMessage => {
-        if (newMessage) {
-          this.userService.setMessageIsRead(false);
-          if (this.storageService.getItem('user_id') == newMessage.receiver_id) {
-            this.getUnseenMessages(newMessage?.team_id, newMessage?.receiver_id)
-          }
-        }
+    const userData = {
+      user_id: this.storageService.getItem('user_id'),
+      team_id: this.storageService.getItem('team_id'),
+    };
+    this.messageService.registerUser(userData);
+
+    //subscribe to socket events
+    this.messageService.subscribeToSocketEvents(userData)
+      .subscribe((data: Message) => {
+        this.newMessageSocketEvent(data)
       })
+  }
+
+  public newMessageSocketEvent(message: Message): void {
+
+    const currentUserId = this.storageService.getItem('user_id');
+    const selectedUserId = this.storageService.getItem('selectedUser'); //@todo fix name
+    const teamId = this.storageService.getItem('team_id');
+
+    if (message?.team_id != teamId) {
+      return;
+    }
+
+    //got new message - needs to show notifications and things to attract attention
+    //if its not the selected user
+    if(message.receiver_id != selectedUserId && message.sender_id != +selectedUserId) {
+      this.userService.setMessageIsRead(false);
+      if (this.storageService.getItem('user_id') == message.receiver_id) {
+        this.getUnseenMessages(message?.team_id, message?.receiver_id)
+      }
+    }
+    
+
+    //if now in that chat window, ask chat component to show that message
+    if ((message.sender_id == +currentUserId && message.receiver_id == selectedUserId)
+      || (message.sender_id == +selectedUserId && message.receiver_id == currentUserId)) {
+      this.messageService.setNewMessage(message);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -117,10 +147,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
   }
 
   public selectUser(user_id: string, index?: number, select?: boolean): void {
-    const currentUser = this.storageService.getItem('user_id');
-    const selected = this.storageService.getItem('selectedUser');
     if (select) {
-      this.messageService.removeSocket(currentUser, selected);
+      this.messageService.setNewMessage(null)
     }
     this.userIsSelected = true;
     this.selectedUser = user_id;
@@ -145,11 +173,10 @@ export class UsersComponent implements OnInit, AfterViewInit {
     if (!index) {
       this.isTopHovered = false
     }
-    this.messageService.reconnectSocket(currentUser, this.selectedUser)
     this.router.navigateByUrl(`/main/${this.selectedUser}`)
   }
 
-  public getUnseenMessages(team_id: string, user_id: string): void {
+  public getUnseenMessages(team_id: string | number, user_id: string): void {
     const current_team = this.storageService.getItem('team_id')
     this.messageService.getUnseenMessages(team_id, user_id)
       .subscribe(data => {

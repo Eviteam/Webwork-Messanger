@@ -1,5 +1,5 @@
 import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Message } from 'src/app/models/message';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
 import { MessageService } from 'src/app/services/message/message.service';
@@ -34,43 +34,50 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public WEBWORK_BASE_URL = environment.WEBWORK_BASE_URL;
   public isSame: boolean;
   public isIcon: boolean;
-  private subscribtion: Subscription
+  private subscribtion: Subscription;
 
   constructor(
     public messageService: MessageService, // property messageService is public because it is using in chat-history.component.html
     private activatedRoute: ActivatedRoute,
     private storageService: LocalStorageService,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.getUrlParameter()
-    // .then(param => {
-    //   this.currentUser = this.storageService.getItem('user_id');
-      // this.messageService.getMessage(this.currentUser, param)
-      //   .subscribe((data: Message) => {
-      //     this.selectedUser = this.activatedRoute.params['value'].id.toString();
-      //     const team_id = this.storageService.getItem('team_id');
-      //     if ((data.sender_id.toString() == this.activatedRoute.params['value'].id && data.receiver_id == this.storageService.getItem('user_id')
-      //     || data.sender_id.toString() == this.storageService.getItem('user_id') && data.receiver_id == this.activatedRoute.params['value'].id)
-      //     && data.team_id == team_id) {
-          //   this.newMessage = data;
-            // if (this.newMessage.sender_id == +this.selectedUser) {
-            //   this.newMessage.isSeen = true;
-            //   this.messageService.setMessageIsRead(team_id, this.storageService.getItem('user_id'), data.sender_id.toString())
-            //     .subscribe(data => data)
-            // }
-          //   this.current_time = moment().format();
-          //   this.newMessage.createdAt = this.current_time;
-          //   this.messageService.allMessages.push(this.newMessage);
-          //   this.seperateMessagesByDate(this.messageService.allMessages)
-          //   this.newMessageAdded = true;
-          //   this.scrollToBottom();
-          // } else {
-          //   this.messageService.getNewMessage(data)
-        //   }
-        // })
-    // });
+    this.activatedRoute.params
+      .subscribe(param => {
+        this.storageService.setItem('selectedUser', param.id);
+        this.messageService.setMessageProps()
+          .then(data => this.getAllMessage(data, this.messageService.params))
+          .then(() => {
+            this.currentUser = this.storageService.getItem('user_id');
+            const team_id = this.storageService.getItem('team_id');
+            this.subscribtion = this.messageService.newMessage
+              .subscribe(message => {
+                if (message) {
+                  this.newMessage = message;
+                  this.newMessage.isSeen = true;
+                    this.messageService.setMessageIsRead(team_id, this.storageService.getItem('user_id'), message.sender_id.toString())
+                      .subscribe(data => data)
+
+                  this.current_time = moment().format();
+                  this.newMessage.createdAt = this.current_time;
+                  this.messageService.allMessages.push(this.newMessage);
+                  this.seperateMessagesByDate(this.messageService.allMessages);
+                  this.newMessageAdded = true;
+                  this.scrollToBottom();
+                  this.messageService.setNewMessage(null)
+                }
+              })
+          }).then(() => {
+            this.router.events.subscribe(event => {
+              if (event instanceof NavigationEnd) {
+                this.subscribtion.unsubscribe()
+              }
+            })
+          })
+      })
   }
 
   ngAfterViewChecked(): void {
@@ -105,26 +112,8 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
       this.activatedRoute.params
         .subscribe(param => {
           this.storageService.setItem('selectedUser', param.id);
-          this.messageService.setMessageProps().then(data => this.getAllMessage(data, this.messageService.params));
-          this.currentUser = this.storageService.getItem('user_id');
-          this.subscribtion = this.messageService.getMessage(this.currentUser, param.id)
-            .subscribe((data: Message) => {
-              const team_id = this.storageService.getItem('team_id');
-              if (data.team_id == team_id) {
-                this.newMessage = data;
-                if (this.newMessage.sender_id == +param.id) {
-                  this.newMessage.isSeen = true;
-                  this.messageService.setMessageIsRead(team_id, this.storageService.getItem('user_id'), data.sender_id.toString())
-                    .subscribe(data => data)
-                }
-                this.current_time = moment().format();
-                this.newMessage.createdAt = this.current_time;
-                this.messageService.allMessages.push(this.newMessage);
-                this.seperateMessagesByDate(this.messageService.allMessages)
-                this.newMessageAdded = true;
-                this.scrollToBottom();
-              }
-            })
+          this.messageService.setMessageProps()
+            .then(data => this.getAllMessage(data, this.messageService.params))
           res(param.id)
         },
           err => rej(err))
