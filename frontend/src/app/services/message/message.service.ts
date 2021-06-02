@@ -31,15 +31,34 @@ export class MessageService {
     private socket: Socket
   ) { }
 
-  public getMessage(user_id: string | number): any {
-    // this.socket.emit('join', user_id)
-    return this.socket
-        .fromEvent("chatMessage")
-        .pipe(map((data) => data));
+  public getMessage(user_id: string | number, selectedUser: number | string): any {
+    const usersChannel = [user_id, selectedUser];
+    usersChannel.sort();
+    // return this.socket.fromEvent(`chatNotifier-${usersChannel[0]}/${usersChannel[1]}`)
+    // .pipe(map((data) => data));
+    let observable = new Observable<{ user: String, message: String }>(observer => {
+      this.socket.on(`chatNotifier-${usersChannel[0]}/${usersChannel[1]}`, data => {
+        observer.next(data);
+      });
+      return () => { this.socket.disconnect() }
+    });
+    return observable;
   }
 
   public sendMessage(message: Message) {
     this.socket.emit("chatMessage", message);
+  }
+
+  public removeSocket(user_id: string | number, selectedUser: number | string) {
+    const usersChannel = [user_id, selectedUser];
+    usersChannel.sort();
+    this.socket.removeListener(`chatNotifier-${usersChannel[0]}/${usersChannel[1]}`)
+  }
+
+  public reconnectSocket(user_id: string | number, selectedUser: number | string) {
+    const usersChannel = [user_id, selectedUser];
+    usersChannel.sort();
+    this.getMessage(user_id, selectedUser)
   }
 
   public saveMessage(message: Message): Observable<Message> {
@@ -77,7 +96,7 @@ export class MessageService {
   }
 
   public getNewMessage(newMessage: any): void {
-    this.message.next(newMessage); 
+    this.message.next(newMessage);
   }
 
   public sendNotification(message: WebWorkMessage): Observable<any> {

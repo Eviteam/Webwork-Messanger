@@ -10,24 +10,13 @@ function connectToSocket(io) {
     socket.on('disconnect', () => {
       io.emit('message', 'A user has left the chat');
     });
-
-    // socket.on('join', function (room) {
-    //   console.log(room, "room")
-    //   socket.join(room);
-    //   socket.room = room;
-      socket.on('chatMessage', message => {
-        if ((message.sender[0].id == message.room && message.receiver_id == message.sender_id)
-             || (message.sender[0].id == message.sender_id && message.receiver_id == message.room)) {
-          // io.sockets.in(message.room).emit('chatMessage', message);
-          io.sockets.emit('chatMessage', message);
-        }
-        // io.emit('message', message);
-        // if (!message.isSeen) {
-        //   io.emit(`${message.receiver}`, message)
-        // }
-        // io.sockets.emit('chatMessage', message);
-      });
-    // })
+    socket.on('chatMessage', message => {
+      const usersChannel = [message.sender_id.toString(), message.receiver_id.toString()];
+      usersChannel.sort()
+      socket.join(`chatNotifier-${usersChannel[0]}/${usersChannel[1]}`);
+      io.emit(`chatNotifier-${usersChannel[0]}/${usersChannel[1]}`, message)
+      // socket.join(`chatNotifier-${usersChannel[0]}/${usersChannel[1]}`).emit(message)
+    });
   });
 }
 

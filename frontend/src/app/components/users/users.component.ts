@@ -116,7 +116,12 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.hideUsers = !this.hideUsers
   }
 
-  public selectUser(user_id: string, index?: number): void {
+  public selectUser(user_id: string, index?: number, select?: boolean): void {
+    const currentUser = this.storageService.getItem('user_id');
+    const selected = this.storageService.getItem('selectedUser');
+    if (select) {
+      this.messageService.removeSocket(currentUser, selected);
+    }
     this.userIsSelected = true;
     this.selectedUser = user_id;
     this.storageService.setItem('selectedUser', this.selectedUser);
@@ -128,7 +133,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     })
     this.messageService.setMessageIsRead(this.team_id, this.user_id, this.selectedUser)
       .subscribe(data => {
-        if (this.userMessages.includes(this.selectedUser.toString())) {
+        if (this.userMessages && this.userMessages.includes(this.selectedUser.toString())) {
           this.userMessages.splice(this.userMessages.indexOf(this.selectedUser.toString()), 1);
         }
         if (data.n > 0) {
@@ -140,6 +145,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     if (!index) {
       this.isTopHovered = false
     }
+    this.messageService.reconnectSocket(currentUser, this.selectedUser)
     this.router.navigateByUrl(`/main/${this.selectedUser}`)
   }
 
