@@ -113,7 +113,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     //if its not the selected user
     if(message.sender_id != +selectedUserId) {
       this.userService.setMessageIsRead(false);
-      if (currentUserId == message.receiver_id || selectedUserId == message.receiver_id) {
+      if (currentUserId == message.receiver_id) {
         this.getUnseenMessages(message?.team_id, message?.receiver_id);
       }
     }
