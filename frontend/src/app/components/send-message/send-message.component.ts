@@ -114,11 +114,11 @@ export class SendMessageComponent implements OnInit, OnDestroy {
           .subscribe((param => {
             message['data'].room = param.id;
             message['data'].sender_id = this.storageService.getItem('user_id');
-            this.messageService.sendMessage(message['data']);
             if (message['data'].sender_id != message['data'].room) {
               this.sendMessageNotification(message['data'])
             }
           }))
+        this.messageService.sendMessage(message['data']);
       })
   }
 
