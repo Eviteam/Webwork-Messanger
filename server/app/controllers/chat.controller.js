@@ -20,27 +20,25 @@ router.get(`/:team_id/:user_id/:receiver_id`, (req, res) => {
   const receiver_id = req.params.receiver_id;
   const page = req.query.page;
   const limit = req.query.limit;
-  const startIndex = (page - 1 ) * limit;
+  const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
   connect.then(db => {
-    Global_UserSchema.find({}).then(currentUser => {
-      if (currentUser.length) {
-        webWorkService.getTeamData(user_id).then(data => {
-          const singleUser = data.team.users.find(user => user.id == user_id);
-          ChatSchema.find({ team_id }).then(messages => {
-            const allMessages = [];
-            let result = [];
-            messages.map(message => {
-              if ((singleUser.id.toString() == message.sender[0].id.toString() && receiver_id.toString() == message.receiver_id.toString())
-                || (singleUser.id.toString() == message.receiver_id.toString() && receiver_id.toString() == message.sender[0].id.toString())) {
-                allMessages.unshift(message);
-                result = allMessages.slice(startIndex, endIndex)
-              }
-            })
-            res.send(result.reverse())
-          })
+    webWorkService.getTeamData(user_id).then(data => {
+      const singleUser = data.team.users.find(user => user.id == user_id);
+      ChatSchema.find({
+        team_id
+      }).then(messages => {
+        const allMessages = [];
+        let result = [];
+        messages.map(message => {
+          if ((singleUser.id.toString() == message.sender[0].id.toString() && receiver_id.toString() == message.receiver_id.toString()) ||
+            (singleUser.id.toString() == message.receiver_id.toString() && receiver_id.toString() == message.sender[0].id.toString())) {
+            allMessages.unshift(message);
+            result = allMessages.slice(startIndex, endIndex)
+          }
         })
-      }
+        res.send(result.reverse())
+      })
     })
   })
 })
@@ -61,7 +59,9 @@ router.post(`/send-message`, (req, res) => {
         }
         const chatSchema = new ChatSchema(data);
         chatSchema.save();
-        res.json({ data });
+        res.json({
+          data
+        });
       }
     })
   })
@@ -75,25 +75,37 @@ router.post(`/send-message/channel`, (req, res) => {
     data.sender = [singleUser]
     const channelMessages = new Channel_ChatSchema(data);
     channelMessages.save();
-    res.json({ data });
+    res.json({
+      data
+    });
   })
 });
 
 
 // UPLOAD FILE
 router.post(`/uploadFile`, uploadedFile.single('file'), uploadFile);
+
 function uploadFile(req, res) {
   const fileData = req.file;
   !fileData
-    ? res.status(400).json({ message: 'No file is available!' })
-    : res.status(200).json({ message: 'File is uploaded', uploaded: req.file.length, fileData });
+    ?
+    res.status(400).json({
+      message: 'No file is available!'
+    }) :
+    res.status(200).json({
+      message: 'File is uploaded',
+      uploaded: req.file.length,
+      fileData
+    });
 };
 
 // DELETE UPLOADED FILE
 router.delete(`/uploadedFile/:fileName`, (req, res) => {
   const fileName = req.params.fileName;
   fs.unlink(`${directoryPath}/${fileName}`, function (err) {
-    err ? res.status(404).send(err) : res.status(200).send({ message: 'Success' })
+    err ? res.status(404).send(err) : res.status(200).send({
+      message: 'Success'
+    })
   });
 })
 
@@ -104,12 +116,21 @@ router.get(`/unseen/messages/:team_id/:user_id`, (req, res) => {
   const unseenMsgs = {}
   connect.then(db => {
     if (team_id == 0) {
-      ChatSchema.find({receiver_id: user_id, isSeen: false})
+      ChatSchema.find({
+          receiver_id: user_id,
+          isSeen: false
+        })
         .then(data => {
-          res.json({messageCount: data.length})
+          res.json({
+            messageCount: data.length
+          })
         })
     } else {
-      ChatSchema.find({ team_id, receiver_id: user_id, isSeen: false })
+      ChatSchema.find({
+          team_id,
+          receiver_id: user_id,
+          isSeen: false
+        })
         .then(data => {
           data.map(item => {
             if (unseenMsgs && !unseenMsgs[item.sender[0].id]) {
@@ -132,25 +153,22 @@ router.put(`/messages/seen/:team_id/:user_id/:sender_id`, (req, res) => {
   const user_id = req.params.user_id;
   const sender_id = req.params.sender_id;
   connect.then(db => {
-  ChatSchema.updateMany(
-    { 
+    ChatSchema.updateMany({
       team_id,
       isSeen: false,
       receiver_id: user_id,
       sender_id
-    },
-    {
+    }, {
       $set: {
         isSeen: true
       }
-    },
-    {
+    }, {
       upsert: false
-    }
-  ).then(data => {
+    }).then(data => {
       res.json(data).status(200)
-    }
-  ).catch(err => res.status(400).json({message: err}))
+    }).catch(err => res.status(400).json({
+      message: err
+    }))
   })
 })
 
