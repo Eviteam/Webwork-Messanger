@@ -35,7 +35,7 @@ export class MessageService {
     this.socket.emit('register', userData)
   }
 
-  public subscribeToSocketEvents(userData: any): any {    
+  public subscribeToSocketEvents(): any {    
     return this.socket.fromEvent('privateChat')
       .pipe(map((data: any) => data));
   }

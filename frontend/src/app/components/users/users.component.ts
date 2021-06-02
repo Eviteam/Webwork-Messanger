@@ -93,7 +93,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.messageService.registerUser(userData);
 
     //subscribe to socket events
-    this.messageService.subscribeToSocketEvents(userData)
+    this.messageService.subscribeToSocketEvents()
       .subscribe((data: Message) => {
         this.newMessageSocketEvent(data)
       })
@@ -111,10 +111,10 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
     //got new message - needs to show notifications and things to attract attention
     //if its not the selected user
-    if(message.receiver_id != selectedUserId && message.sender_id != +selectedUserId) {
+    if(message.sender_id != +selectedUserId) {
       this.userService.setMessageIsRead(false);
-      if (this.storageService.getItem('user_id') == message.receiver_id) {
-        this.getUnseenMessages(message?.team_id, message?.receiver_id)
+      if (currentUserId == message.receiver_id || selectedUserId == message.receiver_id) {
+        this.getUnseenMessages(message?.team_id, message?.receiver_id);
       }
     }
     
