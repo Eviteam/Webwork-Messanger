@@ -188,10 +188,6 @@
     display: inline-block;
   }
 
-  ::ng-deep .ql-container.ql-snow {
-    overflow-y: scroll !important;
-  }
-
   
   ::ng-deep .ql-container.ql-snow::-webkit-scrollbar {
     width: 8px;

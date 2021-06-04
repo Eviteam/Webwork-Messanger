@@ -2,6 +2,7 @@ const connect = require("../helpers/db");
 const UserSchema = require("../models/UserSchema");
 const TeamSchema = require("../models/TeamSchema");
 const webWorkService = require("./web-work.service");
+const ChatSchema = require("../models/ChatSchema");
 
 function createUser(newTeamData) {
   connect.then(db => {
@@ -31,6 +32,29 @@ function createUser(newTeamData) {
   }).catch(err => console.log(err))
 }
 
+async function groupUsers(team_id, receiver_id) {
+  const data = await ChatSchema.aggregate([
+    {
+      $match: { team_id, receiver_id }
+    },
+    {
+      $sort: { isSeen: 1, updatedAt: -1 }
+    },
+    {
+      $group: {
+        _id: "$sender_id",
+        updatedAt: { $first: "$updatedAt" },
+        isSeen: { $first: "$isSeen" }
+      }
+    },
+    {
+      $sort: { isSeen: 1, updatedAt: -1 }
+    },
+  ]);
+  return data.reverse();
+}
+
 module.exports = {
-  createUser
+  createUser,
+  groupUsers
 }
