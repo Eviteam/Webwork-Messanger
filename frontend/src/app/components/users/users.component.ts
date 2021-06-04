@@ -130,7 +130,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.subscription = this.newMessageEvent.changes
       .pipe(take(1))
       .subscribe(change => {
-        this.setToTopUnseenMessages();
+        // this.setToTopUnseenMessages();
       })
   }
 
