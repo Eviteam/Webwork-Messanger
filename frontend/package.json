@@ -23,6 +23,7 @@
     "@ckeditor/ckeditor5-build-classic": "^24.0.0",
     "@ckeditor/ckeditor5-enter": "^24.0.0",
     "@ckeditor/ckeditor5-essentials": "^24.0.0",
+    "angular2-jwt-simple": "^0.5.5",
     "autolinker": "^3.14.2",
     "bootstrap": "^4.5.3",
     "jquery": "^3.5.1",
