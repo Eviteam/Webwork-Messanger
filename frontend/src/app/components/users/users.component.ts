@@ -111,13 +111,13 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
     //got new message - needs to show notifications and things to attract attention
     //if its not the selected user
-    if(message.sender_id != +selectedUserId) {
+    if (message.sender_id != +selectedUserId) {
       this.userService.setMessageIsRead(false);
       if (currentUserId == message.receiver_id) {
         this.getUnseenMessages(message?.team_id, message?.receiver_id);
       }
     }
-    
+
 
     //if now in that chat window, ask chat component to show that message
     if ((message.sender_id == +currentUserId && message.receiver_id == selectedUserId)
@@ -135,10 +135,10 @@ export class UsersComponent implements OnInit, AfterViewInit {
   }
 
   public setToTopUnseenMessages(): void {
-      this.newMessageEvent['_results'].map(item => {
-        const new_users = this.users
-        const single_user = this.users.splice(item.nativeElement.id, 1)
-        new_users.unshift(single_user[0]);
+    this.newMessageEvent['_results'].map(item => {
+      const new_users = this.users
+      const single_user = this.users.splice(item.nativeElement.id, 1)
+      new_users.unshift(single_user[0]);
     })
   }
 
