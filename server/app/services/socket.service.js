@@ -1,5 +1,6 @@
 function connectToSocket(io) {
   const sockets = {};
+  const externalSockets = {};
   io.on('connection', socket => {
 
     socket.emit('message', 'welcome to chat'); // emits for single client
@@ -13,6 +14,10 @@ function connectToSocket(io) {
 
     socket.on('register', userData => {
       sockets[`${userData.team_id}-${userData.user_id}`] = socket;
+    })
+
+    socket.on('registerExternal', userData => {
+      externalSockets[`${userData.team_id}-${userData.user_id}`] = socket;
     })
 
     socket.on('chatMessage', message => {
@@ -32,7 +37,10 @@ function connectToSocket(io) {
   
         //emit to the receiver's socket
         if(sockets[`${message.team_id}-${message.receiver_id}`]) {
-          sockets[`${message.team_id}-${message.receiver_id}`].emit(`privateChat`, message)
+          sockets[`${message.team_id}-${message.receiver_id}`].emit(`privateChat`, message);
+          if (externalSockets[`${message.team_id}-${message.receiver_id}`]) {
+            externalSockets[`${message.team_id}-${message.receiver_id}`].emit(`privateChat`, message)
+          }
         } else {
          // receiver is not online;
         }
