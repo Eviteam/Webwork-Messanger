@@ -58,9 +58,11 @@ function connectToSocket(io) {
             }
             externalSockets[`${message.team_id}-${message.receiver_id}`].emit(`privateChat`, messageForWebwork);
           }
-          messageCountSocket[`${message.team_id}-${message.receiver_id}`].on('msgCount', count => {
-            messageCountSocket[`${message.team_id}-${message.receiver_id}`].emit(`chatCount`, count)
-          })
+          if (messageCountSocket[`${message.team_id}-${message.receiver_id}`]) {
+            socket.on('msgCount', count => {
+              messageCountSocket[`${message.team_id}-${message.receiver_id}`].emit(`chatCount`, count)
+            })
+          }
         } else {
          // receiver is not online;
         }
