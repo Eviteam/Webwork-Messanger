@@ -3,16 +3,13 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   firstname: {
-    type: String,
-    required: true
+    type: String
   },
   lastname: {
-    type: String,
-    required: true
+    type: String
   },
   id: {
-    type: Number,
-    required: true
+    type: Number
   },
   team_id: {
     type: Number

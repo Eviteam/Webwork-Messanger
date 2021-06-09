@@ -183,6 +183,9 @@ export class UsersComponent implements OnInit, AfterViewInit {
         if (team_id == current_team) {
           this.userMessages = Object.keys(data);
           this.unreadMessageCount = data;
+          delete data.team_id
+          const count = Object.values(data).reduce((a: number, b: number) => a + b, 0)
+          this.messageService.emitMsgCounts(+count)
           if (this.unreadMessageCount) {
             this.userService.setMessageIsRead(false);
           }
