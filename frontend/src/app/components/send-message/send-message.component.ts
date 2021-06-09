@@ -114,9 +114,14 @@ export class SendMessageComponent implements OnInit, OnDestroy {
           .subscribe((param => {
             message['data'].room = param.id;
             message['data'].sender_id = this.storageService.getItem('user_id');
-            if (message['data'].sender_id != message['data'].room) {
-              this.sendMessageNotification(message['data'])
-            }
+            this.messageService.getUnseenMessages(message['data'].team_id, message['data'].receiver_id)
+              .toPromise()
+              .then(messageCount => {
+                const data = messageCount
+                delete data.team_id
+                const count = Object.values(data).reduce((a: number, b: number) => a + b, 0)
+                this.messageService.emitMsgCounts(+count)
+              })
           }))
         this.messageService.sendMessage(message['data']);
       })

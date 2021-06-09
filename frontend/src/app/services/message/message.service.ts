@@ -71,6 +71,10 @@ export class MessageService {
     })
   }
 
+  public emitMsgCounts(count: number): void {
+    this.socket.emit('msgCount', count)
+  }
+
   public uploadFile(file: any): Observable<any> {
     return this.apiService.postFile(`/api/chat/uploadFile`, file)
   }
