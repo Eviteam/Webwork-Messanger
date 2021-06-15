@@ -148,7 +148,10 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   public selectUser(user_id: string, index?: number, select?: boolean): void {
     if (select) {
-      this.messageService.setNewMessage(null)
+      this.messageService.setNewMessage(null);
+      const current_team = this.storageService.getItem('team_id');
+      const current_user = this.storageService.getItem('user_id');
+      this.getUnseenMessages(current_team, current_user)
     }
     this.userIsSelected = true;
     this.selectedUser = user_id;
@@ -184,7 +187,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
           this.userMessages = Object.keys(data);
           this.unreadMessageCount = data;
           delete data.team_id
-          const count = Object.values(data).reduce((a: number, b: number) => a + b, 0)
+          const count = Object.values(data).reduce((a: number, b: number) => a + b, 0);
           this.messageService.emitMsgCounts(+count)
           if (this.unreadMessageCount) {
             this.userService.setMessageIsRead(false);

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -14,7 +14,7 @@ import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-
   templateUrl: './send-message.component.html',
   styleUrls: ['./send-message.component.scss']
 })
-export class SendMessageComponent implements OnInit, OnDestroy {
+export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public message: string = '';
   public messageBody: Message = new Message();
@@ -27,7 +27,7 @@ export class SendMessageComponent implements OnInit, OnDestroy {
   public tooltipFromLeft: boolean = false;
   public loader: boolean = false;
   private subscription: Subscription;
-  @ViewChild('editor', {static: false}) public editor: ElementRef
+  @ViewChild('editor', { static: false }) public editor: any
 
   constructor(
     private messageService: MessageService,
@@ -45,9 +45,163 @@ export class SendMessageComponent implements OnInit, OnDestroy {
     this.messageService.setMessageProps().then(data => this.messageBody = data);
   }
 
+  async ngAfterViewInit() {
+    await this.removeUnnecessaryWhiteSpaces();
+  }
+
+  public async removeUnnecessaryWhiteSpaces(setNull?: boolean) {
+    
+    const quills = [];
+    // @ts-ignore
+    [...document.getElementsByClassName('quillEditor')].forEach((el, idx) => {
+      // this.editor.selectionChangeHandler = (range, oldRange, source) => {
+      //   console.log(range, oldRange, source, "3632184132")
+      //   if (setNull) {
+      //     oldRange = range;
+      //     range = null;
+      //   }
+        if (this.editor.quillEditor) {
+          const delta = this.editor.quillEditor.getContents();
+
+          let leadingFixed = false;
+          let newDelta = [];
+          let tempDelta = [];
+
+          if (delta.ops.length === 1) {
+            // If there is only one entry, check if it's a string and trim leading and ending LF
+            let { insert, attributes } = delta.ops[0];
+            if (typeof (insert) === 'string') {
+              insert = insert.replace(/^\n+|\n+$/g, '');
+            }
+            newDelta = [{ insert, attributes }];
+          } else {
+            // Else go through all the insert entries
+            delta.ops.forEach(({ insert, attributes }, idx) => {
+              // Create a boolean to indicate if we're at the last entry
+              const isLast = idx === delta.ops.length - 1;
+
+              // If the entry is a string (not image/asset)
+              if (typeof (insert) === 'string') {
+                // If we haven't fixed the leading
+                if (!leadingFixed) {
+                  // If the entry begins with LFs
+                  if (/^\n+/.test(insert)) {
+                    // Create a string witrh clean leading LFs
+                    let cleanText = insert.replace(/^\n+/, '');
+
+                    // If there is text after cleaning the LFs
+                    if (cleanText.length > 0) {
+                      // Add the text to the newDelta
+                      newDelta.push({
+                        insert: cleanText,
+                        attributes
+                      });
+                      // Set leading flag to indicate we've fixed the leading
+                      leadingFixed = true;
+                    }
+                    // Else if the entry does not start with LFs
+                  } else {
+                    // If the entry does not begin with LFs
+                    // Add any pending entries that may exists in tempDelta to the newDelta
+                    newDelta = newDelta.concat(tempDelta);
+                    // Add the existing entry
+                    newDelta.push({
+                      insert,
+                      attributes
+                    });
+                    // Clean the any pending entries
+                    tempDelta = [];
+                    // And set the leading flag to indicate we've fixed the leading
+                    leadingFixed = true;
+                  }
+                  // Else if we have fixed the leading
+                } else {
+                  // If there an entry with ending LFs
+                  if (/\n+$/.test(insert)) {
+                    // Create a string witrh clean ending LFs
+                    let cleanText = insert.replace(/\n+$/, '');
+
+                    // If this is the last entry
+                    if (isLast) {
+                      // If there is text after cleaning the LFs
+                      if (cleanText.length > 0) {
+                        // Add any pending entries that may exists in tempDelta to the newDelta
+                        newDelta = newDelta.concat(tempDelta);
+                        // Add the cleaned entry
+                        newDelta.push({
+                          insert: cleanText,
+                          attributes
+                        });
+                      }
+                      // Else if this is not the last entry
+                    } else {
+                      // If there is text after cleaning the LFs
+                      if (cleanText.length > 0) {
+                        // Add any pending entries that may exists in tempDelta to the newDelta
+                        newDelta = newDelta.concat(tempDelta);
+                        // Add the existing entry
+                        newDelta.push({
+                          insert,
+                          attributes
+                        });
+                        // Clean the any pending entries
+                        tempDelta = [];
+                        // Else if there is no text after cleaning the LFs
+                      } else {
+                        // Add the entry to the temp deltas so to use them later if its needed
+                        tempDelta.push({ insert, attributes });
+                      }
+                    }
+                    // Else if the entry does not end with LFs
+                  } else {
+                    // Add any pending entries that may exists in tempDelta to the newDelta
+                    newDelta = newDelta.concat(tempDelta);
+                    // Add the existing entry
+                    newDelta.push({
+                      insert,
+                      attributes
+                    });
+                    // Clean the any pending entries
+                    tempDelta = [];
+                  }
+                }
+                // If the entry is not a string
+              } else {
+                // Then all leading text/line feeds have been cleared if there were any
+                // so, it's safe to set the leading flag
+                leadingFixed = true;
+                // Add any pending entries that may exists in tempDelta to the newDelta
+                newDelta = newDelta.concat(tempDelta);
+                // Add the existing entry
+                newDelta.push({
+                  insert,
+                  attributes
+                })
+                // Clean the any pending entries
+                tempDelta = [];
+              }
+            });
+          }
+          
+          this.editor.quillEditor.setContents(newDelta);
+          this.message = this.editor.quillEditor.scrollingContainer.innerHTML;
+        }
+      // }
+      quills.push(this.editor);
+    })
+    return this.message
+    // [...this.editor['elementRef'].nativeElement as HTMLDivElement].forEach((el, idx) => {
+    //   console.log(idx, el);
+    // })
+  }
+
   public setFocus(editor: any) {
     this.messageService.setFocus(editor);
     editor.focus();
+  }
+
+  public async onBlur() {
+    await this.removeUnnecessaryWhiteSpaces(true);
   }
 
   /**
@@ -96,35 +250,37 @@ export class SendMessageComponent implements OnInit, OnDestroy {
    * @param messageBody 
    * @returns void
    */
-  public sendMessage(messageBody: Message): void {
-    this.currentUser = this.storageService.getItem('selectedUser');
-    messageBody.message = this.message;
-    this.message = '';
-    this.messageService.saveMessage(messageBody)
-      .pipe(
-        finalize(() => {
-          this.filePaths = [];
-          this.message = '';
-          messageBody.filePath = [];
-          this.formValue.files.setValue([]);
-          this.loader = false;
-        }))
-      .subscribe((message: Message) => {
-        this.subscription = this.activatedRoute.params
-          .subscribe((param => {
-            message['data'].room = param.id;
-            message['data'].sender_id = this.storageService.getItem('user_id');
-            this.messageService.getUnseenMessages(message['data'].team_id, message['data'].receiver_id)
-              .toPromise()
-              .then(messageCount => {
-                const data = messageCount
-                delete data.team_id
-                const count = Object.values(data).reduce((a: number, b: number) => a + b, 0)
-                this.messageService.emitMsgCounts(+count)
-              })
+  public sendMessage(messageBody: Message) {
+    this.onBlur().then(() => {
+      this.currentUser = this.storageService.getItem('selectedUser');
+      messageBody.message = this.message;
+      this.message = '';
+      this.messageService.saveMessage(messageBody)
+        .pipe(
+          finalize(() => {
+            this.filePaths = [];
+            this.message = '';
+            messageBody.filePath = [];
+            this.formValue.files.setValue([]);
+            this.loader = false;
           }))
-        this.messageService.sendMessage(message['data']);
-      })
+        .subscribe((message: Message) => {
+          this.subscription = this.activatedRoute.params
+            .subscribe((param => {
+              message['data'].room = param.id;
+              message['data'].sender_id = this.storageService.getItem('user_id');
+              this.messageService.getUnseenMessages(message['data'].team_id, message['data'].receiver_id)
+                .toPromise()
+                .then(messageCount => {
+                  const data = messageCount
+                  delete data.team_id
+                  const count = Object.values(data).reduce((a: number, b: number) => a + b, 0)
+                  this.messageService.emitMsgCounts(+count)
+                })
+            }))
+          this.messageService.sendMessage(message['data']);
+        })
+    });
   }
 
   /**
