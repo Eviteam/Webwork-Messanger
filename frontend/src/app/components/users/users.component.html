@@ -1,9 +1,20 @@
-<!-- <div class="title_part d-flex align-items-center" (click)="hideOrShowContent()">
+<!--<div class="title_part d-flex align-items-center" (click)="hideOrShowContent()">
   <img src="../../../assets/icons/chevron_down.svg" class="msg_arrow" [ngClass]="hideUsers ? 'msg_arrow_rotate' : ''">
   <h4 class="title">Direct Messages</h4>
-</div> -->
-<div class="user_part" [ngClass]="hideUsers ? 'd-none' : ''">
-  <div class="single_user d-flex align-items-center" *ngFor="let user of users; let i = index"
+</div>-->
+<div *ngIf="!hideUsers" class="searchMod position-relative ">
+  <i class="d-flex mt-2"></i>
+  <input
+    class="form-control ml-4 mr-4 mb-4 ml-4 mt-2"
+    [(ngModel)]="searchName"
+    placeholder="Search">
+  <div *ngIf="!(users | filter:searchName:'lastname': 'firstname')?.length" class="text-center">
+    No Result!
+  </div>
+</div>
+<div
+  class="user_part"  [ngClass]="hideUsers ? 'd-none' : ''">
+  <div class="single_user d-flex align-items-center" *ngFor="let user of users | filter:searchName: 'lastname':'firstname' let i = index"
     (click)="selectUser(user.id, i, true)" [ngClass]="{'selectedUser': (userIsSelected && user.id == selectedUser)}"
     (mouseenter)="hoverUser(i, true)" (mouseleave)="hoverUser(i, false)">
     <div *ngIf="i === 0" [ngClass]="isTopHovered ? 'single_user_fullName_top' : 'd-none'">
@@ -14,7 +25,7 @@
     </div>
     <p class="user_name" [id]="i">{{user.firstname}} {{user.lastname}}</p>
     <div class="single_user_message_count" [id]="i" #newMessageEvent
-      [ngClass]="{'d-none': (messageIsRead && user.id == selectedUser)}" *ngIf="userMessages?.includes(user.id.toString()) 
+      [ngClass]="{'d-none': (messageIsRead && user.id == selectedUser)}" *ngIf="userMessages?.includes(user.id.toString())
         && user.id.toString() !== user_id">
       <p class="mb-0">{{unreadMessageCount[user.id]}}</p>
     </div>
@@ -22,3 +33,6 @@
     </div>
   </div>
 </div>
+
+
+

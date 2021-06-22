@@ -168,4 +168,34 @@
   align-items: center;
   height: 100vh;
   color: $tooltip-link-editButton-border;
+
 }
+
+.searchMod {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0 12px;
+
+  input {
+    border: 2px solid $hover-background-color;
+    padding-left: 40px;
+    &:focus {
+      border: 2px solid $hover-background-color !important;
+      box-shadow: 2px 2px 5px $hover-background-color;
+    }
+  }
+
+  i {
+    position: absolute;
+    background: url('../../../assets/icons/search_icon.svg') no-repeat 97% 50%;
+    width: 20px;
+    height: 20px;
+    left: 20px;
+    top: 10px;
+  }
+
+}
+
+
