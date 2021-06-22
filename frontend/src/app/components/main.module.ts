@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {NgModule, Pipe} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainComponent } from './main.component';
 import { RouterModule, Routes } from '@angular/router';
@@ -10,6 +10,7 @@ import { SidebarHeaderComponent } from './sidebar-header/sidebar-header.componen
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
+import { FilterPipe } from '../helpers/pipes/filter-pipe/filter.pipe';
 
 const routes: Routes = [
   {
@@ -29,15 +30,16 @@ const config: SocketIoConfig = { url: BASE_URL, options: {} };
     SidebarComponent,
     ChannelsComponent,
     UsersComponent,
-    SidebarHeaderComponent
+    SidebarHeaderComponent,
+    FilterPipe
   ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    CKEditorModule,
-    SocketIoModule.forRoot(config),
-    FormsModule
-  ],
-  exports: [RouterModule]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        CKEditorModule,
+        SocketIoModule.forRoot(config),
+        FormsModule
+    ],
+  exports: [RouterModule, FilterPipe]
 })
 export class MainModule { }

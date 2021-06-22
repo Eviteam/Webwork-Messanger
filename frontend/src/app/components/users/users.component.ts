@@ -32,6 +32,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   public isHovered: boolean = false;
   public isTopHovered: boolean = false;
   public isChanged: boolean = false;
+  public searchName = '';
   private subscription: Subscription;
 
   @ViewChild('userPart', { static: false }) public userPart: ElementRef;
@@ -198,8 +199,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   /**
    * Hovers first user
-   * @param index 
-   * @param isTopHovered 
+   * @param index
+   * @param isTopHovered
    * @returns void
    */
   public hoverUser(index: number, isHovered: boolean): void {
