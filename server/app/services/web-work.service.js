@@ -11,10 +11,14 @@ async function getTeamData(user_id) {
       });
 
       res.on('end', () => {
-        const team = JSON.parse(data);
-        team.user_id = user_id;
-        const newTeam = { team, user_id };
-        resolve(newTeam)
+        try {
+          const team = JSON.parse(data);
+          team.user_id = user_id;
+          const newTeam = { team, user_id };
+          resolve(newTeam)
+        } catch (e) {
+          console.log(e)
+        }
       });
     })
   })

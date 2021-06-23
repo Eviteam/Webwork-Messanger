@@ -3,18 +3,17 @@
   <h4 class="title">Direct Messages</h4>
 </div>-->
 <div *ngIf="!hideUsers" class="searchMod position-relative ">
-  <i class="d-flex mt-2"></i>
+  <i class="d-flex mr-5 textarea-emoji-control"></i>
   <input
-    class="form-control ml-4 mr-4 mb-4 ml-4 mt-2"
-    [(ngModel)]="searchName"
-    placeholder="Search">
-  <div *ngIf="!(users | filter:searchName:'lastname': 'firstname')?.length" class="text-center">
+    class="form-control mb-4 mt-2"
+    [(ngModel)]="searchName">
+  <div *ngIf="!(users | filter:searchName:'firstname': 'lastname')?.length" class="text-center">
     No Result!
   </div>
 </div>
 <div
   class="user_part"  [ngClass]="hideUsers ? 'd-none' : ''">
-  <div class="single_user d-flex align-items-center" *ngFor="let user of users | filter:searchName: 'lastname':'firstname' let i = index"
+  <div class="single_user d-flex align-items-center" *ngFor="let user of users | filter:searchName: 'firstname':'lastname' let i = index"
     (click)="selectUser(user.id, i, true)" [ngClass]="{'selectedUser': (userIsSelected && user.id == selectedUser)}"
     (mouseenter)="hoverUser(i, true)" (mouseleave)="hoverUser(i, false)">
     <div *ngIf="i === 0" [ngClass]="isTopHovered ? 'single_user_fullName_top' : 'd-none'">

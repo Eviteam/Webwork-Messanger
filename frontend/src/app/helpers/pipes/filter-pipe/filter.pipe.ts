@@ -1,5 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+
+
 @Pipe({
   name: 'filter',
   pure: false
@@ -7,16 +9,14 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FilterPipe implements PipeTransform {
 
   transform(value: any[], searchUser: string, propName: string, propLastName: string): any {
-    if (!searchUser.length) {
+    const name: any = searchUser.toLowerCase();
+    const contactedName = name.replace(/\s/g, '');
+    if (value) {
+      value?.map(user => user.fullName = `${user[propName]} ${user[propLastName]}`);
+    }
+    if (!name.length) {
       return value;
     }
-    const resultArray = [];
-    const name = searchUser.toLowerCase();
-    for (const item of value) {
-      if (item[propName].toLowerCase().includes(name) || item[propLastName].toLowerCase().includes(name)) {
-        resultArray.push(item);
-      }
-    }
-    return resultArray;
+    return value.filter(item => item.fullName.toLowerCase().includes(name) || item.fullName.toLowerCase().includes(contactedName));
   }
 }
