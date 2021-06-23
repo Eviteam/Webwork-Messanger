@@ -179,7 +179,7 @@
   flex-direction: column;
 
   input {
-    background-color: #E0F8FF;
+    background-color: $input-color;
     border: 2px solid $hover-background-color;
     border-radius: 7px;
     height: 31px;
