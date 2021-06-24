@@ -72,7 +72,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
                 this.users = data.team.users;
                 this.storageService.setItem('team_id', data.team.team_id)
                 this.selectUser(this.user_id)
-              })
+              });
           }
         })
     } else {
@@ -97,7 +97,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.messageService.subscribeToSocketEvents()
       .subscribe((data: Message) => {
         this.newMessageSocketEvent(data)
-      })
+      });
+
   }
 
   public newMessageSocketEvent(message: Message): void {

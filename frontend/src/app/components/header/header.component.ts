@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params
-      .subscribe(param => this.getSingleUser(param.id))
+      .subscribe(param => this.getSingleUser(param.id));
   }
 
   public getSingleUser(user_id: string): void {
