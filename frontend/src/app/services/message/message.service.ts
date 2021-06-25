@@ -23,7 +23,7 @@ export class MessageService {
   public params = {
     page: 1,
     limit: 10
-  }
+  };
 
   constructor(
     private apiService: ApiService,
@@ -32,10 +32,10 @@ export class MessageService {
   ) { }
 
   public registerUser(userData: any) {
-    this.socket.emit('register', userData)
+    this.socket.emit('register', userData);
   }
 
-  public subscribeToSocketEvents(): any {    
+  public subscribeToSocketEvents(): any {
     return this.socket.fromEvent('privateChat')
       .pipe(map((data: any) => data));
   }
@@ -67,12 +67,12 @@ export class MessageService {
       this.messageBody.sender = +this.storageService.getItem('user_id');
       this.messageBody.receiver_id = this.selectedUser;
       this.messageBody.team_id = this.storageService.getItem('team_id');
-      resolve(this.messageBody)
-    })
+      resolve(this.messageBody);
+    });
   }
 
   public emitMsgCounts(count: number): void {
-    this.socket.emit('msgCount', count)
+    this.socket.emit('msgCount', count);
   }
 
   public uploadFile(file: any): Observable<any> {
