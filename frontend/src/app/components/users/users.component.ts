@@ -17,21 +17,21 @@ import { environment } from 'src/environments/environment';
 })
 export class UsersComponent implements OnInit, AfterViewInit {
 
-  public hideUsers = false;
+  public hideUsers: boolean = false;
   public user_id: string;
   public team_id: string;
   public users: User[];
-  public userIsSelected = false;
+  public userIsSelected: boolean = false;
   public selectedUser: string = this.storageService.getItem('selectedUser')
     ? this.storageService.getItem('selectedUser')
     : null;
   public userMessages: any;
   public unreadMessageCount: any;
-  public messageIsRead = false;
+  public messageIsRead: boolean = false;
   public WEBWORK_BASE_URL = environment.WEBWORK_BASE_URL;
-  public isHovered = false;
-  public isTopHovered = false;
-  public isChanged = false;
+  public isHovered: boolean = false;
+  public isTopHovered: boolean = false;
+  public isChanged: boolean = false;
   public searchName = '';
   private subscription: Subscription;
 
@@ -63,18 +63,18 @@ export class UsersComponent implements OnInit, AfterViewInit {
             this.userService.getAllUsers(param.user_id)
               .subscribe((data: Team) => {
                 this.users = data.team.users;
-                this.storageService.setItem('team_id', data.team.team_id);
-                this.selectUser(param.user_id);
-              });
+                this.storageService.setItem('team_id', data.team.team_id)
+                this.selectUser(param.user_id)
+              })
           } else {
             this.userService.getAllUsers(this.user_id)
               .subscribe((data: Team) => {
                 this.users = data.team.users;
-                this.storageService.setItem('team_id', data.team.team_id);
-                this.selectUser(this.user_id);
+                this.storageService.setItem('team_id', data.team.team_id)
+                this.selectUser(this.user_id)
               });
           }
-        });
+        })
     } else {
       this.userService.getAllUsers(this.user_id)
         .subscribe((data: Team) => {
@@ -82,9 +82,9 @@ export class UsersComponent implements OnInit, AfterViewInit {
           this.storageService.setItem('team_id', data.team.team_id);
           const userIds = data.team.users.map(user => user.id);
           if (!userIds.includes(+selectedUser)) {
-            this.selectUser(this.user_id);
+            this.selectUser(this.user_id)
           }
-        });
+        })
       this.selectUser(selectedUser);
     }
     const userData = {
@@ -96,7 +96,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     //subscribe to socket events
     this.messageService.subscribeToSocketEvents()
       .subscribe((data: Message) => {
-        this.newMessageSocketEvent(data);
+        this.newMessageSocketEvent(data)
       });
 
   }
@@ -107,26 +107,23 @@ export class UsersComponent implements OnInit, AfterViewInit {
     const selectedUserId = this.storageService.getItem('selectedUser'); //@todo fix name
     const teamId = this.storageService.getItem('team_id');
 
-
-    // tslint:disable-next-line:triple-equals
     if (message?.team_id != teamId) {
       return;
     }
 
-    // got new message - needs to show notifications and things to attract attention
-    // if its not the selected user
-    // tslint:disable-next-line:triple-equals
+    //got new message - needs to show notifications and things to attract attention
+    //if its not the selected user
     if (message.sender_id != +selectedUserId) {
       this.userService.setMessageIsRead(false);
-      if (currentUserId === message.receiver_id) {
+      if (currentUserId == message.receiver_id) {
         this.getUnseenMessages(message?.team_id, message?.receiver_id);
       }
     }
 
 
-    // if now in that chat window, ask chat component to show that message
-    if ((message.sender_id === +currentUserId && message.receiver_id === selectedUserId)
-      || (message.sender_id === +selectedUserId && message.receiver_id === currentUserId)) {
+    //if now in that chat window, ask chat component to show that message
+    if ((message.sender_id == +currentUserId && message.receiver_id == selectedUserId)
+      || (message.sender_id == +selectedUserId && message.receiver_id == currentUserId)) {
       this.messageService.setNewMessage(message);
     }
   }
@@ -136,19 +133,19 @@ export class UsersComponent implements OnInit, AfterViewInit {
       .pipe(take(1))
       .subscribe(change => {
         // this.setToTopUnseenMessages();
-      });
+      })
   }
 
   public setToTopUnseenMessages(): void {
     this.newMessageEvent['_results'].map(item => {
-      const new_users = this.users;
-      const single_user = this.users.splice(item.nativeElement.id, 1);
+      const new_users = this.users
+      const single_user = this.users.splice(item.nativeElement.id, 1)
       new_users.unshift(single_user[0]);
-    });
+    })
   }
 
   public hideOrShowContent(): void {
-    this.hideUsers = !this.hideUsers;
+    this.hideUsers = !this.hideUsers
   }
 
   public selectUser(user_id: string, index?: number, select?: boolean): void {
@@ -156,7 +153,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
       this.messageService.setNewMessage(null);
       const current_team = this.storageService.getItem('team_id');
       const current_user = this.storageService.getItem('user_id');
-      this.getUnseenMessages(current_team, current_user);
+      this.getUnseenMessages(current_team, current_user)
     }
     this.userIsSelected = true;
     this.selectedUser = user_id;
@@ -164,7 +161,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.team_id = this.storageService.getItem('team_id');
     this.messageService.editor.subscribe(editor => {
       if (editor) {
-        editor.focus();
+        editor.focus()
       }
     })
     this.messageService.setMessageIsRead(this.team_id, this.user_id, this.selectedUser)
@@ -179,26 +176,26 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.messageService.allMessages = [];
     this.messageService.params.page = 1;
     if (!index) {
-      this.isTopHovered = false;
+      this.isTopHovered = false
     }
-    this.router.navigateByUrl(`/main/${this.selectedUser}`);
+    this.router.navigateByUrl(`/main/${this.selectedUser}`)
   }
 
   public getUnseenMessages(team_id: string | number, user_id: string): void {
-    const current_team = this.storageService.getItem('team_id');
+    const current_team = this.storageService.getItem('team_id')
     this.messageService.getUnseenMessages(team_id, user_id)
       .subscribe(data => {
-        if (team_id === current_team) {
+        if (team_id == current_team) {
           this.userMessages = Object.keys(data);
           this.unreadMessageCount = data;
-          delete data.team_id;
+          delete data.team_id
           const count = Object.values(data).reduce((a: number, b: number) => a + b, 0);
-          this.messageService.emitMsgCounts(+count);
+          this.messageService.emitMsgCounts(+count)
           if (this.unreadMessageCount) {
             this.userService.setMessageIsRead(false);
           }
         }
-      });
+      })
   }
 
   /**
@@ -208,7 +205,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
    * @returns void
    */
   public hoverUser(index: number, isHovered: boolean): void {
-    const element = document.getElementById(index.toString());
+    const element = document.getElementById(index.toString())
     if (element.scrollWidth > element.clientWidth) {
       !index ? this.isTopHovered = isHovered : this.isHovered = isHovered;
     }

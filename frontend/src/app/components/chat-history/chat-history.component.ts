@@ -23,14 +23,14 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public selectedUser: string = this.storageService.getItem('selectedUser');
   public current_time: string;
   public newMessage: Message;
-  public newMessageAdded = false;
+  public newMessageAdded: boolean = false;
   public unSeenMessages: Message[];
-  public loader = false;
+  public loader: boolean = false;
   public groupArrays: {
     date: string;
     messages: any;
   }[];
-  public todayDate: string = moment().format('dddd, MMMM Do');
+  public todayDate: string = moment().format("dddd, MMMM Do");
   public WEBWORK_BASE_URL = environment.WEBWORK_BASE_URL;
   public isSame: boolean;
   public isIcon: boolean;
@@ -45,9 +45,39 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
+    this.activatedRoute.params
+      .subscribe(param => {
+        this.storageService.setItem('selectedUser', param.id);
+        this.messageService.setMessageProps()
+          .then(data => this.getAllMessage(data, this.messageService.params))
+          .then(() => {
+            this.currentUser = this.storageService.getItem('user_id');
+            const team_id = this.storageService.getItem('team_id');
+            this.subscribtion = this.messageService.newMessage
+              .subscribe(message => {
+                if (message) {
+                  this.newMessage = message;
+                  this.newMessage.isSeen = true;
+                    this.messageService.setMessageIsRead(team_id, this.storageService.getItem('user_id'), message.sender_id.toString())
+                      .subscribe(data => data)
 
-    this.getMessageInformation();
-
+                  this.current_time = moment().format();
+                  this.newMessage.createdAt = this.current_time;
+                  this.messageService.allMessages.push(this.newMessage);
+                  this.seperateMessagesByDate(this.messageService.allMessages);
+                  this.newMessageAdded = true;
+                  this.scrollToBottom();
+                  this.messageService.setNewMessage(null)
+                }
+              })
+          }).then(() => {
+            this.router.events.subscribe(event => {
+              if (event instanceof NavigationEnd) {
+                this.subscribtion.unsubscribe()
+              }
+            })
+          })
+      })
   }
 
   ngAfterViewChecked(): void {
@@ -57,20 +87,20 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  /**
+  /** 
    * Listen to socket for get all messages
-   * @param messageBody
+   * @param messageBody 
    * @returns void
    */
   public getAllMessage(messageBody: Message, params: any): void {
     this.messageService.getMessageHistory(messageBody, params)
       .subscribe((data: any): void => {
         if (this.messageService.allMessages && !this.messageService.allMessages.length) {
-          this.newMessageAdded = true;
+          this.newMessageAdded = true
         }
         this.messageService.allMessages = data.concat(this.messageService.allMessages);
-        this.seperateMessagesByDate(this.messageService.allMessages);
-      });
+        this.seperateMessagesByDate(this.messageService.allMessages)
+      })
   }
 
   /**
@@ -83,11 +113,11 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
         .subscribe(param => {
           this.storageService.setItem('selectedUser', param.id);
           this.messageService.setMessageProps()
-            .then(data => this.getAllMessage(data, this.messageService.params));
-          res(param.id);
+            .then(data => this.getAllMessage(data, this.messageService.params))
+          res(param.id)
         },
-          err => rej(err));
-    });
+          err => rej(err))
+    })
   }
 
   /**
@@ -109,21 +139,21 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
       .then(props => {
         this.loader = true;
         this.messageService.params.page = this.messageService.params.page + 1;
-        this.getAllMessage(props, this.messageService.params);
+        this.getAllMessage(props, this.messageService.params)
       })
-      .finally(() => this.loader = false);
+      .finally(() => this.loader = false)
     this.infiniteScroll.ngOnDestroy();
     this.infiniteScroll.setup();
   }
 
   /**
    * Seperates messages by date
-   * @param allMessages
+   * @param allMessages 
    * @returns messages body by seperated date
    */
   public seperateMessagesByDate(allMessages: Message[]): any {
     const groups = allMessages.reduce((groups: any, message: Message) => {
-      const date = moment(message.createdAt).format('dddd, MMMM Do');
+      const date = moment(message.createdAt).format("dddd, MMMM Do");
       if (!groups[date]) {
         groups[date] = [];
       }
@@ -145,32 +175,36 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
 
   /**
    * Converts image sizes
-   * @param messages
+   * @param messages 
    * @returns void
    */
   public convertImageSize(messages: any): void {
     messages.map((item: { filePath: string[] }) => {
       if (item.filePath && item.filePath.length) {
         const reader = new FileReader();
-        const blobFile = this.b64toBlob(item.filePath[0]);
+        const blobFile = this.b64toBlob(item.filePath[0])
         const img = new Image;
         reader.readAsDataURL(blobFile);
         reader.onload = () => {
           img.src = reader.result.toString();
-        };
+        }
         img.onload = () => {
           // if (img.width < 300 && img.height < 300) {
           //   return this.isIcon = true
           // }
-          this.isSame = img.width <= img.height;
-        };
+          if (img.width > img.height) {
+            this.isSame = false
+          } else {
+            this.isSame = true;
+          }
+        }
       }
-    });
+    })
   }
 
   /**
    * Converting base64 to Blob
-   * @param dataURI
+   * @param dataURI 
    * @returns Blob
    */
   public b64toBlob(dataURI: string): Blob {
@@ -185,48 +219,16 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
 
   /**
    * Compares two dates
-   * @param firstDate
-   * @param secondDate
+   * @param firstDate 
+   * @param secondDate 
    * @returns true | false
    */
   public compareDates(firstDate: any, secondDate: any): Boolean {
-    return moment(firstDate).format('MMM d, y, h:mm a') === moment(secondDate).format('MMM d, y, h:mm a');
-  }
-
-   getMessageInformation(): any {
-     this.activatedRoute.params
-       .subscribe(param => {
-         this.storageService.setItem('selectedUser', param.id);
-         this.messageService.setMessageProps()
-           .then(data => this.getAllMessage(data, this.messageService.params))
-           .then(() => {
-             this.currentUser = this.storageService.getItem('user_id');
-             const team_id = this.storageService.getItem('team_id');
-             this.subscribtion = this.messageService.newMessage
-               .subscribe(message => {
-                 if (message) {
-                   this.newMessage = message;
-                   this.newMessage.isSeen = true;
-                   this.messageService.setMessageIsRead(team_id, this.storageService.getItem('user_id'), message.sender_id.toString())
-                     .subscribe(data => data);
-
-                   this.current_time = moment().format();
-                   this.newMessage.createdAt = this.current_time;
-                   this.messageService.allMessages.push(this.newMessage);
-                   this.seperateMessagesByDate(this.messageService.allMessages);
-                   this.newMessageAdded = true;
-                   this.scrollToBottom();
-                   this.messageService.setNewMessage(null);
-                 }
-               });
-           }).then(() => {
-           this.router.events.subscribe(event => {
-             if (event instanceof NavigationEnd) {
-               this.subscribtion.unsubscribe();
-             }
-           });
-         });
-       });
+    if (moment(firstDate).format('MMM d, y, h:mm a') === moment(secondDate).format('MMM d, y, h:mm a')) {
+      return true
+    } else {
+      return false
+    }
   }
 
 }
