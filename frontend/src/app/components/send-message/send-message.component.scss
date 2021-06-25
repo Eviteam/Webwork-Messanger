@@ -4,14 +4,14 @@
   margin: 0 32px 16px 38px;
   display: flex;
   position: relative;
-  
+
   .quillEditor-wrapper {
     border: 2px solid #B0DAE6;
     border-right-style: none;
     border-radius: 13px 0 0 13px;
     flex-grow: 1;
   }
-  
+
 }
 
 .send_button {
@@ -48,9 +48,10 @@
     border-top-style: none;
     border-radius: 0 0 0 13px;
     overflow: auto;
+    height: inherit !important;
     max-height: 240px;
   }
-  
+
   ::ng-deep .ql-formats>button {
     color: $ck-button-color;
   }
@@ -59,11 +60,11 @@
     width: 8px;
     border-radius: 4px;
   }
-   
+
   ::ng-deep .ql-editor::-webkit-scrollbar-track {
     display: none;
   }
-   
+
   ::ng-deep .ql-editor::-webkit-scrollbar-thumb {
     background-color: rgba($color: #000000, $alpha: 0.1);
     border-radius: 4px;
@@ -187,16 +188,16 @@
     display: inline-block;
   }
 
-  
+
   ::ng-deep .ql-container.ql-snow::-webkit-scrollbar {
     width: 8px;
     border-radius: 4px;
   }
-  
+
   ::ng-deep .ql-container.ql-snow::-webkit-scrollbar-track {
     display: none;
   }
-  
+
   ::ng-deep .ql-container.ql-snow::-webkit-scrollbar-thumb {
     background-color: rgba($color: #000000, $alpha: 0.1);
     border-radius: 4px;
@@ -210,7 +211,7 @@
   top: 9px;
   right: 70px;
   cursor: pointer;
-  
+
   &:hover svg {
     fill: #06c;
   }
@@ -268,7 +269,7 @@
 }
 
 ::ng-deep .ql-flip {
-  z-index: 1; 
+  z-index: 1;
 }
 
 ::ng-deep .ql-editor > p > span {

@@ -2,32 +2,62 @@
   <img src="../../../assets/icons/chevron_down.svg" class="msg_arrow" [ngClass]="hideUsers ? 'msg_arrow_rotate' : ''">
   <h4 class="title">Direct Messages</h4>
 </div>-->
-<div *ngIf="!hideUsers" class="searchMod position-relative ">
+<div
+  class="searchMod position-relative"
+  *ngIf="!hideUsers">
   <i class="d-flex mr-5 textarea-emoji-control"></i>
   <input
     class="form-control mb-4 mt-2"
     [(ngModel)]="searchName">
-  <div *ngIf="!(users | filter:searchName:'firstname': 'lastname')?.length" class="text-center">
+  <div
+    class="text-center"
+    *ngIf="!(users | filter:searchName:'firstname': 'lastname')?.length">
     No Result!
   </div>
 </div>
-<div class="user_part"  [ngClass]="hideUsers ? 'd-none' : ''">
-  <div class="single_user d-flex align-items-center" *ngFor="let user of users | filter:searchName: 'firstname':'lastname' let i = index"
-    (click)="selectUser(user.id, i, true)" [ngClass]="{'selectedUser': (userIsSelected && user.id == selectedUser)}"
-    (mouseenter)="hoverUser(i, true)" (mouseleave)="hoverUser(i, false)">
-    <div *ngIf="i === 0" [ngClass]="isTopHovered ? 'single_user_fullName_top' : 'd-none'">
-      {{user.firstname}} {{user.lastname}}</div>
+<div
+  class="user_part"
+  [ngClass]="hideUsers ? 'd-none' : ''">
+  <div
+    class="single_user d-flex align-items-center"
+    *ngFor="let user of users |
+    filter:searchName: 'firstname':'lastname' let i = index"
+    (click)="selectUser(user.id, i, true)"
+    [ngClass]="{'selectedUser': (userIsSelected && user.id == selectedUser)}"
+    (mouseenter)="hoverUser(i, true)"
+    (mouseleave)="hoverUser(i, false)">
+    <div
+      *ngIf="i === 0"
+      [ngClass]="isTopHovered ? 'single_user_fullName_top' : 'd-none'">
+      {{user.firstname}} {{user.lastname}}
+    </div>
     <div class="user_image_block">
-      <img [src]="user?.avatar.includes('data:image/') ? user?.avatar : WEBWORK_BASE_URL + user?.avatar" class="user_icon">
-      <div class="status" [ngClass]="{'status_active': user?.is_online,  'status_inactive': !user?.is_online, 'status_active': user?.id.toString() === user_id }"></div>
+      <img
+        class="user_icon"
+        [src]="user?.avatar.includes('data:image/') ? user?.avatar : WEBWORK_BASE_URL + user?.avatar">
+      <div
+        class="status"
+        [ngClass]="{'status_active': user?.is_online,  'status_inactive': !user?.is_online, 'status_active': user?.id.toString() === user_id }"></div>
     </div>
-    <p class="user_name" [id]="i">{{user.firstname}} {{user.lastname}}</p>
-    <div class="single_user_message_count" [id]="i" #newMessageEvent
-      [ngClass]="{'d-none': (messageIsRead && user.id == selectedUser)}" *ngIf="userMessages?.includes(user.id.toString())
-        && user.id.toString() !== user_id">
-      <p class="mb-0">{{unreadMessageCount[user.id]}}</p>
+    <p
+      class="user_name"
+      [id]="i">
+      {{user.firstname}} {{user.lastname}}
+    </p>
+    <div
+      class="single_user_message_count"
+      [id]="i"
+      #newMessageEvent
+      [ngClass]="{'d-none': (messageIsRead && user.id == selectedUser)}"
+      *ngIf="userMessages?.includes(user.id.toString()) && user.id.toString() !== user_id">
+      <p class="mb-0">
+        {{unreadMessageCount[user.id]}}
+      </p>
     </div>
-    <div *ngIf="i !== 0" [ngClass]="isHovered ? 'single_user_fullName' : 'd-none'">{{user.firstname}} {{user.lastname}}
+    <div
+      *ngIf="i !== 0"
+      [ngClass]="isHovered ? 'single_user_fullName' : 'd-none'">
+      {{user.firstname}} {{user.lastname}}
     </div>
   </div>
 </div>
