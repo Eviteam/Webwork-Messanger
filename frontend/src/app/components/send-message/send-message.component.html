@@ -1,48 +1,33 @@
 <div class="editor">
+
   <div class="quillEditor-wrapper">
-    <quill-editor
-      class="quillEditor"
-      (onBlur)="onBlur()"
-      (keydown)="onKeyDown($event)"
-      [(ngModel)]="message"
-      #editor
-      (onEditorCreated)="setFocus($event)"
+    <quill-editor class="quillEditor" (onBlur)="onBlur()" (keydown)="onKeyDown($event)" [(ngModel)]="message" #editor (onEditorCreated)="setFocus($event)"
       [ngClass]="{tooltipPostion: tooltipFromLeft}">
     </quill-editor>
+
     <div class="d-flex">
-      <div
-        class="uploadedFile"
-        *ngFor="let src of filePaths; let i = index">
+      <div class="uploadedFile" *ngFor="let src of filePaths; let i = index">
         <img [src]="sanitizer.bypassSecurityTrustUrl(src)" alt="" class="w-100 h-100">
-        <img src="../../../assets/icons/icon_x.svg" class="deleteFile"
-             (click)="deleteMessage(i)">
+        <img src="../../../assets/icons/icon_x.svg" class="deleteFile" (click)="deleteMessage(i)">
       </div>
     </div>
   </div>
+
   <form [formGroup]="formData">
-    <label
-      for="uploadFile"
-      class="file_upload_icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-paperclip" viewBox="0 0 16 16">
+    <label for="uploadFile" class="file_upload_icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-paperclip"
+        viewBox="0 0 16 16">
         <path
           d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
       </svg>
     </label>
-    <input
-      type="file"
-      accept="image/png, image/jpg, image/jpeg, image/svg+xml"
-      class="d-none"
-      name="uploadFile"
-      multiple
-      (change)="uploadFile($event.target.files)"
-      id="uploadFile"
-      (click)="$event.target.value = null">
+    <input type="file" accept="image/png, image/jpg, image/jpeg, image/svg+xml" class="d-none" name="uploadFile" multiple (change)="uploadFile($event.target.files)"
+      id="uploadFile" (click)="$event.target.value = null">
   </form>
-  <div
-    class="send_button"
-    (click)="onKeyDown()">
+  <div class="send_button" (click)="onKeyDown()">
     <img src="../../../assets/icons/send_button.svg" class="send_button_img">
   </div>
+
   <!-- <div class="loader">
     <div class="spinner-border" role="status">
     </div>
