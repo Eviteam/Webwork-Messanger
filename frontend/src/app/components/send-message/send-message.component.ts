@@ -42,7 +42,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.formData = this.fb.group({
       files: this.fb.array([])
-    })
+    });
     this.messageService.setMessageProps().then(data => this.messageBody = data);
   }
 
@@ -189,9 +189,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
               newDelta.push(item);
             }
           });
-
           this.editor.quillEditor.setContents(newDelta);
-          console.log(newDelta);
           this.message = this.editor.quillEditor.scrollingContainer.innerHTML;
         }
       // }
@@ -304,7 +302,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
   public uploadFile(fileList: FileList) {
     if (fileList && fileList[0]) {
       this.messageService.uploadFile(fileList[0])
-        .subscribe(data => this.uploadedFilePaths.push(data))
+        .subscribe(data => this.uploadedFilePaths.push(data));
       Object.values(fileList).filter(item => {
         if (typeof (item) !== 'number') {
           const reader = new FileReader();
@@ -312,10 +310,10 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
           reader.onload = () => {
             this.uploadedFileType = item.type;
             this.formData.get('files').value.push(item);
-            this.setSafeSvgFormat(reader.result)
+            this.setSafeSvgFormat(reader.result);
           };
         }
-      })
+      });
     }
   }
 
@@ -332,7 +330,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!this.uploadedFilePaths.length) {
           this.formValue.files.setValue([]);
         }
-      })
+      });
   }
 
   /**
@@ -357,10 +355,10 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
     messageForWebwork.team_id = message.team_id;
     messageForWebwork.message = message.message;
     if (message.filePath && message.filePath.length) {
-      const base64File = message.filePath.toString()
-      const base64ContentArray = base64File.split(",");
+      const base64File = message.filePath.toString();
+      const base64ContentArray = base64File.split(',');
       const mimeType = base64ContentArray[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0];
-      mimeType.includes('image') ? messageForWebwork.attachment = 'image' : messageForWebwork.attachment = 'file'
+      mimeType.includes('image') ? messageForWebwork.attachment = 'image' : messageForWebwork.attachment = 'file';
     }
     messageForWebwork.fullName = `${message.sender[0].firstname} ${message.sender[0].lastname}`;
     this.messageService.getUnseenMessages(0, message.receiver_id)
@@ -369,9 +367,9 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
       .then(() => {
         if (messageForWebwork.messageCount) {
           this.messageService.sendNotification(messageForWebwork)
-            .subscribe(data => data)
+            .subscribe(data => data);
         }
-      })
+      });
   }
 
   ngOnDestroy(): void {
