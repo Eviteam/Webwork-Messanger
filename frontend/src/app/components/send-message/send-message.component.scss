@@ -11,7 +11,6 @@
     border-radius: 13px 0 0 13px;
     flex-grow: 1;
   }
-
 }
 
 .send_button {
@@ -25,12 +24,15 @@
   justify-content: center;
   cursor: pointer;
   flex: 0 0 61px;
+
   &_img {
     width: 20px;
     height: 20px;
   }
+
 }
 :host {
+
   ::ng-deep .ql-toolbar {
     background-color: $sender-message-container-RGBA;
     box-shadow: inset 4px 4px 4px 4px rgba(217, 233, 238, 0.2);
@@ -150,6 +152,7 @@
     top: 12px;
     min-width: 60px;
     text-align: center;
+
     &:after{
       padding-right: 0 !important;
       border-right: 0 !important;
@@ -169,6 +172,7 @@
     top: 44px;
     text-align: center;
     min-width: 60px;
+
     &::before{
       margin-left: 0 !important;
     }
@@ -230,6 +234,7 @@
 
   &:hover .deleteFile {
     opacity: 1;
+
     &:hover {
       opacity: 0.8;
     }
