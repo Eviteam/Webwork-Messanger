@@ -3,11 +3,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import {finalize, first} from 'rxjs/operators';
 import { Message, WebWorkMessage } from 'src/app/models/message';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
 import { MessageService } from 'src/app/services/message/message.service';
 import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-initialize.service';
+import {log} from "util";
 
 @Component({
   selector: 'app-send-message',
@@ -16,7 +17,7 @@ import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-
 })
 export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  public message: string = '';
+  public message = '';
   public messageBody: Message = new Message();
   public filePaths: Array<string | ArrayBuffer> = [];
   public uploadedFilePaths: Array<string | ArrayBuffer> = [];
@@ -24,8 +25,8 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
   public uploadedFileType: SafeResourceUrl;
   public selectedUser: string;
   public currentUser: string;
-  public tooltipFromLeft: boolean = false;
-  public loader: boolean = false;
+  public tooltipFromLeft = false;
+  public loader = false;
   private subscription: Subscription;
   @ViewChild('editor', { static: false }) public editor: any
 
@@ -50,7 +51,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public async removeUnnecessaryWhiteSpaces(setNull?: boolean) {
-    
+
     const quills = [];
     // @ts-ignore
     [...document.getElementsByClassName('quillEditor')].forEach((el, idx) => {
@@ -118,7 +119,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
                 } else {
                   // If there an entry with ending LFs
                   if (/\n+$/.test(insert)) {
-                    // Create a string witrh clean ending LFs
+                    // Create a string with clean ending LFs
                     let cleanText = insert.replace(/\n+$/, '');
 
                     // If this is the last entry
@@ -176,20 +177,27 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
                 newDelta.push({
                   insert,
                   attributes
-                })
+                });
                 // Clean the any pending entries
                 tempDelta = [];
               }
             });
+
           }
-          
+          newDelta.map(item => {
+            if (item.index % 2 !== 0 && item.insert === '\n') {
+              newDelta.push(item);
+            }
+          });
+
           this.editor.quillEditor.setContents(newDelta);
+          console.log(newDelta);
           this.message = this.editor.quillEditor.scrollingContainer.innerHTML;
         }
       // }
       quills.push(this.editor);
     })
-    return this.message
+    return this.message;
     // [...this.editor['elementRef'].nativeElement as HTMLDivElement].forEach((el, idx) => {
     //   console.log(idx, el);
     // })
@@ -206,24 +214,27 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Message typing function
-   * @param event 
+   * @param event
    * @returns void
    */
   public onKeyDown(event?: any) {
-    (this.message && this.message.length <= 48) ? this.tooltipFromLeft = true : this.tooltipFromLeft = false
+    if (!this.message?.length && event.code === 'Space') {
+      return false;
+    }
+    (this.message && this.message.length <= 48) ? this.tooltipFromLeft = true : this.tooltipFromLeft = false;
     if (event) {
       if (event.keyCode === 13) {
         if (!event.shiftKey && !event.altKey && !event.ctrlKey) {
-          this.loader = true
+          this.loader = true;
           if (this.filePaths.length) {
-            this.messageBody.filePath = this.filePaths
+            this.messageBody.filePath = this.filePaths;
             this.messageBody.message = this.message;
-            this.sendMessage(this.messageBody)
+            this.sendMessage(this.messageBody);
           } else {
             if (this.message && this.message.length) {
               this.messageBody.message = this.message;
               if (this.message.replace(/<(.|\n)*?>/g, '').length) {
-                this.sendMessage(this.messageBody)
+                this.sendMessage(this.messageBody);
               }
             }
           }
@@ -233,24 +244,26 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.filePaths.length) {
         this.messageBody.filePath = this.filePaths;
         this.messageBody.message = this.message;
-        this.sendMessage(this.messageBody)
+        this.sendMessage(this.messageBody);
       } else {
         if (this.message && this.message.length) {
           this.messageBody.message = this.message;
           if (this.message.replace(/<(.|\n)*?>/g, '').length) {
-            this.sendMessage(this.messageBody)
+            this.sendMessage(this.messageBody);
           }
         }
       }
     }
+
   }
 
   /**
    * Message sending function
-   * @param messageBody 
+   * @param messageBody
    * @returns void
    */
   public sendMessage(messageBody: Message) {
+
     this.onBlur().then(() => {
       this.currentUser = this.storageService.getItem('selectedUser');
       messageBody.message = this.message;
@@ -272,10 +285,10 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
               this.messageService.getUnseenMessages(message['data'].team_id, message['data'].receiver_id)
                 .toPromise()
                 .then(messageCount => {
-                  const data = messageCount
-                  delete data.team_id
-                  const count = Object.values(data).reduce((a: number, b: number) => a + b, 0)
-                  this.messageService.emitMsgCounts(+count)
+                  const data = messageCount;
+                  delete data.team_id;
+                  const count = Object.values(data).reduce((a: number, b: number) => a + b, 0);
+                  this.messageService.emitMsgCounts(+count);
                 })
             }))
           this.messageService.sendMessage(message['data']);
@@ -285,7 +298,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * File uploading function
-   * @param fileList 
+   * @param fileList
    * @returns void
    */
   public uploadFile(fileList: FileList) {
@@ -308,7 +321,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Deletes uploaded file
-   * @param index 
+   * @param index
    * @returns void
    */
   public deleteMessage(index: number) {
@@ -334,7 +347,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Sends notification to webwork
-   * @param message 
+   * @param message
    * @returns void
    */
   public sendMessageNotification(message: Message): void {
