@@ -11,8 +11,8 @@
     [(ngModel)]="searchName">
   <div
     class="text-center"
-    *ngIf="!(users | filter:searchName:'firstname': 'lastname')?.length">
-    No Result!
+    *ngIf="!(users | filter:searchName:'firstname': 'lastname')?.length && users">
+    No Result
   </div>
 </div>
 <div
