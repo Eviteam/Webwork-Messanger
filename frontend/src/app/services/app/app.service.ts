@@ -4,7 +4,6 @@ import { environment } from 'src/environments/environment';
 import { ApiService } from '../api.service';
 import { LocalStorageService } from '../localStorage/local-storage.service';
 import jwt from 'angular2-jwt-simple';
-import {any} from "codelyzer/util/function";
 
 const WEBWORK_KEY = environment.WEBWORK_KEY;
 
