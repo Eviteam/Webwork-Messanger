@@ -8,6 +8,7 @@ import { Message, WebWorkMessage } from 'src/app/models/message';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
 import { MessageService } from 'src/app/services/message/message.service';
 import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-initialize.service';
+import {UserService} from "../../services/user/user.service";
 
 @Component({
   selector: 'app-send-message',
@@ -35,7 +36,8 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
     private fb: FormBuilder,
     public sanitizer: DomSanitizer, // property sanitizer is public because it is using in send-message.component.html
     private storageService: LocalStorageService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +45,8 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
       files: this.fb.array([])
     });
     this.messageService.setMessageProps().then(data => this.messageBody = data);
+    this.userService.isSeen
+      .subscribe(data => this.message = '')
   }
 
   async ngAfterViewInit() {
@@ -201,8 +205,16 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public setFocus(editor: any) {
+
     this.messageService.setFocus(editor);
     editor.focus();
+  }
+
+  onFocus(): string {
+    if (this.message.includes('<br>')) {
+      this.message = '';
+    }
+    return this.message;
   }
 
   public async onBlur() {
