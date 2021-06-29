@@ -12,14 +12,14 @@ export class LocalStorageService {
   }
 
   public setItem(key: string, value: any): void {
-    localStorage.setItem(key, JSON.stringify(value))
+    localStorage.setItem(key, JSON.stringify(value));
   }
 
   public clearStorage(): void {
-    localStorage.clear()
+    localStorage.clear();
   }
 
   public removeItem(key: string): void {
-    localStorage.removeItem(key)
+    localStorage.removeItem(key);
   }
 }

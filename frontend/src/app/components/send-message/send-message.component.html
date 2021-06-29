@@ -3,6 +3,7 @@
     <quill-editor
       class="quillEditor"
       (onBlur)="onBlur()"
+      (onFocus)="onFocus()"
       (keydown)="onKeyDown($event)"
       [(ngModel)]="message" #editor
       (onEditorCreated)="setFocus($event)"
