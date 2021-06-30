@@ -11,7 +11,7 @@ export class Message {
   filePath?: Array<string | ArrayBuffer>;
   room?: string | number;
   createdAt?: string;
-  updatedAt?: string
+  updatedAt?: string;
 }
 
 export class WebWorkMessage {
@@ -21,5 +21,5 @@ export class WebWorkMessage {
   message?: string;
   fullName?: string;
   messageCount?: number;
-  attachment: string | null
+  attachment: string | null;
 }
