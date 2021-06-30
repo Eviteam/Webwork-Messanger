@@ -79,7 +79,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
             // If there is only one entry, check if it's a string and trim leading and ending LF
             let { insert, attributes } = delta.ops[0];
             if (typeof (insert) === 'string') {
-              insert = insert.replace(/^\n+|\n+$/g, '');;
+              insert = insert.replace(/^\n+|\n+$/g, '');
             }
             newDelta = [{ insert, attributes }];
           } else {
@@ -203,8 +203,9 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
           this.message = this.editor.quillEditor.scrollingContainer.innerHTML;
         }
       // }
-      quills.push(this.editor);
-    })
+      //
+        quills.push(this.editor);
+    });
     return this.message;
     // [...this.editor['elementRef'].nativeElement as HTMLDivElement].forEach((el, idx) => {
     //   console.log(idx, el);
