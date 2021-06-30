@@ -60,7 +60,9 @@ function connectToSocket(io) {
           }
           if (messageCountSocket[`${message.team_id}-${message.receiver_id}`]) {
             socket.on('msgCount', count => {
-              messageCountSocket[`${message.team_id}-${message.receiver_id}`].emit(`chatCount`, count)
+              if (+message.sender_id !== +message.receiver_id) {
+                messageCountSocket[`${message.team_id}-${message.receiver_id}`].emit(`chatCount`, count)
+              }
             })
           }
         } else {

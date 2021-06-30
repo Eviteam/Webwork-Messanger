@@ -46,7 +46,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     this.messageService.setMessageProps().then(data => this.messageBody = data);
     this.userService.isSeen
-      .subscribe(data => this.message = '')
+      .subscribe(data => this.message = '');
   }
 
   async ngAfterViewInit() {
@@ -70,12 +70,16 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
           let leadingFixed = false;
           let newDelta = [];
           let tempDelta = [];
+          let newLine = null;
 
+          if (delta.ops.length === 2 && delta.ops[1].insert) {
+            newLine = delta.ops[1];
+          }
           if (delta.ops.length === 1) {
             // If there is only one entry, check if it's a string and trim leading and ending LF
             let { insert, attributes } = delta.ops[0];
             if (typeof (insert) === 'string') {
-              insert = insert.replace(/^\n+|\n+$/g, '');
+              insert = insert.replace(/^\n+|\n+$/g, '');;
             }
             newDelta = [{ insert, attributes }];
           } else {
@@ -90,16 +94,16 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (!leadingFixed) {
                   // If the entry begins with LFs
                   if (/^\n+/.test(insert)) {
-                    // Create a string witrh clean leading LFs
-                    let cleanText = insert.replace(/^\n+/, '');
-
+                    // Create a string with clean leading LFs
+                    const cleanText = insert.replace(/^\n+/, '');
                     // If there is text after cleaning the LFs
                     if (cleanText.length > 0) {
                       // Add the text to the newDelta
                       newDelta.push({
                         insert: cleanText,
-                        attributes
+                        attributes,
                       });
+                      console.log(newDelta, '9')
                       // Set leading flag to indicate we've fixed the leading
                       leadingFixed = true;
                     }
@@ -123,7 +127,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
                   // If there an entry with ending LFs
                   if (/\n+$/.test(insert)) {
                     // Create a string with clean ending LFs
-                    let cleanText = insert.replace(/\n+$/, '');
+                    const cleanText = insert.replace(/\n+$/, '');
 
                     // If this is the last entry
                     if (isLast) {
@@ -188,10 +192,13 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
 
           }
           newDelta.map(item => {
-            if (item.index % 2 !== 0 && item.insert === '\n') {
+            if (item.index % 2 !== 0 && item.insert === '\n' && newDelta[newDelta.length - 1].insert !== '\n') {
               newDelta.push(item);
             }
           });
+          if (newDelta.length === 1 && newLine) {
+            newDelta.push(newLine);
+          }
           this.editor.quillEditor.setContents(newDelta);
           this.message = this.editor.quillEditor.scrollingContainer.innerHTML;
         }
