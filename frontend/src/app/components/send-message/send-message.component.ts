@@ -8,7 +8,8 @@ import { Message, WebWorkMessage } from 'src/app/models/message';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
 import { MessageService } from 'src/app/services/message/message.service';
 import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-initialize.service';
-import {UserService} from "../../services/user/user.service";
+import {UserService} from '../../services/user/user.service';
+
 
 @Component({
   selector: 'app-send-message',
@@ -28,7 +29,8 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
   public tooltipFromLeft = false;
   public loader = false;
   private subscription: Subscription;
-  @ViewChild('editor', { static: false }) public editor: any
+  @ViewChild('editor', { static: false }) public editor: any;
+
 
   constructor(
     private messageService: MessageService,
@@ -47,7 +49,17 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.messageService.setMessageProps().then(data => this.messageBody = data);
     this.userService.isSeen
       .subscribe(data => this.message = '');
+
   }
+
+  onDisable(): any {
+    if (this.message === '') {
+      this.editor.setDisabledState(true);
+    }
+  }
+
+
+
 
   async ngAfterViewInit() {
     await this.removeUnnecessaryWhiteSpaces();
@@ -234,8 +246,21 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param event
    * @returns void
    */
+
+
+
   public onKeyDown(event?: any) {
-    if (!this.message?.length && event.code === 'Space') {
+    if (this.message?.replace(/(<([^>]+)>)/gi, '')?.replace(/\&nbsp;/g, '')?.length === 0 && null) {
+      return false;
+    }
+
+    if ((this.message?.replace(/\&nbsp;/g, '').replace(/\>[\t ]+\</g, '><') === '<p></p>' ||
+      this.message?.replace(/\&nbsp;/g, '').replace(/\>[\t ]+\</g, '><') === '<p><br></p>')) {
+      this.message = '';
+      return false;
+    }
+
+    if (!this.message?.length && event?.code === 'Space') {
       return false;
     }
     (this.message && this.message.length <= 48) ? this.tooltipFromLeft = true : this.tooltipFromLeft = false;
@@ -306,10 +331,10 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
                   delete data.team_id;
                   const count = Object.values(data).reduce((a: number, b: number) => a + b, 0);
                   this.messageService.emitMsgCounts(+count);
-                })
-            }))
+                });
+            }));
           this.messageService.sendMessage(message['data']);
-        })
+        });
     });
   }
 

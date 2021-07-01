@@ -45,7 +45,7 @@ export class MessageService {
   }
 
   public removeSocket(userData: any) {
-    this.socket.emit('removeUser', userData)
+    this.socket.emit('removeUser', userData);
   }
 
   public reconnectSocket(user_id: string | number, selectedUser: number | string) {
