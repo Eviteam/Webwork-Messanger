@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterContentInit, AfterViewChecked,
+  AfterViewInit,
+  Component,
+  DoCheck,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -11,12 +20,13 @@ import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-
 import {UserService} from '../../services/user/user.service';
 
 
+
 @Component({
   selector: 'app-send-message',
   templateUrl: './send-message.component.html',
   styleUrls: ['./send-message.component.scss']
 })
-export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, DoCheck {
 
   public message = '';
   public messageBody: Message = new Message();
@@ -30,6 +40,8 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
   public loader = false;
   private subscription: Subscription;
   @ViewChild('editor', { static: false }) public editor: any;
+  public editorHeightSize = 46;
+  public emojiBottomSize = 90;
 
 
   constructor(
@@ -42,19 +54,28 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
     private userService: UserService
   ) { }
 
+
+  ngDoCheck() {
+    this.onFindInputStyles();
+  }
+
+
   ngOnInit(): void {
+
     this.formData = this.fb.group({
       files: this.fb.array([])
     });
     this.messageService.setMessageProps().then(data => this.messageBody = data);
     this.userService.isSeen
       .subscribe(data => this.message = '');
-
   }
 
-  onDisable(): any {
-    if (this.message === '') {
-      this.editor.setDisabledState(true);
+  onFindInputStyles(): any {
+    const editor = document?.getElementsByClassName('ql-editor');
+    const editorClientHeight = editor[0]?.clientHeight != undefined ? editor[0]?.clientHeight : 46;
+    const emojiPalette = document?.getElementById('emoji-palette');
+    if (emojiPalette) {
+      document.getElementById('emoji-palette').style.bottom = (this.emojiBottomSize + editorClientHeight - this.editorHeightSize) + 'px';
     }
   }
 
@@ -63,6 +84,8 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async ngAfterViewInit() {
     await this.removeUnnecessaryWhiteSpaces();
+
+
   }
 
   public async removeUnnecessaryWhiteSpaces(setNull?: boolean) {
@@ -115,7 +138,6 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
                         insert: cleanText,
                         attributes,
                       });
-                      console.log(newDelta, '9')
                       // Set leading flag to indicate we've fixed the leading
                       leadingFixed = true;
                     }
@@ -230,8 +252,8 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
     editor.focus();
   }
 
-  onFocus(): string {
-    if (this.message.includes('<br>')) {
+  onFocus() {
+    if (this.message.includes('<p><br></p>') && this.message === '') {
       this.message = '';
     }
     return this.message;
@@ -250,52 +272,8 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   public onKeyDown(event?: any) {
-    if (this.message?.replace(/(<([^>]+)>)/gi, '')?.replace(/\&nbsp;/g, '')?.length === 0 && null) {
-      return false;
-    }
 
-    if ((this.message?.replace(/\&nbsp;/g, '').replace(/\>[\t ]+\</g, '><') === '<p></p>' ||
-      this.message?.replace(/\&nbsp;/g, '').replace(/\>[\t ]+\</g, '><') === '<p><br></p>')) {
-      this.message = '';
-      return false;
-    }
-
-    if (!this.message?.length && event?.code === 'Space') {
-      return false;
-    }
-    (this.message && this.message.length <= 48) ? this.tooltipFromLeft = true : this.tooltipFromLeft = false;
-    if (event) {
-      if (event.keyCode === 13) {
-        if (!event.shiftKey && !event.altKey && !event.ctrlKey) {
-          this.loader = true;
-          if (this.filePaths.length) {
-            this.messageBody.filePath = this.filePaths;
-            this.messageBody.message = this.message;
-            this.sendMessage(this.messageBody);
-          } else {
-            if (this.message && this.message.length) {
-              this.messageBody.message = this.message;
-              if (this.message.replace(/<(.|\n)*?>/g, '').length) {
-                this.sendMessage(this.messageBody);
-              }
-            }
-          }
-        }
-      }
-    } else {
-      if (this.filePaths.length) {
-        this.messageBody.filePath = this.filePaths;
-        this.messageBody.message = this.message;
-        this.sendMessage(this.messageBody);
-      } else {
-        if (this.message && this.message.length) {
-          this.messageBody.message = this.message;
-          if (this.message.replace(/<(.|\n)*?>/g, '').length) {
-            this.sendMessage(this.messageBody);
-          }
-        }
-      }
-    }
+    this.isMessageValid(event);
 
   }
 
@@ -418,6 +396,60 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  isMessageValid(event): any {
+    if (this.message?.replace(/<[^>]+>/g, '') === '' && !this.message.length) {
+      this.message = '';
+    }
+
+    if (this.message?.replace(/(<([^>]+)>)/gi, '')?.replace(/\&nbsp;/g, '')?.length === 0 && null) {
+      return false;
+    }
+
+    if ((this.message?.replace(/\&nbsp;/g, '').replace(/\>[\t ]+\</g, '><') === '<p></p>' ||
+      this.message?.replace(/\&nbsp;/g, '').replace(/\>[\t ]+\</g, '><') === '<p><br></p>')) {
+      this.message = '';
+      return false;
+    }
+
+    if (!this.message?.length && event?.code === 'Space') {
+      return false;
+    }
+
+    (this.message && this.message.length <= 48) ? this.tooltipFromLeft = true : this.tooltipFromLeft = false;
+    if (event) {
+      if (event.keyCode === 13) {
+        if (!event.shiftKey && !event.altKey && !event.ctrlKey) {
+          this.loader = true;
+          if (this.filePaths.length) {
+            this.messageBody.filePath = this.filePaths;
+            this.messageBody.message = this.message;
+            this.sendMessage(this.messageBody);
+          } else {
+            if (this.message && this.message.length) {
+              this.messageBody.message = this.message;
+              if (this.message.replace(/<(.|\n)*?>/g, '').length) {
+                this.sendMessage(this.messageBody);
+              }
+            }
+          }
+        }
+      }
+    } else {
+      if (this.filePaths.length) {
+        this.messageBody.filePath = this.filePaths;
+        this.messageBody.message = this.message;
+        this.sendMessage(this.messageBody);
+      } else {
+        if (this.message && this.message.length) {
+          this.messageBody.message = this.message;
+          if (this.message.replace(/<(.|\n)*?>/g, '').length) {
+            this.sendMessage(this.messageBody);
+          }
+        }
+      }
+    }
   }
 
   // convenience getter for easy access to form fields

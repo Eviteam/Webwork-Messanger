@@ -6,6 +6,7 @@
   position: relative;
 
   .quillEditor-wrapper {
+    position: relative;
     border: 2px solid #B0DAE6;
     border-right-style: none;
     border-radius: 13px 0 0 13px;
@@ -253,9 +254,10 @@
 }
 
 ::ng-deep #emoji-palette {
+  left: 20vh !important;
+  /*If you want to change bottom pixels, please, change also variables in send-message.ts*/
   bottom: 90px;
   top: inherit !important;
-  left: 20vh !important;
 }
 
 ::ng-deep .ql-tooltip input[type=text]{
@@ -275,6 +277,18 @@
 
 ::ng-deep .ql-editor > p > span {
   background-color: unset !important;
+}
+
+::ng-deep  .ql-editor  {
+  position: relative;
+  max-height: 180px;
+  /*If you want to change min-height pixels, please, change also variables in send-message.ts*/
+  min-height: 46px!important;
+}
+
+::ng-deep .ql-toolbar {
+  overflow: hidden;
+  position: static;
 }
 
 .tooltipPostion {
