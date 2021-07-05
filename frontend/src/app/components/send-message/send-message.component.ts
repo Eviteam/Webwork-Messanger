@@ -273,7 +273,39 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
 
   public onKeyDown(event?: any) {
 
-    this.isMessageValid(event);
+    (this.message && this.message.length <= 48) ? this.tooltipFromLeft = true : this.tooltipFromLeft = false;
+    if (event) {
+      if (event.keyCode === 13) {
+        if (!event.shiftKey && !event.altKey && !event.ctrlKey) {
+          this.loader = true;
+          if (this.filePaths.length) {
+            this.messageBody.filePath = this.filePaths;
+            this.messageBody.message = this.message;
+            this.sendMessage(this.messageBody);
+          } else {
+            if (this.message && this.message.length) {
+              this.messageBody.message = this.message;
+              if (this.message.replace(/<(.|\n)*?>/g, '').length) {
+                this.sendMessage(this.messageBody);
+              }
+            }
+          }
+        }
+      }
+    } else {
+      if (this.filePaths.length) {
+        this.messageBody.filePath = this.filePaths;
+        this.messageBody.message = this.message;
+        this.sendMessage(this.messageBody);
+      } else {
+        if (this.message && this.message.length) {
+          this.messageBody.message = this.message;
+          if (this.message.replace(/<(.|\n)*?>/g, '').length) {
+            this.sendMessage(this.messageBody);
+          }
+        }
+      }
+    }
 
   }
 
@@ -283,7 +315,8 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
    * @returns void
    */
   public sendMessage(messageBody: Message) {
-
+    const mess = this.message.replace(/(<([^>]+)>)/gi, '')?.replace(/\&nbsp;/g, '');
+    if (!mess || mess.match(/^ *$/) != null) { return; }
     this.onBlur().then(() => {
       this.currentUser = this.storageService.getItem('selectedUser');
       messageBody.message = this.message;
@@ -398,59 +431,6 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
     this.subscription.unsubscribe();
   }
 
-  isMessageValid(event): any {
-    if (this.message?.replace(/<[^>]+>/g, '') === '' && !this.message.length) {
-      this.message = '';
-    }
-
-    if (this.message?.replace(/(<([^>]+)>)/gi, '')?.replace(/\&nbsp;/g, '')?.length === 0 && null) {
-      return false;
-    }
-
-    if ((this.message?.replace(/\&nbsp;/g, '').replace(/\>[\t ]+\</g, '><') === '<p></p>' ||
-      this.message?.replace(/\&nbsp;/g, '').replace(/\>[\t ]+\</g, '><') === '<p><br></p>')) {
-      this.message = '';
-      return false;
-    }
-
-    if (!this.message?.length && event?.code === 'Space') {
-      return false;
-    }
-
-    (this.message && this.message.length <= 48) ? this.tooltipFromLeft = true : this.tooltipFromLeft = false;
-    if (event) {
-      if (event.keyCode === 13) {
-        if (!event.shiftKey && !event.altKey && !event.ctrlKey) {
-          this.loader = true;
-          if (this.filePaths.length) {
-            this.messageBody.filePath = this.filePaths;
-            this.messageBody.message = this.message;
-            this.sendMessage(this.messageBody);
-          } else {
-            if (this.message && this.message.length) {
-              this.messageBody.message = this.message;
-              if (this.message.replace(/<(.|\n)*?>/g, '').length) {
-                this.sendMessage(this.messageBody);
-              }
-            }
-          }
-        }
-      }
-    } else {
-      if (this.filePaths.length) {
-        this.messageBody.filePath = this.filePaths;
-        this.messageBody.message = this.message;
-        this.sendMessage(this.messageBody);
-      } else {
-        if (this.message && this.message.length) {
-          this.messageBody.message = this.message;
-          if (this.message.replace(/<(.|\n)*?>/g, '').length) {
-            this.sendMessage(this.messageBody);
-          }
-        }
-      }
-    }
-  }
 
   // convenience getter for easy access to form fields
   public get formValue() { return this.formData.controls; }
