@@ -29,6 +29,7 @@
   &_img {
     width: 20px;
     height: 20px;
+    opacity: 1;
   }
 
 }
@@ -309,4 +310,12 @@
   bottom: 0;
   margin: auto;
   opacity: .5;
+}
+
+.helpMessage {
+  color: red;
+}
+
+.helpMessage {
+  color: rgb(227 42 75);
 }

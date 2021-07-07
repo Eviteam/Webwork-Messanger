@@ -1,5 +1,5 @@
 <div class="editor">
-  <div class="quillEditor-wrapper">
+  <div class="quillEditor-wrapper" id="wrapper">
     <quill-editor
       class="quillEditor"
       (onBlur)="onBlur()"
@@ -39,12 +39,18 @@
       (click)="$event.target.value = null">
   </form>
   <div
-    class="send_button"
+    class="send_button" id="sendButton"
     (click)="onKeyDown()">
-    <img src="../../../assets/icons/send_button.svg" class="send_button_img">
+    <img src="../../../assets/icons/send_button.svg" class="send_button_img" id="sendButtonImg">
   </div>
   <!-- <div class="loader">
     <div class="spinner-border" role="status">
     </div>
   </div> -->
 </div>
+<div
+  *ngIf="canNotUploadFile"
+  class="helpMessage pl-5">
+  Maximum upload file size: 10 MB
+</div>
+

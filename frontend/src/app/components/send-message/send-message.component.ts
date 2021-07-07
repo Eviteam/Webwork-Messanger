@@ -1,9 +1,7 @@
 import {
-  AfterContentInit, AfterViewChecked,
   AfterViewInit,
   Component,
   DoCheck,
-  OnChanges,
   OnDestroy,
   OnInit,
   ViewChild
@@ -18,6 +16,9 @@ import { LocalStorageService } from 'src/app/services/localStorage/local-storage
 import { MessageService } from 'src/app/services/message/message.service';
 import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-initialize.service';
 import {UserService} from '../../services/user/user.service';
+import {log} from "util";
+
+
 
 
 
@@ -42,6 +43,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
   @ViewChild('editor', { static: false }) public editor: any;
   public editorHeightSize = 46;
   public emojiBottomSize = 90;
+  public canNotUploadFile = false;
 
 
   constructor(
@@ -57,6 +59,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
 
   ngDoCheck() {
     this.onFindInputStyles();
+
   }
 
 
@@ -74,8 +77,30 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
     const editor = document?.getElementsByClassName('ql-editor');
     const editorClientHeight = editor[0]?.clientHeight != undefined ? editor[0]?.clientHeight : 46;
     const emojiPalette = document?.getElementById('emoji-palette');
+    const editorBorder = document.getElementById('wrapper');
+    const sendButtonBorder = document.getElementById('sendButton');
+    const toolbarColor = document?.querySelector('.ql-toolbar');
+    const sendButtonCOlor = document.getElementById('sendButton');
+    const buttonOpacity = document?.getElementById('sendButtonImg');
     if (emojiPalette) {
       document.getElementById('emoji-palette').style.bottom = (this.emojiBottomSize + editorClientHeight - this.editorHeightSize) + 'px';
+    }
+    if (this.canNotUploadFile) {
+      editorBorder.style.borderColor = 'rgb(227 42 75 / 60%)';
+      sendButtonBorder.style.borderColor = 'rgb(227 42 75 / 60%)';
+      // @ts-ignore
+      toolbarColor.style.backgroundColor = 'rgb(227 42 75 / 10%';
+      sendButtonCOlor.style.backgroundColor = 'rgb(249 216 216 / 23%';
+      // @ts-ignore
+      buttonOpacity.style?.opacity = '0.3';
+    } else {
+      editorBorder.style.borderColor = '#B0DAE6';
+      sendButtonBorder.style.borderColor = '#B0DAE6';
+      // @ts-ignore
+      toolbarColor?.style?.backgroundColor = 'rgba(209, 242, 251, 0.5)';
+      sendButtonCOlor.style.backgroundColor = '#F6FAFB';
+      // @ts-ignore
+      buttonOpacity.style?.opacity = '1';
     }
   }
 
@@ -225,16 +250,18 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
             });
 
           }
-          newDelta.map(item => {
-            if (item.index % 2 !== 0 && item.insert === '\n' && newDelta[newDelta.length - 1].insert !== '\n') {
+          newDelta.map((item) => {
+            if (item.index % 2 !== 0 && item?.insert === '\n' && newDelta[newDelta.length - 1]?.insert !== '\n') {
               newDelta.push(item);
             }
           });
           if (newDelta.length === 1 && newLine) {
             newDelta.push(newLine);
           }
+
           this.editor.quillEditor.setContents(newDelta);
           this.message = this.editor.quillEditor.scrollingContainer.innerHTML;
+
         }
       // }
       //
@@ -271,8 +298,9 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
 
 
 
-  public onKeyDown(event?: any) {
 
+
+  public onKeyDown(event?: any) {
     (this.message && this.message.length <= 48) ? this.tooltipFromLeft = true : this.tooltipFromLeft = false;
     if (event) {
       if (event.keyCode === 13) {
@@ -316,7 +344,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
    */
   public sendMessage(messageBody: Message) {
     const mess = this.message.replace(/(<([^>]+)>)/gi, '')?.replace(/\&nbsp;/g, '');
-    if (!mess || mess.match(/^ *$/) != null) { return; }
+    if (!messageBody.filePath && (!mess || mess.match(/^ *$/) != null)) { return; }
     this.onBlur().then(() => {
       this.currentUser = this.storageService.getItem('selectedUser');
       messageBody.message = this.message;
@@ -356,19 +384,27 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
    */
   public uploadFile(fileList: FileList) {
     if (fileList && fileList[0]) {
+      const imageSizeToMB = fileList[0].size / 1000000;
+      this.canNotUploadFile = false;
       this.messageService.uploadFile(fileList[0])
-        .subscribe(data => this.uploadedFilePaths.push(data));
+          .subscribe(data => this.uploadedFilePaths.push(data));
       Object.values(fileList).filter(item => {
-        if (typeof (item) !== 'number') {
-          const reader = new FileReader();
-          reader.readAsDataURL(item);
-          reader.onload = () => {
-            this.uploadedFileType = item.type;
-            this.formData.get('files').value.push(item);
-            this.setSafeSvgFormat(reader.result);
-          };
-        }
-      });
+          if (typeof (item) !== 'number') {
+            const reader = new FileReader();
+            reader.readAsDataURL(item);
+            reader.onload = () => {
+              this.uploadedFileType = item.type;
+              this.formData.get('files').value.push(item);
+              this.setSafeSvgFormat(reader.result);
+            };
+          }
+        });
+      if (imageSizeToMB > 1) {
+        this.canNotUploadFile = true;
+        setTimeout(() => {
+          this.canNotUploadFile = !this.canNotUploadFile;
+        }, 4000);
+      }
     }
   }
 
