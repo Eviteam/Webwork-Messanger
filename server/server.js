@@ -24,8 +24,8 @@ const swaggerDocument = require('./swagger.json');
 const PORT = process.env.PORT || 3000 ;
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({limit: '1mb', extended: true}));
-app.use(bodyParser.json({limit: '1mb'}));
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
+app.use(bodyParser.json({limit: '10mb'}));
 app.use(express.static(path.join(__dirname, '../frontend/dist/frontend')));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(express.static('uploads'));

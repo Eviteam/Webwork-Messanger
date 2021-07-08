@@ -8,8 +8,8 @@ import { SidebarService } from 'src/app/services/sidebar/sidebar.service';
 })
 export class SidebarComponent implements OnInit {
 
-  public bottomMsg: boolean = false;
-  public topMsg: boolean = false;
+  public bottomMsg = false;
+  public topMsg = false;
   public newMessageEvent: any;
   public scrollingElement: any;
 
@@ -17,7 +17,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void { }
   public newMessageInfo(event: any) : void {
-    this.newMessageEvent = event
+    this.newMessageEvent = event;
     if (event.eventHeight > event.topHeight && event.eventHeight > event.windowHeight) {
       this.bottomMsg = true
     } else if (event.eventHeight > event.topHeight && event.eventHeight < event.windowHeight) {
@@ -25,23 +25,23 @@ export class SidebarComponent implements OnInit {
     }
 
     if (event.eventHeight < event.topHeight && event.eventHeight > event.windowHeight) {
-      this.topMsg = true
+      this.topMsg = true;
     } else if (event.eventHeight < event.topHeight && event.eventHeight < event.windowHeight){
-      this.topMsg = false
+      this.topMsg = false;
     }
 
   }
 
   public onScroll(event: any): void {
-    this.sideBarService.getScrolEvent(event)
+    this.sideBarService.getScrolEvent(event);
   }
 
   public scrollTo(): void {
-    this.scrollingElement.nativeElement.scrollIntoView()
+    this.scrollingElement.nativeElement.scrollIntoView();
   }
 
   newEventInfo(event) {
-    this.scrollingElement = event
+    this.scrollingElement = event;
   }
 
 }

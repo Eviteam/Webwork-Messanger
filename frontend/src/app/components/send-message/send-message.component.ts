@@ -80,7 +80,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
     const editorBorder = document.getElementById('wrapper');
     const sendButtonBorder = document.getElementById('sendButton');
     const toolbarColor = document?.querySelector('.ql-toolbar');
-    const sendButtonCOlor = document.getElementById('sendButton');
+    const sendButtonColor = document.getElementById('sendButton');
     const buttonOpacity = document?.getElementById('sendButtonImg');
     if (emojiPalette) {
       document.getElementById('emoji-palette').style.bottom = (this.emojiBottomSize + editorClientHeight - this.editorHeightSize) + 'px';
@@ -90,7 +90,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
       sendButtonBorder.style.borderColor = 'rgb(227 42 75 / 60%)';
       // @ts-ignore
       toolbarColor.style.backgroundColor = 'rgb(227 42 75 / 10%';
-      sendButtonCOlor.style.backgroundColor = 'rgb(249 216 216 / 23%';
+      sendButtonColor.style.backgroundColor = 'rgb(249 216 216 / 23%';
       // @ts-ignore
       buttonOpacity.style?.opacity = '0.3';
     } else {
@@ -98,7 +98,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
       sendButtonBorder.style.borderColor = '#B0DAE6';
       // @ts-ignore
       toolbarColor?.style?.backgroundColor = 'rgba(209, 242, 251, 0.5)';
-      sendButtonCOlor.style.backgroundColor = '#F6FAFB';
+      sendButtonColor.style.backgroundColor = '#F6FAFB';
       // @ts-ignore
       buttonOpacity.style?.opacity = '1';
     }
@@ -109,7 +109,6 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
 
   async ngAfterViewInit() {
     await this.removeUnnecessaryWhiteSpaces();
-
 
   }
 
@@ -383,8 +382,8 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
    * @returns void
    */
   public uploadFile(fileList: FileList) {
-    if (fileList && fileList[0]) {
-      const imageSizeToMB = fileList[0].size / 1000000;
+    const fileSizeToMB = fileList[0].size / 1000000;
+    if (fileList && fileList[0] && fileSizeToMB < 10) {
       this.canNotUploadFile = false;
       this.messageService.uploadFile(fileList[0])
           .subscribe(data => this.uploadedFilePaths.push(data));
@@ -399,13 +398,14 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
             };
           }
         });
-      if (imageSizeToMB > 1) {
-        this.canNotUploadFile = true;
-        setTimeout(() => {
-          this.canNotUploadFile = !this.canNotUploadFile;
-        }, 4000);
-      }
+    } else {
+      this.canNotUploadFile = true;
+      setTimeout(() => {
+        this.canNotUploadFile = !this.canNotUploadFile;
+      }, 4000);
     }
+
+
   }
 
   /**

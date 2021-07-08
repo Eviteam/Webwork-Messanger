@@ -76,19 +76,19 @@ export class MessageService {
   }
 
   public uploadFile(file: any): Observable<any> {
-    return this.apiService.postFile(`/api/chat/uploadFile`, file)
+    return this.apiService.postFile(`/api/chat/uploadFile`, file);
   }
 
   public deleteUploadedFile(fileName: string): Observable<any> {
-    return this.apiService.delete(`/api/chat/uploadedFile/${fileName}`)
+    return this.apiService.delete(`/api/chat/uploadedFile/${fileName}`);
   }
 
   public getUnseenMessages(team_id: string | number, user_id: string): Observable<any> {
-    return this.apiService.get(`/api/chat/unseen/messages/${team_id}/${user_id}`)
+    return this.apiService.get(`/api/chat/unseen/messages/${team_id}/${user_id}`);
   }
 
   public setMessageIsRead(team_id: string, user_id: string, sender_id: string): Observable<any> {
-    return this.apiService.put(`/api/chat/messages/seen/${team_id}/${user_id}/${sender_id}`)
+    return this.apiService.put(`/api/chat/messages/seen/${team_id}/${user_id}/${sender_id}`);
   }
 
   public setNewMessage(newMessage: any): void {
