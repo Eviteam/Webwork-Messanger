@@ -2,6 +2,8 @@
   <div class="quillEditor-wrapper" id="wrapper">
     <quill-editor
       class="quillEditor"
+      id="editorId"
+      (paste)="onPaste()"
       (onBlur)="onBlur()"
       (onFocus)="onFocus()"
       (keydown)="onKeyDown($event)"
@@ -11,7 +13,7 @@
     </quill-editor>
     <div class="d-flex">
       <div
-        class="uploadedFile"
+        class="uploadedFile" id="uploadedFile"
         *ngFor="let src of filePaths;
         let i = index">
         <img [src]="sanitizer.bypassSecurityTrustUrl(src)" alt="" class="w-100 h-100">

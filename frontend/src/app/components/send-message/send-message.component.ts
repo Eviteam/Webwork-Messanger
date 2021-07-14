@@ -1,25 +1,14 @@
-import {
-  AfterViewInit,
-  Component,
-  DoCheck,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import {AfterViewInit, Component, DoCheck, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
 import {finalize} from 'rxjs/operators';
-import { Message, WebWorkMessage } from 'src/app/models/message';
-import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
-import { MessageService } from 'src/app/services/message/message.service';
-import { QuillInitializeService } from 'src/app/services/quill-Initialize/quill-initialize.service';
+import {Message, WebWorkMessage} from 'src/app/models/message';
+import {LocalStorageService} from 'src/app/services/localStorage/local-storage.service';
+import {MessageService} from 'src/app/services/message/message.service';
+import {QuillInitializeService} from 'src/app/services/quill-Initialize/quill-initialize.service';
 import {UserService} from '../../services/user/user.service';
-import {log} from "util";
-
-
-
 
 
 @Component({
@@ -59,7 +48,6 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
 
   ngDoCheck() {
     this.onFindInputStyles();
-
   }
 
 
@@ -75,7 +63,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
 
   onFindInputStyles(): any {
     const editor = document?.getElementsByClassName('ql-editor');
-    const editorClientHeight = editor[0]?.clientHeight != undefined ? editor[0]?.clientHeight : 46;
+    const editorClientHeight = editor[0]?.clientHeight !== undefined ? editor[0]?.clientHeight : 46;
     const emojiPalette = document?.getElementById('emoji-palette');
     const editorBorder = document.getElementById('wrapper');
     const sendButtonBorder = document.getElementById('sendButton');
@@ -108,6 +96,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
 
 
   async ngAfterViewInit() {
+
     await this.removeUnnecessaryWhiteSpaces();
 
   }
@@ -294,12 +283,8 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
    * @param event
    * @returns void
    */
-
-
-
-
-
   public onKeyDown(event?: any) {
+
     (this.message && this.message.length <= 48) ? this.tooltipFromLeft = true : this.tooltipFromLeft = false;
     if (event) {
       if (event.keyCode === 13) {
@@ -333,7 +318,37 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
         }
       }
     }
+  }
 
+
+  onPaste(): any {
+    let image: any[] = document.querySelector('.ql-editor').querySelector('p').getElementsByTagName('img');
+    const filePaths = this.filePaths;
+    setTimeout(() => {
+      const newImage = new Image();
+      if (image.length) {
+        for (let i = 0; i <= image.length - 1; i++) {
+          filePaths.push(image[i].currentSrc);
+          image[i]?.parentNode.removeChild(image[i]);
+          image = [];
+        }
+      }
+    }, 500);
+  }
+
+
+
+
+
+
+  public createImage(searchImage, array): any {
+    if (searchImage.length) {
+      for (let i = 0; i <= searchImage.length - 1; i++) {
+        array.push(searchImage[i].currentSrc);
+        this.message = document.querySelector('.ql-editor').querySelector('p').innerText;
+      }
+      return array;
+    }
   }
 
   /**
@@ -342,7 +357,8 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
    * @returns void
    */
   public sendMessage(messageBody: Message) {
-    const mess = this.message.replace(/(<([^>]+)>)/gi, '')?.replace(/\&nbsp;/g, '');
+
+    const mess = this.message?.replace(/(<([^>]+)>)/gi, '')?.replace(/\&nbsp;/g, '');
     if (!messageBody.filePath && (!mess || mess.match(/^ *$/) != null)) { return; }
     this.onBlur().then(() => {
       this.currentUser = this.storageService.getItem('selectedUser');
@@ -415,13 +431,16 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
    */
   public deleteMessage(index: number) {
     this.filePaths.splice(index, 1);
-    this.messageService.deleteUploadedFile(this.uploadedFilePaths[index]['fileData'].filename)
-      .subscribe(data => {
-        this.uploadedFilePaths.splice(index, 1);
-        if (!this.uploadedFilePaths.length) {
-          this.formValue.files.setValue([]);
-        }
-      });
+    if (this?.uploadedFilePaths[index] !== undefined) {
+      this.messageService.deleteUploadedFile(this?.uploadedFilePaths[index]['fileData'].filename)
+        .subscribe(data => {
+          this.uploadedFilePaths.splice(index, 1);
+          if (!this.uploadedFilePaths.length) {
+            this.formValue.files.setValue([]);
+          }
+        });
+    }
+
   }
 
   /**
