@@ -398,9 +398,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
    * @returns void
    */
   public uploadFile(fileList: FileList) {
-    const fileSizeToMB = fileList[0].size / 1000000;
-    if (fileList && fileList[0] && fileSizeToMB < 10) {
-      this.canNotUploadFile = false;
+    if (fileList && fileList[0]) {
       this.messageService.uploadFile(fileList[0])
           .subscribe(data => this.uploadedFilePaths.push(data));
       Object.values(fileList).filter(item => {
@@ -414,14 +412,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
             };
           }
         });
-    } else {
-      this.canNotUploadFile = true;
-      setTimeout(() => {
-        this.canNotUploadFile = !this.canNotUploadFile;
-      }, 4000);
     }
-
-
   }
 
   /**
