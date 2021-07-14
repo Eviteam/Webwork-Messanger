@@ -341,6 +341,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
 
 
 
+
   public createImage(searchImage, array): any {
     if (searchImage.length) {
       for (let i = 0; i <= searchImage.length - 1; i++) {
