@@ -322,10 +322,9 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
 
 
   onPaste(): any {
-    let image: any[] = document.querySelector('.ql-editor').querySelector('p').getElementsByTagName('img');
     const filePaths = this.filePaths;
     setTimeout(() => {
-      const newImage = new Image();
+      let image: any[] = Array.from(document.querySelector('.ql-editor').querySelector('p').getElementsByTagName('img'));
       if (image.length) {
         for (let i = 0; i <= image.length - 1; i++) {
           filePaths.push(image[i].currentSrc);
