@@ -11,6 +11,7 @@ import {QuillInitializeService} from 'src/app/services/quill-Initialize/quill-in
 import {UserService} from '../../services/user/user.service';
 
 
+
 @Component({
   selector: 'app-send-message',
   templateUrl: './send-message.component.html',
@@ -299,6 +300,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
               this.messageBody.message = this.message;
               if (this.message.replace(/<(.|\n)*?>/g, '').length) {
                 this.sendMessage(this.messageBody);
+                console.log(this.filePaths, '3');
               }
             }
           }
@@ -337,33 +339,19 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
 
 
 
-
-
-
-
-  public createImage(searchImage, array): any {
-    if (searchImage.length) {
-      for (let i = 0; i <= searchImage.length - 1; i++) {
-        array.push(searchImage[i].currentSrc);
-        this.message = document.querySelector('.ql-editor').querySelector('p').innerText;
-      }
-      return array;
-    }
-  }
-
   /**
    * Message sending function
    * @param messageBody
    * @returns void
    */
   public sendMessage(messageBody: Message) {
-
     const mess = this.message?.replace(/(<([^>]+)>)/gi, '')?.replace(/\&nbsp;/g, '');
     if (!messageBody.filePath && (!mess || mess.match(/^ *$/) != null)) { return; }
     this.onBlur().then(() => {
       this.currentUser = this.storageService.getItem('selectedUser');
       messageBody.message = this.message;
       this.message = '';
+      this.filePaths = [];
       this.messageService.saveMessage(messageBody)
         .pipe(
           finalize(() => {

@@ -22,7 +22,7 @@ export class AppService {
     return new Promise((resolve, reject) => {
       this.activatedRoute.queryParams
       .subscribe(async (param) => {
-        if (param.enc) {
+        if (param.enc)  {
           const userInfo = await this.decodeToken(param.enc);
           this.apiService.post(`/api/current_user/${userInfo.user_id}`)
             .subscribe(

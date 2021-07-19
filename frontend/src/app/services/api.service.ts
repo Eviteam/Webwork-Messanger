@@ -4,6 +4,7 @@ import { HttpHeaders, HttpClient, HttpParams, HttpErrorResponse } from '@angular
 // @ts-ignore
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import {formatSize} from "@angular-devkit/build-angular/src/webpack/utils/stats";
 
 const BASE_URL = environment.BASE_URL;
 const WEB_WORK_URL = environment.WEBWORK_BASE_URL
@@ -32,8 +33,8 @@ export class ApiService {
 
   /**
    * Getting some data
-   * @param path 
-   * @param params 
+   * @param path
+   * @param params
    * @returns GET request body
    */
   public get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
@@ -42,8 +43,8 @@ export class ApiService {
 
   /**
    * Creating or posting some data
-   * @param path 
-   * @param body 
+   * @param path
+   * @param body
    * @returns POST request body
    */
   public post(path: string, body: object = {}): Observable<any> {
@@ -56,8 +57,8 @@ export class ApiService {
 
   /**
    * Post files
-   * @param path 
-   * @param body 
+   * @param path
+   * @param body
    * @returns POST request body
    */
 
@@ -65,7 +66,7 @@ export class ApiService {
     const payload: FormData = new FormData();
     payload.append('file', body);
     return this.httpClient
-      .post(`${BASE_URL}${path}`, payload, this.fileUploadOptions)
+      .post(`${BASE_URL}${path}`, payload, this.fileUploadOptions )
       .pipe(
         catchError(this.handleError)
       );
@@ -73,8 +74,8 @@ export class ApiService {
 
   /**
    * Updating data
-   * @param path 
-   * @param body 
+   * @param path
+   * @param body
    * @returns PUT request body
    */
   public put(path: string, body: object = {}): Observable<any> {
@@ -84,7 +85,7 @@ export class ApiService {
 
   /**
    * Deleting data
-   * @param path 
+   * @param path
    * @returns DELETE request body
    */
   public delete(path: string): Observable<any> {
@@ -93,8 +94,8 @@ export class ApiService {
 
   /**
    * Creating or posting some data to Web work
-   * @param path 
-   * @param body 
+   * @param path
+   * @param body
    * @returns POST request body
    */
   public postToWebWork(path: string, body: object = {}): Observable<any> {
@@ -107,7 +108,7 @@ export class ApiService {
 
   /**
    * Handling Errors
-   * @param error 
+   * @param error
    * @returns error
    */
   handleError(error: HttpErrorResponse) {
