@@ -4,7 +4,6 @@ import { HttpHeaders, HttpClient, HttpParams, HttpErrorResponse } from '@angular
 // @ts-ignore
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import {formatSize} from "@angular-devkit/build-angular/src/webpack/utils/stats";
 
 const BASE_URL = environment.BASE_URL;
 const WEB_WORK_URL = environment.WEBWORK_BASE_URL
@@ -66,7 +65,7 @@ export class ApiService {
     const payload: FormData = new FormData();
     payload.append('file', body);
     return this.httpClient
-      .post(`${BASE_URL}${path}`, payload, this.fileUploadOptions )
+      .post(`${BASE_URL}${path}`, payload, this.fileUploadOptions)
       .pipe(
         catchError(this.handleError)
       );
