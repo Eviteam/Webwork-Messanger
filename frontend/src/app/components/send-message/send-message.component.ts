@@ -300,7 +300,6 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
               this.messageBody.message = this.message;
               if (this.message.replace(/<(.|\n)*?>/g, '').length) {
                 this.sendMessage(this.messageBody);
-                console.log(this.filePaths, '3');
               }
             }
           }

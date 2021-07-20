@@ -24,7 +24,7 @@ export class ApiService {
   private fileUploadOptions: object = {
     headers: new HttpHeaders({
       // 'Content-Type': 'multipart/form-data',
-      'Access-Control-Allow-Origin': `*`
+      'Access-Control-Allow-Origin': `*`,
     })
   }
 
