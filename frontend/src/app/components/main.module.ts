@@ -11,6 +11,7 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../helpers/pipes/filter-pipe/filter.pipe';
+import { FindUsersPipe } from '../helpers/pipes/find-online-users/find-users.pipe';
 
 const routes: Routes = [
   {
@@ -31,7 +32,8 @@ const config: SocketIoConfig = { url: BASE_URL, options: {} };
     ChannelsComponent,
     UsersComponent,
     SidebarHeaderComponent,
-    FilterPipe
+    FilterPipe,
+    FindUsersPipe
   ],
     imports: [
         CommonModule,

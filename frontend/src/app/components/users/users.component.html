@@ -37,7 +37,10 @@
         [src]="user?.avatar.includes('data:image/') ? user?.avatar : WEBWORK_BASE_URL + user?.avatar">
       <div
         class="status"
-        [ngClass]="{'status_active': user?.is_online,  'status_inactive': !user?.is_online, 'status_active': user?.id.toString() === user_id }"></div>
+        [ngClass]="{'status_active': user?.is_online,
+        'status_inactive': !user?.is_online,
+        'status_active': user?.id.toString() === user_id,
+        'status_active': users | findUsers  }"></div>
     </div>
     <p
       class="user_name"

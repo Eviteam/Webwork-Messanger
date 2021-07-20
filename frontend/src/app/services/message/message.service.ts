@@ -42,7 +42,7 @@ export class MessageService {
   }
 
   public sendMessage(message: Message) {
-    this.socket.emit('chatMessage', message, {maxFileSize: 10485760});
+    this.socket.emit('chatMessage', message);
   }
 
   public removeSocket(userData: any) {
