@@ -3,7 +3,7 @@ import { LocalStorageService } from '../localStorage/local-storage.service';
 import { Socket } from 'ngx-socket-io';
 import { map } from 'rxjs/operators';
 import { Message, WebWorkMessage } from 'src/app/models/message';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import { ApiService } from '../api.service';
 import {Validators} from "@angular/forms";
 
@@ -25,6 +25,7 @@ export class MessageService {
     page: 1,
     limit: 10
   };
+  public uploadPending = new Subject();
 
   constructor(
     private apiService: ApiService,

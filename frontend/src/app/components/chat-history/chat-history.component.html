@@ -13,6 +13,29 @@
     [infiniteScrollDistance]="2"
     (scrolledUp)="onScroll()"
     [infiniteScrollUpDistance]="2">
+    <div *ngIf="pendingStatus">
+      <div class="uploadProgress">Processing Uploaded file...</div>
+      <div class="uploadStatus loadbar">
+        <div class="span-box">
+          <span class="first"></span>
+          <span class="second"></span>
+          <span class="third"></span>
+          <span class="fourth"></span>
+          <span class="fifth"></span>
+          <span class="sixth"></span>
+          <span class="seventh"></span>
+          <span class="eight"></span>
+          <span class="nine"></span>
+          <span class="ten"></span>
+          <span class="eleven"></span>
+          <span class="twelve"></span>
+          <span class="thirteen"></span>
+          <span class="fourteen"></span>
+          <span class="fifeteen"></span>
+          <span class="sixteen"></span>
+        </div>
+      </div>
+    </div>
     <div class="sender_block-inner">
       <ng-container *ngFor="let group of groupArrays">
         <div class="sender_date">

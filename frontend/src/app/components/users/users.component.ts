@@ -1,4 +1,14 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -21,7 +31,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   public user_id: string;
   public team_id: string;
   public users: User[];
-  public userIsSelected: boolean = false;
+  public userIsSelected = false;
   public selectedUser: string = this.storageService.getItem('selectedUser')
     ? this.storageService.getItem('selectedUser')
     : null;
@@ -29,9 +39,9 @@ export class UsersComponent implements OnInit, AfterViewInit {
   public unreadMessageCount: any;
   public messageIsRead = false;
   public WEBWORK_BASE_URL = environment.WEBWORK_BASE_URL;
-  public isHovered: boolean = false;
-  public isTopHovered: boolean = false;
-  public isChanged: boolean = false;
+  public isHovered = false;
+  public isTopHovered = false;
+  public isChanged = false;
   public searchName = '';
   private subscription: Subscription;
 
@@ -48,6 +58,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private messageService: MessageService
   ) { }
+
 
   ngOnInit(): void {
     this.userService.isSeen

@@ -18,11 +18,11 @@
   width: 8px;
   border-radius: 4px;
 }
- 
+
 ::ng-deep .sender_block::-webkit-scrollbar-track {
   display: none;
 }
- 
+
 ::ng-deep .sender_block::-webkit-scrollbar-thumb {
   background-color: rgba($color: #000000, $alpha: 0.1);
   border-radius: 4px;
@@ -53,7 +53,7 @@
         border-width: 21px 0 0 6px;
         border-color: transparent transparent transparent $selected-user-background;
         left: 100%;
-        
+
       }
     }
 
@@ -74,7 +74,7 @@
       line-height: 27px;
       margin: 0 10px;
     }
-  
+
     .time {
       font-size: 14px;
       font-weight: normal;
@@ -96,7 +96,7 @@
         white-space: nowrap;
         transition: opacity .4s ease;
         user-select: none;
-        
+
         &:after {
           content: '';
           position: absolute;
@@ -149,7 +149,7 @@
     border-radius: 11px;
     margin-bottom: 40px;
     margin: 16px 26px 16px 38px;
-    
+
     &_center {
       padding: 2px 140px 2px 140px;
       border-radius: 6px;
@@ -206,3 +206,124 @@
     }
   }
 }
+ /*.uploadStatus {
+   position: absolute;
+   width: 400px;
+   margin-left: 270px;
+   border: 1px solid white;
+   background-color: whitesmoke;
+   border-radius: 14px;
+   text-align: center;
+   opacity: 0.8;
+ }*/
+
+.loadbar {
+  position: absolute;
+  top: 14%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 20px;
+  background-color:#D1F2FB;
+  border-radius: 30px;
+  overflow: hidden;
+  opacity: 0.6;
+
+
+  .span-box {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform: translateX(300%);
+    animation: loader .6s infinite linear;
+
+    & > * {
+      height: 70px;
+      width: 30px;
+      opacity: .7;
+      position: absolute;
+      transform: rotate(45deg);
+      border-radius: 8px;
+      top: -20px;
+      background: whitesmoke !important;
+    }
+  }
+
+  .first {
+    left: 20%;
+  }
+
+  .second {
+    left: 40%;
+  }
+
+  .third {
+    left: 60%;
+  }
+
+  .fourth {
+    left: 80%;
+  }
+
+    .fifth {
+      left: 100%;
+    }
+
+    .sixth {
+      left: 120%;
+    }
+
+    .seventh {
+      left: 140%;
+    }
+
+    .eight {
+      left: 160%;
+    }
+
+    .nine {
+      left: 180%;
+    }
+
+    .ten {
+      left: 200%;
+    }
+
+    .eleven {
+      left: 220%;
+    }
+
+    .twelve {
+      left: 240%;
+    }
+
+    .thirteen {
+      left: 260%;
+    }
+
+    .fourteen {
+      left: 280%;
+    }
+
+    .fifeteen {
+      left: 300%;
+    }
+  }
+
+  @keyframes loader {
+    0% {
+      transform: translateX(10%);
+    }
+    100% {
+      transform: translateX(-10%);
+    }
+  }
+
+  .uploadProgress {
+    position: absolute;
+    top: 123px;
+    left: 49%;
+    color: black;
+  }
+
+

@@ -9,6 +9,7 @@ import {LocalStorageService} from 'src/app/services/localStorage/local-storage.s
 import {MessageService} from 'src/app/services/message/message.service';
 import {QuillInitializeService} from 'src/app/services/quill-Initialize/quill-initialize.service';
 import {UserService} from '../../services/user/user.service';
+import {element} from "protractor";
 
 
 
@@ -327,10 +328,14 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
     setTimeout(() => {
       let image: any[] = Array.from(document.querySelector('.ql-editor').querySelector('p').getElementsByTagName('img'));
       if (image.length) {
+        this.messageService.uploadPending.next(true);
         for (let i = 0; i <= image.length - 1; i++) {
-          filePaths.push(image[i].currentSrc);
-          image[i]?.parentNode.removeChild(image[i]);
-          image = [];
+          setTimeout(() => {
+            this.messageService.uploadPending.next(false);
+            filePaths.push(image[i].currentSrc);
+            image[i]?.parentNode.removeChild(image[i]);
+            image = [];
+          }, 3000);
         }
       }
     }, 500);
@@ -386,21 +391,40 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
    */
   public uploadFile(fileList: FileList) {
     if (fileList && fileList[0]) {
-      this.messageService.uploadFile(fileList[0])
-          .subscribe(data => this.uploadedFilePaths.push(data));
-      Object.values(fileList).filter(item => {
-          if (typeof (item) !== 'number') {
-            const reader = new FileReader();
-            reader.readAsDataURL(item);
-            reader.onload = () => {
-              this.uploadedFileType = item.type;
-              this.formData.get('files').value.push(item);
-              this.setSafeSvgFormat(reader.result);
-            };
-          }
-        });
+      this.messageService.uploadPending.next(true);
+      setTimeout(() => {
+        this.messageService.uploadPending.next(false);
+        if (fileSizeToMB < 10) {
+          this.messageService.uploadFile(fileList[0])
+            .subscribe(data => this.uploadedFilePaths.push(data));
+          Object.values(fileList).filter(item => {
+            if (typeof (item) !== 'number') {
+              const reader = new FileReader();
+              reader.readAsDataURL(item);
+              reader.onload = () => {
+                this.uploadedFileType = item.type;
+                this.formData.get('files').value.push(item);
+                this.setSafeSvgFormat(reader.result);
+              };
+            }
+          });
+        }
+        else {
+          this.canNotUploadFile = true;
+          setTimeout(() => {
+            this.canNotUploadFile = !this.canNotUploadFile;
+          }, 4000);
+        }
+
+      }, 3000);
+      const fileSizeToMB = fileList[0].size / 1000000;
+
     }
   }
+
+
+
+
 
   /**
    * Deletes uploaded file

@@ -35,6 +35,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public isSame: boolean;
   public isIcon: boolean;
   private subscribtion: Subscription;
+  public pendingStatus: any;
 
   constructor(
     public messageService: MessageService, // property messageService is public because it is using in chat-history.component.html
@@ -45,6 +46,9 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
+    this.messageService.uploadPending.subscribe((status) => {
+      this.pendingStatus = status;
+    });
     this.activatedRoute.params
       .subscribe(param => {
         this.storageService.setItem('selectedUser', param.id);
@@ -75,9 +79,9 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
               if (event instanceof NavigationEnd) {
                 this.subscribtion.unsubscribe()
               }
-            })
-          })
-      })
+            });
+          });
+      });
   }
 
   ngAfterViewChecked(): void {
@@ -87,9 +91,9 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  /** 
+  /**
    * Listen to socket for get all messages
-   * @param messageBody 
+   * @param messageBody
    * @returns void
    */
   public getAllMessage(messageBody: Message, params: any): void {
@@ -114,10 +118,10 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
           this.storageService.setItem('selectedUser', param.id);
           this.messageService.setMessageProps()
             .then(data => this.getAllMessage(data, this.messageService.params))
-          res(param.id)
+          res(param.id);
         },
-          err => rej(err))
-    })
+          err => rej(err));
+    });
   }
 
   /**
@@ -148,7 +152,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
 
   /**
    * Seperates messages by date
-   * @param allMessages 
+   * @param allMessages
    * @returns messages body by seperated date
    */
   public seperateMessagesByDate(allMessages: Message[]): any {
@@ -175,7 +179,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
 
   /**
    * Converts image sizes
-   * @param messages 
+   * @param messages
    * @returns void
    */
   public convertImageSize(messages: any): void {
@@ -187,16 +191,12 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
         reader.readAsDataURL(blobFile);
         reader.onload = () => {
           img.src = reader.result.toString();
-        }
+        };
         img.onload = () => {
           // if (img.width < 300 && img.height < 300) {
           //   return this.isIcon = true
           // }
-          if (img.width > img.height) {
-            this.isSame = false
-          } else {
-            this.isSame = true;
-          }
+          this.isSame = img.width <= img.height;
         }
       }
     })
@@ -204,7 +204,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
 
   /**
    * Converting base64 to Blob
-   * @param dataURI 
+   * @param dataURI
    * @returns Blob
    */
   public b64toBlob(dataURI: string): Blob {
@@ -219,8 +219,8 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
 
   /**
    * Compares two dates
-   * @param firstDate 
-   * @param secondDate 
+   * @param firstDate
+   * @param secondDate
    * @returns true | false
    */
   public compareDates(firstDate: any, secondDate: any): Boolean {
