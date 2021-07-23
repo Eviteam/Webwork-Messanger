@@ -49,6 +49,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     this.messageService.uploadPending.subscribe((status) => {
       this.pendingStatus = status;
     });
+
     this.activatedRoute.params
       .subscribe(param => {
         this.storageService.setItem('selectedUser', param.id);
@@ -62,7 +63,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
                 if (message) {
                   this.newMessage = message;
                   this.newMessage.isSeen = true;
-                    this.messageService.setMessageIsRead(team_id, this.storageService.getItem('user_id'), message.sender_id.toString())
+                  this.messageService.setMessageIsRead(team_id, this.storageService.getItem('user_id'), message.sender_id.toString())
                       .subscribe(data => data)
 
                   this.current_time = moment().format();
@@ -77,7 +78,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
           }).then(() => {
             this.router.events.subscribe(event => {
               if (event instanceof NavigationEnd) {
-                this.subscribtion.unsubscribe()
+                this.subscribtion.unsubscribe();
               }
             });
           });
@@ -224,11 +225,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
    * @returns true | false
    */
   public compareDates(firstDate: any, secondDate: any): Boolean {
-    if (moment(firstDate).format('MMM d, y, h:mm a') === moment(secondDate).format('MMM d, y, h:mm a')) {
-      return true
-    } else {
-      return false
-    }
+    return moment(firstDate).format('MMM d, y, h:mm a') === moment(secondDate).format('MMM d, y, h:mm a');
   }
 
 }

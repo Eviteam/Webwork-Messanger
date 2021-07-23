@@ -10,6 +10,7 @@ import {MessageService} from 'src/app/services/message/message.service';
 import {QuillInitializeService} from 'src/app/services/quill-Initialize/quill-initialize.service';
 import {UserService} from '../../services/user/user.service';
 import {element} from "protractor";
+import {log} from "util";
 
 
 
@@ -328,14 +329,10 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
     setTimeout(() => {
       let image: any[] = Array.from(document.querySelector('.ql-editor').querySelector('p').getElementsByTagName('img'));
       if (image.length) {
-        this.messageService.uploadPending.next(true);
         for (let i = 0; i <= image.length - 1; i++) {
-          setTimeout(() => {
-            this.messageService.uploadPending.next(false);
             filePaths.push(image[i].currentSrc);
             image[i]?.parentNode.removeChild(image[i]);
             image = [];
-          }, 3000);
         }
       }
     }, 500);
@@ -352,6 +349,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
     const mess = this.message?.replace(/(<([^>]+)>)/gi, '')?.replace(/\&nbsp;/g, '');
     if (!messageBody.filePath && (!mess || mess.match(/^ *$/) != null)) { return; }
     this.onBlur().then(() => {
+      if (this.filePaths) { this.messageService.uploadPending.next(true); }
       this.currentUser = this.storageService.getItem('selectedUser');
       messageBody.message = this.message;
       this.message = '';
@@ -377,6 +375,7 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
                   delete data.team_id;
                   const count = Object.values(data).reduce((a: number, b: number) => a + b, 0);
                   this.messageService.emitMsgCounts(+count);
+                  this.messageService.uploadPending.next(false);
                 });
             }));
           this.messageService.sendMessage(message['data']);
@@ -391,10 +390,8 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
    */
   public uploadFile(fileList: FileList) {
     if (fileList && fileList[0]) {
-      this.messageService.uploadPending.next(true);
-      setTimeout(() => {
-        this.messageService.uploadPending.next(false);
-        if (fileSizeToMB < 10) {
+      const fileSizeToMB = fileList[0].size / 1000000;
+      if (fileSizeToMB < 10) {
           this.messageService.uploadFile(fileList[0])
             .subscribe(data => this.uploadedFilePaths.push(data));
           Object.values(fileList).filter(item => {
@@ -415,10 +412,6 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
             this.canNotUploadFile = !this.canNotUploadFile;
           }, 4000);
         }
-
-      }, 3000);
-      const fileSizeToMB = fileList[0].size / 1000000;
-
     }
   }
 
