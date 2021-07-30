@@ -9,8 +9,7 @@ import {LocalStorageService} from 'src/app/services/localStorage/local-storage.s
 import {MessageService} from 'src/app/services/message/message.service';
 import {QuillInitializeService} from 'src/app/services/quill-Initialize/quill-initialize.service';
 import {UserService} from '../../services/user/user.service';
-import {element} from "protractor";
-import {log} from "util";
+
 
 
 
@@ -348,8 +347,8 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
   public sendMessage(messageBody: Message) {
     const mess = this.message?.replace(/(<([^>]+)>)/gi, '')?.replace(/\&nbsp;/g, '');
     if (!messageBody.filePath && (!mess || mess.match(/^ *$/) != null)) { return; }
+    if (this.filePaths.length) {this.messageService.uploadPending.next(true); }
     this.onBlur().then(() => {
-      if (this.filePaths) { this.messageService.uploadPending.next(true); }
       this.currentUser = this.storageService.getItem('selectedUser');
       messageBody.message = this.message;
       this.message = '';
@@ -375,7 +374,6 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
                   delete data.team_id;
                   const count = Object.values(data).reduce((a: number, b: number) => a + b, 0);
                   this.messageService.emitMsgCounts(+count);
-                  this.messageService.uploadPending.next(false);
                 });
             }));
           this.messageService.sendMessage(message['data']);

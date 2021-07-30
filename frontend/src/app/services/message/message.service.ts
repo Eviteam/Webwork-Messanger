@@ -25,7 +25,7 @@ export class MessageService {
     page: 1,
     limit: 10
   };
-  public uploadPending = new Subject();
+  public uploadPending = new Subject<boolean>();
 
   constructor(
     private apiService: ApiService,

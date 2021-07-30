@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild, HostListener } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Message } from 'src/app/models/message';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
@@ -8,6 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
+
 
 // ChatHistoryComponent is the message history component
 @Component({
@@ -23,19 +24,19 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public selectedUser: string = this.storageService.getItem('selectedUser');
   public current_time: string;
   public newMessage: Message;
-  public newMessageAdded: boolean = false;
+  public newMessageAdded = false;
   public unSeenMessages: Message[];
-  public loader: boolean = false;
+  public loader = false;
   public groupArrays: {
     date: string;
     messages: any;
   }[];
-  public todayDate: string = moment().format("dddd, MMMM Do");
+  public todayDate: string = moment().format('dddd, MMMM Do');
   public WEBWORK_BASE_URL = environment.WEBWORK_BASE_URL;
   public isSame: boolean;
   public isIcon: boolean;
   private subscribtion: Subscription;
-  public pendingStatus: any;
+  public pendingStatus: boolean;
 
   constructor(
     public messageService: MessageService, // property messageService is public because it is using in chat-history.component.html
@@ -46,9 +47,6 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
-    this.messageService.uploadPending.subscribe((status) => {
-      this.pendingStatus = status;
-    });
 
     this.activatedRoute.params
       .subscribe(param => {
@@ -64,7 +62,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
                   this.newMessage = message;
                   this.newMessage.isSeen = true;
                   this.messageService.setMessageIsRead(team_id, this.storageService.getItem('user_id'), message.sender_id.toString())
-                      .subscribe(data => data)
+                      .subscribe(data => data);
 
                   this.current_time = moment().format();
                   this.newMessage.createdAt = this.current_time;
@@ -72,9 +70,10 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
                   this.seperateMessagesByDate(this.messageService.allMessages);
                   this.newMessageAdded = true;
                   this.scrollToBottom();
-                  this.messageService.setNewMessage(null)
+                  this.messageService.setNewMessage(null);
+                  this.messageService.uploadPending.next(false);
                 }
-              })
+              });
           }).then(() => {
             this.router.events.subscribe(event => {
               if (event instanceof NavigationEnd) {
@@ -83,6 +82,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
             });
           });
       });
+    this.messageService.uploadPending.subscribe(data => this.pendingStatus = data);
   }
 
   ngAfterViewChecked(): void {
@@ -101,11 +101,11 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     this.messageService.getMessageHistory(messageBody, params)
       .subscribe((data: any): void => {
         if (this.messageService.allMessages && !this.messageService.allMessages.length) {
-          this.newMessageAdded = true
+          this.newMessageAdded = true;
         }
         this.messageService.allMessages = data.concat(this.messageService.allMessages);
-        this.seperateMessagesByDate(this.messageService.allMessages)
-      })
+        this.seperateMessagesByDate(this.messageService.allMessages);
+      });
   }
 
   /**
@@ -139,17 +139,18 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
    * Gets scroll event
    * @returns void
    */
-  public onScroll(): void {
-    this.messageService.setMessageProps()
-      .then(props => {
-        this.loader = true;
-        this.messageService.params.page = this.messageService.params.page + 1;
-        this.getAllMessage(props, this.messageService.params)
-      })
-      .finally(() => this.loader = false)
-    this.infiniteScroll.ngOnDestroy();
-    this.infiniteScroll.setup();
+
+  @HostListener('window:scroll', ) onScroll(event): void {
+    const scrollTop = document.querySelector('.sender_block').scrollTop;
+    if (scrollTop === 0) {
+      this.messageService.params.page = this.messageService.params.page + 1;
+      this.messageService.setMessageProps()
+        .then((props) => {
+          this.getAllMessage(props, this.messageService.params);
+        });
+    }
   }
+
 
   /**
    * Seperates messages by date
@@ -158,7 +159,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
    */
   public seperateMessagesByDate(allMessages: Message[]): any {
     const groups = allMessages.reduce((groups: any, message: Message) => {
-      const date = moment(message.createdAt).format("dddd, MMMM Do");
+      const date = moment(message.createdAt).format('dddd, MMMM Do');
       if (!groups[date]) {
         groups[date] = [];
       }
@@ -187,7 +188,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     messages.map((item: { filePath: string[] }) => {
       if (item.filePath && item.filePath.length) {
         const reader = new FileReader();
-        const blobFile = this.b64toBlob(item.filePath[0])
+        const blobFile = this.b64toBlob(item.filePath[0]);
         const img = new Image;
         reader.readAsDataURL(blobFile);
         reader.onload = () => {
@@ -198,9 +199,9 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
           //   return this.isIcon = true
           // }
           this.isSame = img.width <= img.height;
-        }
+        };
       }
-    })
+    });
   }
 
   /**

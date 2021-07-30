@@ -9,10 +9,7 @@
   <div
     class="sender_block"
     #chatContent infiniteScroll
-    [scrollWindow]="false"
-    [infiniteScrollDistance]="2"
-    (scrolledUp)="onScroll()"
-    [infiniteScrollUpDistance]="2">
+    (scroll)="onScroll($event)">
     <div *ngIf="pendingStatus">
       <div class="uploadProgress">Processing Uploaded file...</div>
       <div class="uploadStatus loadbar">
