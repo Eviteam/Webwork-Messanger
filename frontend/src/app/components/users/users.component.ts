@@ -122,8 +122,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    //got new message - needs to show notifications and things to attract attention
-    //if its not the selected user
+    // got new message - needs to show notifications and things to attract attention
+    // if its not the selected user
     if (message.sender_id != +selectedUserId) {
       this.userService.setMessageIsRead(false);
       if (currentUserId == message.receiver_id) {
@@ -132,7 +132,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     }
 
 
-    //if now in that chat window, ask chat component to show that message
+    // if now in that chat window, ask chat component to show that message
     if ((message.sender_id == +currentUserId && message.receiver_id == selectedUserId)
       || (message.sender_id == +selectedUserId && message.receiver_id == currentUserId)) {
       this.messageService.setNewMessage(message);
@@ -189,7 +189,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     if (!index) {
       this.isTopHovered = false;
     }
-    this.router.navigateByUrl(`/main/${this.selectedUser}`)
+    this.router.navigateByUrl(`/main/${this.selectedUser}`);
   }
 
   public getUnseenMessages(team_id: string | number, user_id: string): void {

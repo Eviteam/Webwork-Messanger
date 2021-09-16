@@ -33,7 +33,7 @@ export class MessageService {
     private socket: Socket
   ) { }
 
-  public registerUser(userData: any) {
+  public registerUser(userData: any): any {
     this.socket.emit('register', userData);
   }
 
@@ -42,7 +42,7 @@ export class MessageService {
       .pipe(map((data: any) => data));
   }
 
-  public sendMessage(message: Message) {
+  public sendMessage(message: Message): any {
     this.socket.emit('chatMessage', message);
   }
 

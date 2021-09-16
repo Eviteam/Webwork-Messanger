@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild, HostListener } from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, OnInit, ViewChild, HostListener, AfterViewInit} from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Message } from 'src/app/models/message';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
@@ -7,7 +7,8 @@ import moment from 'moment';
 import { DomSanitizer } from '@angular/platform-browser';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { environment } from 'src/environments/environment';
-import { Subscription } from 'rxjs';
+import { Subscription} from 'rxjs';
+import {reduce} from "rxjs/operators";
 
 
 // ChatHistoryComponent is the message history component
@@ -17,7 +18,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./chat-history.component.scss']
 })
 export class ChatHistoryComponent implements OnInit, AfterViewChecked {
-  @ViewChild('chatContent') private chatContent: ElementRef;
+  @ViewChild('chatContent') private chatContent: ElementRef | any;
   @ViewChild(InfiniteScrollDirective) infiniteScroll: InfiniteScrollDirective;
 
   public currentUser: string;
@@ -37,6 +38,8 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public isIcon: boolean;
   private subscribtion: Subscription;
   public pendingStatus: boolean;
+  public showMoreMessages: boolean;
+  private messageInfo: any;
 
   constructor(
     public messageService: MessageService, // property messageService is public because it is using in chat-history.component.html
@@ -52,7 +55,10 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
       .subscribe(param => {
         this.storageService.setItem('selectedUser', param.id);
         this.messageService.setMessageProps()
-          .then(data => this.getAllMessage(data, this.messageService.params))
+          .then(data => {
+            this.messageInfo = data;
+            this.getAllMessage(data, this.messageService.params);
+          })
           .then(() => {
             this.currentUser = this.storageService.getItem('user_id');
             const team_id = this.storageService.getItem('team_id');
@@ -85,6 +91,9 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
     this.messageService.uploadPending.subscribe(data => this.pendingStatus = data);
   }
 
+
+
+
   ngAfterViewChecked(): void {
     if (this.newMessageAdded) {
       this.scrollToBottom();
@@ -97,7 +106,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
    * @param messageBody
    * @returns void
    */
-  public getAllMessage(messageBody: Message, params: any): void {
+  public getAllMessage(messageBody: Message, params: any): any | Promise<Message> {
     this.messageService.getMessageHistory(messageBody, params)
       .subscribe((data: any): void => {
         if (this.messageService.allMessages && !this.messageService.allMessages.length) {
@@ -107,6 +116,19 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
         this.seperateMessagesByDate(this.messageService.allMessages);
       });
   }
+   //  to show more messages
+  onShowMessages(): any {
+    this.messageService.params.page = this.messageService.params.page + 1;
+    this.messageService.getMessageHistory(this.messageInfo, this.messageService.params )
+      .subscribe((messages: any): void => {
+        this.messageService.allMessages = messages.concat(this.messageService.allMessages);
+        this.seperateMessagesByDate(this.messageService.allMessages);
+        setTimeout(() => {
+          this.chatContent.nativeElement.scrollTop = 1000;
+         }, 1);
+      });
+  }
+
 
   /**
    * Gets parameter from URL for get selected user's all message data
@@ -118,7 +140,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
         .subscribe(param => {
           this.storageService.setItem('selectedUser', param.id);
           this.messageService.setMessageProps()
-            .then(data => this.getAllMessage(data, this.messageService.params))
+            .then(data => this.getAllMessage(data, this.messageService.params));
           res(param.id);
         },
           err => rej(err));
@@ -140,15 +162,11 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
    * @returns void
    */
 
-  @HostListener('window:scroll', ) onScroll(event): void {
+   @HostListener('window: scroll') onScroll(event): void {
     const scrollTop = document.querySelector('.sender_block').scrollTop;
-    if (scrollTop === 0) {
-      this.messageService.params.page = this.messageService.params.page + 1;
-      this.messageService.setMessageProps()
-        .then((props) => {
-          this.getAllMessage(props, this.messageService.params);
-        });
-    }
+    this.showMoreMessages = scrollTop <= 30;
+    /*this.currentScroll = this.chatContent.nativeElement.scrollHeight;
+    this.currentScroll = this.chatContent.nativeElement.scrollHeight;*/
   }
 
 

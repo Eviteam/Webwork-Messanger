@@ -170,6 +170,16 @@
   }
 }
 
+.showMessage {
+  width: 20%;
+  color: white;
+  background-color: $selected-user-background;
+  position: center;
+  margin-left: 40%;
+  border: none;
+  border-radius: 10px;
+}
+
 ::ng-deep .image_part {
   // width: 360px;
   // margin-right: 13px;

@@ -6,6 +6,12 @@
       <span class="sr-only">Loading...</span>
     </div>
   </div>
+  <button
+
+    *ngIf="showMoreMessages"
+    class="showMessage"
+    (click)="onShowMessages()">Show More
+  </button>
   <div
     class="sender_block"
     #chatContent infiniteScroll
