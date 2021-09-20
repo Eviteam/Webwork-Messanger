@@ -7,10 +7,9 @@
     </div>
   </div>
   <button
-
-    *ngIf="showMoreMessages"
+    *ngIf="showMoreMessages && groupArrays[0]?.messages.length"
     class="showMessage"
-    (click)="onShowMessages()">Show More
+    (click)="onShowMessages()">Show More!
   </button>
   <div
     class="sender_block"

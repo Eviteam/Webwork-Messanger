@@ -8,7 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { environment } from 'src/environments/environment';
 import { Subscription} from 'rxjs';
-import {reduce} from "rxjs/operators";
+import {group} from "@angular/animations";
 
 
 // ChatHistoryComponent is the message history component
@@ -50,7 +50,6 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
-
     this.activatedRoute.params
       .subscribe(param => {
         this.storageService.setItem('selectedUser', param.id);
@@ -123,9 +122,6 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
       .subscribe((messages: any): void => {
         this.messageService.allMessages = messages.concat(this.messageService.allMessages);
         this.seperateMessagesByDate(this.messageService.allMessages);
-        setTimeout(() => {
-          this.chatContent.nativeElement.scrollTop = 1000;
-         }, 1);
       });
   }
 
@@ -163,11 +159,9 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
    */
 
    @HostListener('window: scroll') onScroll(event): void {
-    const scrollTop = document.querySelector('.sender_block').scrollTop;
-    this.showMoreMessages = scrollTop <= 30;
-    /*this.currentScroll = this.chatContent.nativeElement.scrollHeight;
-    this.currentScroll = this.chatContent.nativeElement.scrollHeight;*/
-  }
+     const scrollTop = document.querySelector('.sender_block').scrollTop;
+     this.showMoreMessages = scrollTop <= 30;
+   }
 
 
   /**
