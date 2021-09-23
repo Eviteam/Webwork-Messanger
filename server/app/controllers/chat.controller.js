@@ -83,7 +83,7 @@ router.post(`/send-message/channel`, (req, res) => {
 
 
 // UPLOAD FILE
-router.post(`/uploadFile`, uploadedFile.single('file'), uploadFile);
+router.post(`/uploadFile/:team_id/:receiver_id`, uploadedFile.single('file'), uploadFile);
 
 function uploadFile(req, res) {
   const fileData = req.file;
@@ -100,9 +100,9 @@ function uploadFile(req, res) {
 };
 
 // DELETE UPLOADED FILE
-router.delete(`/uploadedFile/:fileName`, (req, res) => {
-  const fileName = req.params.fileName;
-  fs.unlink(`${directoryPath}/${fileName}`, function (err) {
+router.post(`/uploadedFile`, (req, res) => {
+  const filePath = req.body.filePath;
+  fs.unlink(`${filePath}`, function (err) {
     err ? res.status(404).send(err) : res.status(200).send({
       message: 'Success'
     })

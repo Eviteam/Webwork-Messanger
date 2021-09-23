@@ -7,7 +7,6 @@ const socketio = require("socket.io");
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
-app.use(cors());
 const dotenv = require('dotenv');
 dotenv.config();
 const webWorkService = require("./app/services/web-work.service");
@@ -22,7 +21,9 @@ const swaggerDocument = require('./swagger.json');
 
 // PORT
 const PORT = process.env.PORT || 3000 ;
-
+app.use(cors({
+  origin: '*'
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 app.use(bodyParser.json({limit: '10mb'}));
@@ -34,12 +35,12 @@ app.get(`/`, (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/frontend/index.html'))
 });
 
-const server = http.createServer(
-  // {
-  //   key: fs.readFileSync(process.env.KEY, 'utf8'),
-  //   cert: fs.readFileSync(process.env.CERT, 'utf8')
-  // },
-  app
+const server = https.createServer(
+    {
+      key: fs.readFileSync(process.env.KEY, 'utf8'),
+      cert: fs.readFileSync(process.env.CERT, 'utf8')
+    },
+    app
 );
 
 server.listen(PORT, () => {

@@ -5,7 +5,8 @@ import { map } from 'rxjs/operators';
 import { Message, WebWorkMessage } from 'src/app/models/message';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import { ApiService } from '../api.service';
-import {Validators} from "@angular/forms";
+import { environment } from '../../../environments/environment';
+const webWork = environment.BASE_URL;
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,7 @@ export class MessageService {
     limit: 10
   };
   public uploadPending = new Subject<boolean>();
+
 
   constructor(
     private apiService: ApiService,
@@ -77,12 +79,12 @@ export class MessageService {
     this.socket.emit('msgCount', count);
   }
 
-  public uploadFile(file: any): Observable<any> {
-    return this.apiService.postFile(`/api/chat/uploadFile`, file);
+  public uploadFile(file: any, team_id: string | number, receiver_id: string | number): Observable<any> {
+    return this.apiService.postFile(`/api/chat/uploadFile/${team_id}/${receiver_id}`, file);
   }
 
-  public deleteUploadedFile(fileName: string): Observable<any> {
-    return this.apiService.delete(`/api/chat/uploadedFile/${fileName}`);
+  public deleteUploadedFile(filePath: string): Observable<any> {
+    return this.apiService.post(`/api/chat/uploadedFile`, {filePath});
   }
 
   public getUnseenMessages(team_id: string | number, user_id: string): Observable<any> {

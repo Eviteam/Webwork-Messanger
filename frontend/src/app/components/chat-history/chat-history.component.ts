@@ -199,7 +199,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public convertImageSize(messages: any): void {
     messages.map((item: { filePath: string[] }) => {
       if (item.filePath && item.filePath.length) {
-        const reader = new FileReader();
+        /*const reader = new FileReader();
         const blobFile = this.b64toBlob(item.filePath[0]);
         const img = new Image;
         reader.readAsDataURL(blobFile);
@@ -211,7 +211,7 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
           //   return this.isIcon = true
           // }
           this.isSame = img.width <= img.height;
-        };
+        };*/
       }
     });
   }
@@ -221,14 +221,14 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
    * @param dataURI
    * @returns Blob
    */
-  public b64toBlob(dataURI: string): Blob {
-    const byteString = atob(dataURI.split(',')[1]);
+  public b64toBlob(dataURI: string): Blob | any {
+    /*const byteString = atob(dataURI.split(',')[1]);
     const ab = new ArrayBuffer(byteString.length);
     const ia = new Uint8Array(ab);
     for (let i = 0; i < byteString.length; i++) {
       ia[i] = byteString.charCodeAt(i);
     }
-    return new Blob([ab], { type: 'image/jpeg' });
+    return new Blob([ab], { type: 'image/jpeg' });*/
   }
 
   /**

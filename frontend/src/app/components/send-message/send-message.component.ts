@@ -9,6 +9,7 @@ import {LocalStorageService} from 'src/app/services/localStorage/local-storage.s
 import {MessageService} from 'src/app/services/message/message.service';
 import {QuillInitializeService} from 'src/app/services/quill-Initialize/quill-initialize.service';
 import {UserService} from '../../services/user/user.service';
+import {environment} from '../../../environments/environment';
 
 
 
@@ -54,7 +55,6 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
 
 
   ngOnInit(): void {
-
     this.formData = this.fb.group({
       files: this.fb.array([])
     });
@@ -98,13 +98,10 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
 
 
   async ngAfterViewInit() {
-
     await this.removeUnnecessaryWhiteSpaces();
-
   }
 
   public async removeUnnecessaryWhiteSpaces(setNull?: boolean) {
-
     const quills = [];
     // @ts-ignore
     [...document.getElementsByClassName('quillEditor')].forEach((el, idx) => {
@@ -264,12 +261,11 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
   }
 
   public setFocus(editor: any) {
-
     this.messageService.setFocus(editor);
     editor.focus();
   }
 
-  onFocus() {
+  onFocus(): any {
     if (this.message.includes('<p><br></p>') && this.message === '') {
       this.message = '';
     }
@@ -286,7 +282,6 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
    * @returns void
    */
   public onKeyDown(event?: any) {
-
     (this.message && this.message.length <= 48) ? this.tooltipFromLeft = true : this.tooltipFromLeft = false;
     if (event) {
       if (event.keyCode === 13) {
@@ -390,19 +385,15 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
     if (fileList && fileList[0]) {
       const fileSizeToMB = fileList[0].size / 1000000;
       if (fileSizeToMB < 10) {
-          this.messageService.uploadFile(fileList[0])
-            .subscribe(data => this.uploadedFilePaths.push(data));
-          Object.values(fileList).filter(item => {
-            if (typeof (item) !== 'number') {
-              const reader = new FileReader();
-              reader.readAsDataURL(item);
-              reader.onload = () => {
-                this.uploadedFileType = item.type;
-                this.formData.get('files').value.push(item);
-                this.setSafeSvgFormat(reader.result);
-              };
-            }
-          });
+        const team_id = this.storageService.getItem('team_id');
+        const receiver_id = this.storageService.getItem('selectedUser');
+        Object.values(fileList).filter(item => {
+          this.messageService.uploadFile(item, team_id, receiver_id)
+            .subscribe((data) => {
+              this.uploadedFilePaths.push(data);
+              this.filePaths.push(environment.BASE_URL + '/' + data.fileData.path);
+            });
+        });
         }
         else {
           this.canNotUploadFile = true;
@@ -423,17 +414,19 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
    * @returns void
    */
   public deleteMessage(index: number) {
-    this.filePaths.splice(index, 1);
-    if (this?.uploadedFilePaths[index] !== undefined) {
-      this.messageService.deleteUploadedFile(this?.uploadedFilePaths[index]['fileData'].filename)
+    console.log('file', this.filePaths[index])
+    console.log('uplo', this.uploadedFilePaths[index])
+      this.filePaths.splice(index, 1);
+      if (this?.uploadedFilePaths[index] !== undefined) {
+        console.log(this?.uploadedFilePaths[index]['fileData'])
+      this.messageService.deleteUploadedFile(this?.uploadedFilePaths[index]['fileData'].path)
         .subscribe(data => {
           this.uploadedFilePaths.splice(index, 1);
           if (!this.uploadedFilePaths.length) {
-            this.formValue.files.setValue([]);
+            // this.formValue.files.setValue([]);
           }
         });
-    }
-
+      }
   }
 
   /**
