@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(express.static(path.join(__dirname, '../frontend/dist/frontend')));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use(express.static('uploads'));
+app.use('/uploads', express.static('uploads'));
 
 app.get(`/`, (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/frontend/index.html'))
@@ -37,8 +37,8 @@ app.get(`/`, (req, res) => {
 
 const server = https.createServer(
     {
-      key: fs.readFileSync(process.env.KEY, 'utf8'),
-      cert: fs.readFileSync(process.env.CERT, 'utf8')
+      key: fs.readFileSync(process.env.KEY, "utf8"),
+      cert: fs.readFileSync(process.env.CERT, "utf8"),
     },
     app
 );
