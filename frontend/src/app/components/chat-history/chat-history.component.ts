@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, ElementRef, OnInit, ViewChild, HostListener, AfterViewInit} from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, OnInit, ViewChild, HostListener, TemplateRef} from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Message } from 'src/app/models/message';
 import { LocalStorageService } from 'src/app/services/localStorage/local-storage.service';
@@ -8,7 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { environment } from 'src/environments/environment';
 import { Subscription} from 'rxjs';
-import {group} from "@angular/animations";
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 
 
 // ChatHistoryComponent is the message history component
@@ -40,8 +40,10 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public pendingStatus: boolean;
   public showMoreMessages: boolean;
   private messageInfo: any;
+  modalRef: BsModalRef;
 
   constructor(
+    private modalService: BsModalService,
     public messageService: MessageService, // property messageService is public because it is using in chat-history.component.html
     private activatedRoute: ActivatedRoute,
     private storageService: LocalStorageService,
@@ -88,6 +90,11 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
           });
       });
     this.messageService.uploadPending.subscribe(data => this.pendingStatus = data);
+  }
+
+  openModal(template: TemplateRef<any>, imageSrc: string): any {
+    console.log(imageSrc)
+    this.modalRef = this.modalService.show(template, { class : 'myCustomModalClass'});
   }
 
 
@@ -240,5 +247,6 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   public compareDates(firstDate: any, secondDate: any): Boolean {
     return moment(firstDate).format('MMM d, y, h:mm a') === moment(secondDate).format('MMM d, y, h:mm a');
   }
+
 
 }

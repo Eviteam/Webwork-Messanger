@@ -52,3 +52,22 @@ pre {
   display: inline-block !important;
   margin-bottom: 0 !important;
 }
+ .myCustomModalClass {
+   margin-left: 400px !important;
+ }
+
+.myCustomModalClass .modal-content {
+  width: 900px;
+  height: 800px;
+
+  .modal-header img {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+  }
+}
+/* Importing Bootstrap SCSS file. */
+@import "~bootstrap/scss/bootstrap";
+
+/* Importing Datepicker SCSS file. */
+@import "~ngx-bootstrap/datepicker/bs-datepicker";

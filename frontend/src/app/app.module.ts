@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { MainModule } from './components/main.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from './interceptors/error/error.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { ErrorInterceptor } from './interceptors/error/error.interceptor';
     BrowserModule,
     AppRoutingModule,
     MainModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

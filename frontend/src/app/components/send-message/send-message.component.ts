@@ -414,16 +414,13 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
    * @returns void
    */
   public deleteMessage(index: number) {
-    console.log('file', this.filePaths[index])
-    console.log('uplo', this.uploadedFilePaths[index])
       this.filePaths.splice(index, 1);
       if (this?.uploadedFilePaths[index] !== undefined) {
-        console.log(this?.uploadedFilePaths[index]['fileData'])
-      this.messageService.deleteUploadedFile(this?.uploadedFilePaths[index]['fileData'].path)
+        this.messageService.deleteUploadedFile(this?.uploadedFilePaths[index]['fileData'].path)
         .subscribe(data => {
           this.uploadedFilePaths.splice(index, 1);
           if (!this.uploadedFilePaths.length) {
-            // this.formValue.files.setValue([]);
+            this.formValue.files.setValue([]);
           }
         });
       }

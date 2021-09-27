@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../helpers/pipes/filter-pipe/filter.pipe';
 import { FindUsersPipe } from '../helpers/pipes/find-online-users/find-users.pipe';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 const routes: Routes = [
   {
@@ -36,6 +37,7 @@ const config: SocketIoConfig = { url: BASE_URL, options: {} };
     FindUsersPipe
   ],
     imports: [
+      ModalModule.forRoot(),
         CommonModule,
         RouterModule.forChild(routes),
         CKEditorModule,
