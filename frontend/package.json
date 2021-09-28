@@ -26,7 +26,7 @@
     "angular2-jwt-simple": "^0.5.5",
     "autolinker": "^3.14.2",
     "bootstrap": "^4.5.3",
-    "jquery": "^3.5.1",
+    "jquery": "^3.5.1ng",
     "moment": "^2.29.1",
     "ngx-bootstrap": "^7.1.0",
     "ngx-infinite-scroll": "^10.0.1",

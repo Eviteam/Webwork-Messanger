@@ -182,9 +182,12 @@
 }
 
 ::ng-deep .image_part {
-  // width: 360px;
-  // margin-right: 13px;
-  // margin-bottom: 10px;
+  :hover {
+    cursor: pointer;
+  }
+  width: 360px;
+  margin-right: 13px;
+  margin-bottom: 10px;
 
   img {
     max-width: 100%;
@@ -328,10 +331,15 @@
   }
 
   .imageModal {
-    margin-top: 40px;
     max-width: 800px;
     max-height: 700px;
 
+  }
+
+  .timeContent {
+    margin-top: 30px;
+    margin-left: -154px;
+    font-size: 15px;
   }
 
 
