@@ -61,9 +61,10 @@ pre {
   height: 800px;
 
   .modal-header img {
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     margin-right: 5px;
+    border-radius: 20%;
   }
 }
 /* Importing Bootstrap SCSS file. */

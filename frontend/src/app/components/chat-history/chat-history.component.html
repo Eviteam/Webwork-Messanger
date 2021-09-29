@@ -85,7 +85,7 @@
                     <ng-template #template>
                       <div class="modal-header">
                         <img [src]="message?.sender[0]?.avatar.includes('data:image/') ? message?.sender[0]?.avatar : WEBWORK_BASE_URL + message?.sender[0]?.avatar" class="mt-2">
-                        <h5 class="modal-title pull-left">{{message.sender[0].firstname + ' ' + message.sender[0].lastname }}</h5>
+                        <h5 class="modal-title pull-left ml-4">{{message.sender[0].firstname + ' ' + message.sender[0].lastname }}</h5>
                         <div class="timeContent">{{ message.createdAt | date: 'MMM d, y, h:mm a' }}</div>
                         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
                           <span aria-hidden="true">&times;</span>
