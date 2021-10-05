@@ -197,12 +197,16 @@
 
   .sameSizes {
     width: 300px;
-    height: 300px;
+    position: relative;
+    display: inline;
+    height: auto;
   }
 
   .differentSizes {
+    position: relative;
     width: 400px;
-    height: 300px;
+    display: inline;
+    height: auto;
   }
 
   .icons {
@@ -340,6 +344,64 @@
     margin-top: 30px;
     margin-left: -154px;
     font-size: 15px;
+  }
+
+  .downloadButton {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background-color: whitesmoke;
+    border-radius: 17%;
+    height: 45px;
+    width: 110px;
+    white-space: nowrap;
+  }
+
+  .imageDiv {
+    &:hover .downloadButton {
+      display: inline-flex;
+    }
+    position: relative;
+  }
+
+  .downloadCloud {
+    span {
+      margin-top: 9px;
+      margin-left: 5px;
+    }
+    height: 100%;
+    width: 33%;
+    &:hover {
+      background-color: #ebeef2;
+      border-radius: 20%;
+    }
+  }
+
+  .shareImage {
+    span {
+      margin-left: 5px;
+      margin-top: 9px;
+    }
+    height: 100%;
+    width: 34%;
+    &:hover {
+      background-color: #ebeef2;
+      border-radius: 20%;
+    }
+  }
+
+  .moreAction {
+    span {
+      margin-top: 9px;
+      margin-left: 5px;
+    }
+    height: 100%;
+    width: 33%;
+    &:hover {
+      background-color: #ebeef2;
+      border-radius: 20%;
+    }
   }
 
 

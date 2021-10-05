@@ -9,6 +9,7 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { environment } from 'src/environments/environment';
 import { Subscription} from 'rxjs';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import { saveAs } from 'file-saver';
 
 
 // ChatHistoryComponent is the message history component
@@ -93,7 +94,6 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
   }
 
   openModal(template: TemplateRef<any>, imageSrc: string): any {
-    console.log(imageSrc)
     this.modalRef = this.modalService.show(template, { class : 'myCustomModalClass'});
   }
 
@@ -246,6 +246,18 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
    */
   public compareDates(firstDate: any, secondDate: any): Boolean {
     return moment(firstDate).format('MMM d, y, h:mm a') === moment(secondDate).format('MMM d, y, h:mm a');
+  }
+
+  onDownloadImage(message, index): any {
+    const filePath = message.filePath[index];
+    const num = filePath.lastIndexOf('\\')
+    const fileName = filePath.substring(num + 1);
+    this.messageService.downloadFile(filePath).subscribe(
+      (data) => {
+        if (data) {
+          saveAs(data, fileName);
+        }
+      });
   }
 
 

@@ -172,4 +172,18 @@ router.put(`/messages/seen/:team_id/:user_id/:sender_id`, (req, res) => {
   })
 })
 
+ //    DOWNLOAD IMAGE FROM CHAT-HISTORY
+
+router.post(`/downloadFile`, (req, res) => {
+  const filepath = req.body.params
+  const num = filepath.indexOf('uploads')
+  const direction = filepath.substring(num)
+  const lastSlashIndex = direction.lastIndexOf('\\');
+  const directoryPath = direction.substring(lastSlashIndex, 0)
+  const fileName = direction.slice(lastSlashIndex + 1);
+  res.sendFile(`${fileName}`, { root: path.join(__dirname, `../../${directoryPath}`) });
+
+})
+
+
 module.exports = router

@@ -9,7 +9,7 @@
   <button
     *ngIf="showMoreMessages && groupArrays[0]?.messages.length"
     class="showMessage"
-    (click)="onShowMessages()">Show More!
+    (click)="onShowMessages()">Show More
   </button>
   <div
     class="sender_block"
@@ -76,12 +76,28 @@
                 [ngClass]="currentUser == message?.sender[0].id ? 'text-right' : ''"
                 [innerHtml]="message?.message">
               </div>
-              <div class="uploadedFiles d-flex justify-content-end flex-wrap">
+              <div class="uploadedFiles d-flex justify-content-end flex-wrap"
+                   *ngFor="let src of message.filePath let i = index">
                 <div
-                  (click)="openModal(template, message)"
-                  class="image_part"
-                  *ngFor="let src of message.filePath let i = index">
-                  <img [src]="sanitizer.bypassSecurityTrustUrl(src)" [ngClass]="{'sameSizes': isSame, 'differentSizes': !isSame, isIcon: 'icons'}">
+                  class="image_part">
+                  <div class="imageDiv">
+                    <img [src]="sanitizer.bypassSecurityTrustUrl(src)" [ngClass]="{'sameSizes': isSame, 'differentSizes': !isSame, isIcon: 'icons'}"
+                         (click)="openModal(template, message)">
+                    <div class="downloadButton">
+                      <div class="downloadCloud">
+                        <span
+                          class="material-icons"
+                        (click)="onDownloadImage(message, i)">cloud_download
+                        </span>
+                      </div>
+                      <div class="shareImage">
+                        <span class="material-icons">reply</span>
+                      </div>
+                      <div class="moreAction">
+                        <span class="material-icons-outlined">more_horiz</span>
+                      </div>
+                    </div>
+                  </div>
                     <ng-template #template>
                       <div class="modal-header">
                         <img [src]="message?.sender[0]?.avatar.includes('data:image/') ? message?.sender[0]?.avatar : WEBWORK_BASE_URL + message?.sender[0]?.avatar" class="mt-2">

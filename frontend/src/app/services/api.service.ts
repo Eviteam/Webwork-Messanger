@@ -28,6 +28,14 @@ export class ApiService {
     })
   }
 
+  private downloadOptions: object = {
+   /* responseType : 'blob',*/
+    headers: new HttpHeaders({
+      'content-type': 'application/json',
+      'Access-Control-Allow-Origin': `*`
+    })
+  }
+
   constructor(private httpClient: HttpClient) { }
 
   /**
@@ -38,6 +46,10 @@ export class ApiService {
    */
   public get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
     return this.httpClient.get(`${BASE_URL}${path}`, { params });
+  }
+
+  public downloadImage(path: string, params: HttpParams = new HttpParams()): Observable<any> {
+    return this.httpClient.post(`${BASE_URL}${path}`, {params}, {responseType: 'blob'});
   }
 
   /**
@@ -61,7 +73,7 @@ export class ApiService {
    * @returns POST request body
    */
 
-  public postFile (path: string, body: any): Observable<any> {
+  public postFile(path: string, body: any): Observable<any> {
     const payload: FormData = new FormData();
     payload.append('file', body);
     return this.httpClient

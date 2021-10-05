@@ -6,6 +6,7 @@ import { Message, WebWorkMessage } from 'src/app/models/message';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import { ApiService } from '../api.service';
 import { environment } from '../../../environments/environment';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 const webWork = environment.BASE_URL;
 
 @Injectable({
@@ -32,7 +33,8 @@ export class MessageService {
   constructor(
     private apiService: ApiService,
     private storageService: LocalStorageService,
-    private socket: Socket
+    private socket: Socket,
+    private httpClient: HttpClient,
   ) { }
 
   public registerUser(userData: any): any {
@@ -87,6 +89,10 @@ export class MessageService {
     return this.apiService.post(`/api/chat/uploadedFile`, {filePath});
   }
 
+  public downloadFile(file): Observable<any> {
+    return this.apiService.downloadImage(`/api/chat/downloadFile`, file);
+  }
+
   public getUnseenMessages(team_id: string | number, user_id: string): Observable<any> {
     return this.apiService.get(`/api/chat/unseen/messages/${team_id}/${user_id}`);
   }
@@ -100,7 +106,7 @@ export class MessageService {
   }
 
   public sendNotification(message: WebWorkMessage): Observable<any> {
-    return this.apiService.postToWebWork('/chat-api/new-message', message)
+    return this.apiService.postToWebWork('/chat-api/new-message', message);
   }
 
   public setFocus(editor: any) {
