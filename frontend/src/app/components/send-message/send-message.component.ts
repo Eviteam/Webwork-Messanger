@@ -319,14 +319,25 @@ export class SendMessageComponent implements OnInit, AfterViewInit, OnDestroy, D
 
 
   onPaste(): any {
-    const filePaths = this.filePaths;
     setTimeout(() => {
+      const team_id = this.storageService.getItem('team_id');
+      const receiver_id = this.storageService.getItem('selectedUser');
       let image: any[] = Array.from(document.querySelector('.ql-editor').querySelector('p').getElementsByTagName('img'));
       if (image.length) {
         for (let i = 0; i <= image.length - 1; i++) {
-            filePaths.push(image[i].currentSrc);
-            image[i]?.parentNode.removeChild(image[i]);
-            image = [];
+          const url = image[i].currentSrc;
+          fetch(url)
+            .then(res => res.blob())
+            .then(blob => {
+              const file = new File([blob], 'Image.png', { type: 'image/png' })
+              this.messageService.uploadFile(file, team_id, receiver_id)
+                .subscribe((data) => {
+                  this.uploadedFilePaths.push(data);
+                  this.filePaths.push(environment.BASE_URL + '/' + data.fileData.path);
+                  image[i]?.parentNode.removeChild(image[i]);
+                  image = [];
+                });
+            });
         }
       }
     }, 500);
