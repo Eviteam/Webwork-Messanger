@@ -11,7 +11,8 @@ const uploadedFile = require("../services/chat.service");
 const UploadedFileSchema = require("../models/UploadedFileSchema");
 const fs = require('fs');
 const path = require('path')
-const directoryPath = path.join(__dirname, '../../uploads')
+const directoryPath = path.join(__dirname, '../../uploads');
+const md5 = require('md5');
 
 // GET CHAT MESSAGES
 router.get(`/:team_id/:user_id/:receiver_id`, (req, res) => {
@@ -187,3 +188,4 @@ router.post(`/downloadFile`, (req, res) => {
 
 
 module.exports = router
+

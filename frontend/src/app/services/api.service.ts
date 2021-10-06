@@ -36,6 +36,10 @@ export class ApiService {
     })
   }
 
+  private headers = new HttpHeaders().append(
+    'Access-Control-Allow-Origin', '*'
+);
+
   constructor(private httpClient: HttpClient) { }
 
   /**

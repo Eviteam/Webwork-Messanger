@@ -18,6 +18,7 @@ const channelController = require('./app/controllers/channel.controller');
 const chatController = require('./app/controllers/chat.controller');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
+const md5 = require('md5');
 
 // PORT
 const PORT = process.env.PORT || 3000 ;

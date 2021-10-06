@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { Subscription} from 'rxjs';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import { saveAs } from 'file-saver';
+const md5 = require('md5');
 
 
 // ChatHistoryComponent is the message history component
@@ -250,8 +251,8 @@ export class ChatHistoryComponent implements OnInit, AfterViewChecked {
 
   onDownloadImage(message, index): any {
     const filePath = message.filePath[index];
-    const num = filePath.lastIndexOf('\\')
-    const fileName = filePath.substring(num + 1);
+    const num = filePath.lastIndexOf('\\');
+    const fileName = md5(filePath.substring(num + 1));
     this.messageService.downloadFile(filePath).subscribe(
       (data) => {
         if (data) {
